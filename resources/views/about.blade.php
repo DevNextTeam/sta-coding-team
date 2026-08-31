@@ -277,7 +277,7 @@
                            font-bold
                            text-[#29483D]">
 
-                    Ariel
+                    Ariel (Sarong)
 
                 </h3>
 
@@ -371,7 +371,7 @@
                            font-bold
                            text-[#29483D]">
 
-                    Chery
+                    Chery (Tallie)
 
                 </h3>
 
@@ -465,7 +465,7 @@
                            font-bold
                            text-[#29483D]">
 
-                    Angel
+                    Angel (Angulo)
 
                 </h3>
 
