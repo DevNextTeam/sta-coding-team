@@ -1,0 +1,10 @@
+{
+  "data": {
+    "attributes": {
+      "type": "checkout_session.payment.paid",
+      "data": {
+        "id": "test_checkout_id"
+      }
+    }
+  }
+}
