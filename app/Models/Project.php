@@ -16,6 +16,7 @@ class Project extends Model
         'is_premium',
         'github_url',
         'demo_url',
+        'video_url',
         'published_at',
     ];
 

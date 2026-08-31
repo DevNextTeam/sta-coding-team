@@ -46,12 +46,11 @@ class ProjectInstructionController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Upload Instruction Image
+        | Upload Image
         |--------------------------------------------------------------------------
         */
 
         if ($request->hasFile('image')) {
-
             $validated['image'] = $request
                 ->file('image')
                 ->store('project-instructions', 'public');
@@ -118,9 +117,7 @@ class ProjectInstructionController extends Controller
 
             if (
                 $instruction->image &&
-                Storage::disk('public')->exists(
-                    $instruction->image
-                )
+                Storage::disk('public')->exists($instruction->image)
             ) {
                 Storage::disk('public')->delete(
                     $instruction->image
@@ -163,9 +160,7 @@ class ProjectInstructionController extends Controller
 
         if (
             $instruction->image &&
-            Storage::disk('public')->exists(
-                $instruction->image
-            )
+            Storage::disk('public')->exists($instruction->image)
         ) {
             Storage::disk('public')->delete(
                 $instruction->image

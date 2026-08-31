@@ -140,14 +140,14 @@
 
 
                 {{-- ================================================= --}}
-                {{-- ACCESS GRANTED --}}
+                {{-- ACCESS --}}
                 {{-- ================================================= --}}
 
                 @if($hasAccess)
 
-                    {{-- ============================================= --}}
+                    {{-- ================================================= --}}
                     {{-- PREMIUM ACCESS MESSAGE --}}
-                    {{-- ============================================= --}}
+                    {{-- ================================================= --}}
 
                     @if($project->is_premium)
 
@@ -193,14 +193,10 @@
 
 
                     {{-- ================================================= --}}
-                    {{-- SOURCE CODE / GITHUB / DEMO --}}
+                    {{-- SOURCE / GITHUB / DEMO --}}
                     {{-- ================================================= --}}
 
                     <div class="flex flex-wrap gap-4 mt-8">
-
-                        {{-- ============================================= --}}
-                        {{-- FIND SOURCE CODE RESOURCE --}}
-                        {{-- ============================================= --}}
 
                         @php
 
@@ -227,7 +223,9 @@
                             $sourceResource = $project->resources->first(
                                 function ($resource) use ($sourceExtensions) {
 
-                                    $fileName = strtolower($resource->name ?? '');
+                                    $fileName = strtolower(
+                                        $resource->name ?? ''
+                                    );
 
                                     foreach ($sourceExtensions as $extension) {
 
@@ -250,9 +248,7 @@
                         @endphp
 
 
-                        {{-- ============================================= --}}
-                        {{-- VIEW SOURCE CODE --}}
-                        {{-- ============================================= --}}
+                        {{-- SOURCE CODE --}}
 
                         @if($sourceResource)
 
@@ -275,9 +271,7 @@
                         @endif
 
 
-                        {{-- ============================================= --}}
                         {{-- GITHUB --}}
-                        {{-- ============================================= --}}
 
                         @if($project->github_url)
 
@@ -299,9 +293,7 @@
                         @endif
 
 
-                        {{-- ============================================= --}}
                         {{-- LIVE DEMO --}}
-                        {{-- ============================================= --}}
 
                         @if($project->demo_url)
 
@@ -325,6 +317,160 @@
                     </div>
 
 
+                    {{-- ================================================= --}}
+                    {{-- PROJECT VIDEO --}}
+                    {{-- ================================================= --}}
+
+                    @if($project->video_url)
+
+                        @php
+
+                            $videoUrl = $project->video_url;
+
+                            $youtubeId = null;
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | youtube.com/watch?v=
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (str_contains($videoUrl, 'youtube.com/watch')) {
+
+                                parse_str(
+                                    parse_url($videoUrl, PHP_URL_QUERY) ?? '',
+                                    $youtubeQuery
+                                );
+
+                                $youtubeId =
+                                    $youtubeQuery['v'] ?? null;
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | youtu.be/
+                            |--------------------------------------------------------------------------
+                            */
+
+                            elseif (str_contains($videoUrl, 'youtu.be/')) {
+
+                                $youtubeId = trim(
+                                    parse_url(
+                                        $videoUrl,
+                                        PHP_URL_PATH
+                                    ),
+                                    '/'
+                                );
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | youtube.com/shorts/
+                            |--------------------------------------------------------------------------
+                            */
+
+                            elseif (str_contains($videoUrl, 'youtube.com/shorts/')) {
+
+                                $path = parse_url(
+                                    $videoUrl,
+                                    PHP_URL_PATH
+                                );
+
+                                $youtubeId = basename($path);
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Remove YouTube parameters
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if ($youtubeId) {
+
+                                $youtubeId = preg_replace(
+                                    '/[^a-zA-Z0-9_-]/',
+                                    '',
+                                    $youtubeId
+                                );
+                            }
+
+                        @endphp
+
+
+                        @if($youtubeId)
+
+                            <div class="mt-12">
+
+                                <div class="mb-5">
+
+                                    <p
+                                        class="text-sm
+                                               uppercase
+                                               tracking-[0.3em]
+                                               text-[#B87945]"
+                                    >
+                                        PROJECT VIDEO
+                                    </p>
+
+                                    <h2
+                                        class="text-3xl
+                                               font-bold
+                                               text-[#0F3F4A]
+                                               mt-1"
+                                    >
+                                        Video Demonstration
+                                    </h2>
+
+                                    <p
+                                        class="text-[#315F6D]
+                                               mt-2"
+                                    >
+                                        Watch the video demonstration of this
+                                        project.
+                                    </p>
+
+                                </div>
+
+
+                                {{-- YOUTUBE PLAYER --}}
+
+                                <div
+                                    class="relative
+                                           w-full
+                                           overflow-hidden
+                                           rounded-2xl
+                                           border border-[#D5DDD8]
+                                           shadow-sm"
+                                    style="aspect-ratio: 16 / 9;"
+                                >
+
+                                    <iframe
+                                        class="absolute inset-0
+                                               w-full h-full"
+                                        src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                        title="{{ $project->title }} Video"
+                                        frameborder="0"
+                                        allow="accelerometer;
+                                               autoplay;
+                                               clipboard-write;
+                                               encrypted-media;
+                                               gyroscope;
+                                               picture-in-picture;
+                                               web-share"
+                                        allowfullscreen
+                                    ></iframe>
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                    @endif
+
 
                     {{-- ================================================= --}}
                     {{-- PROJECT INSTRUCTIONS --}}
@@ -333,10 +479,6 @@
                     @if($project->instructions->count())
 
                         <div class="mt-12">
-
-                            {{-- ========================================= --}}
-                            {{-- SECTION HEADER --}}
-                            {{-- ========================================= --}}
 
                             <div class="mb-6">
 
@@ -369,10 +511,6 @@
                             </div>
 
 
-                            {{-- ========================================= --}}
-                            {{-- INSTRUCTION LIST --}}
-                            {{-- ========================================= --}}
-
                             <div class="space-y-6">
 
                                 @foreach($project->instructions as $instruction)
@@ -385,13 +523,7 @@
                                                p-6"
                                     >
 
-                                        {{-- ================================= --}}
-                                        {{-- STEP HEADER --}}
-                                        {{-- ================================= --}}
-
                                         <div class="flex items-start gap-4">
-
-                                            {{-- STEP NUMBER --}}
 
                                             <div
                                                 class="shrink-0
@@ -409,8 +541,6 @@
                                                 {{ $instruction->step }}
                                             </div>
 
-
-                                            {{-- TITLE + DESCRIPTION --}}
 
                                             <div class="min-w-0 flex-1">
 
@@ -436,10 +566,6 @@
 
                                         </div>
 
-
-                                        {{-- ================================= --}}
-                                        {{-- INSTRUCTION IMAGE --}}
-                                        {{-- ================================= --}}
 
                                         @if($instruction->image)
 
@@ -471,7 +597,6 @@
                         </div>
 
                     @endif
-
 
 
                     {{-- ================================================= --}}
@@ -514,10 +639,6 @@
                                                border border-[#D5DDD8]"
                                     >
 
-                                        {{-- ================================= --}}
-                                        {{-- FILE INFORMATION --}}
-                                        {{-- ================================= --}}
-
                                         <div class="min-w-0">
 
                                             <p
@@ -541,12 +662,10 @@
                                                 @if($resource->file_size)
 
                                                     •
-
                                                     {{ number_format(
                                                         $resource->file_size / 1024,
                                                         1
                                                     ) }}
-
                                                     KB
 
                                                 @endif
@@ -556,19 +675,11 @@
                                         </div>
 
 
-                                        {{-- ================================= --}}
-                                        {{-- BUTTONS --}}
-                                        {{-- ================================= --}}
-
                                         <div
                                             class="flex
                                                    gap-2
                                                    shrink-0"
                                         >
-
-                                            {{-- ================================= --}}
-                                            {{-- VIEW --}}
-                                            {{-- ================================= --}}
 
                                             @php
 
@@ -578,7 +689,10 @@
 
                                                 $canView = false;
 
-                                                foreach ($sourceExtensions as $extension) {
+                                                foreach (
+                                                    $sourceExtensions
+                                                    as $extension
+                                                ) {
 
                                                     if (
                                                         str_ends_with(
@@ -616,10 +730,6 @@
 
                                             @endif
 
-
-                                            {{-- ================================= --}}
-                                            {{-- DOWNLOAD --}}
-                                            {{-- ================================= --}}
 
                                             <a
                                                 href="{{ route(
@@ -689,20 +799,15 @@
                             🔒 Premium Project
                         </h2>
 
-
                         <p
                             class="text-[#7A5538]
                                    mt-2"
                         >
                             This project is available to subscribers.
                             Subscribe to access the source code,
-                            instructions, and project resources.
+                            instructions, project video, and resources.
                         </p>
 
-
-                        {{-- ============================================= --}}
-                        {{-- GUEST --}}
-                        {{-- ============================================= --}}
 
                         @guest
 
@@ -720,11 +825,6 @@
                             >
                                 Login to Continue
                             </a>
-
-
-                        {{-- ============================================= --}}
-                        {{-- LOGGED IN WITHOUT SUBSCRIPTION --}}
-                        {{-- ============================================= --}}
 
                         @else
 
