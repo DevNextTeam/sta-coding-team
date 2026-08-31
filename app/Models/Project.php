@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Project extends Model
 {
     protected $fillable = [
@@ -22,8 +23,27 @@ class Project extends Model
         'is_premium' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Resources
+    |--------------------------------------------------------------------------
+    */
+
     public function resources(): HasMany
-{
-    return $this->hasMany(ProjectResource::class);
-}
+    {
+        return $this->hasMany(ProjectResource::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Instructions
+    |--------------------------------------------------------------------------
+    */
+
+    public function instructions(): HasMany
+    {
+        return $this->hasMany(ProjectInstruction::class)
+            ->orderBy('step');
+    }
 }

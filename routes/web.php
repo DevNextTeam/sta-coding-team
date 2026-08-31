@@ -10,6 +10,7 @@ use App\Http\Controllers\PageController;
 
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectResourceController as AdminProjectResourceController;
+use App\Http\Controllers\Admin\ProjectInstructionController;
 
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayMongoWebhookController;
@@ -295,6 +296,31 @@ Route::middleware(['auth', 'admin'])
             [AdminProjectResourceController::class, 'destroy']
         )
             ->name('projects.resources.destroy');
+
+
+        // =================================================
+        // PROJECT INSTRUCTIONS
+        // =================================================
+
+        Route::post(
+            'projects/{project}/instructions',
+            [ProjectInstructionController::class, 'store']
+        )
+            ->name('projects.instructions.store');
+
+
+        Route::put(
+            'projects/instructions/{instruction}',
+            [ProjectInstructionController::class, 'update']
+        )
+            ->name('projects.instructions.update');
+
+
+        Route::delete(
+            'projects/instructions/{instruction}',
+            [ProjectInstructionController::class, 'destroy']
+        )
+            ->name('projects.instructions.destroy');
 
     });
 

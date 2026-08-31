@@ -12,7 +12,7 @@
 
         <a
             href="{{ route('admin.projects.index') }}"
-            class="text-[#4f8775]"
+            class="text-[#4f8775] hover:underline"
         >
             ← Back to Projects
         </a>
@@ -30,6 +30,19 @@
         </p>
 
     </div>
+
+
+    {{-- ===================================================== --}}
+    {{-- SUCCESS MESSAGE --}}
+    {{-- ===================================================== --}}
+
+    @if (session('success'))
+
+        <div class="mb-6 p-4 rounded-xl bg-green-100 text-green-700">
+            {{ session('success') }}
+        </div>
+
+    @endif
 
 
     {{-- ===================================================== --}}
@@ -175,8 +188,6 @@
                 class="w-full border rounded-xl px-4 py-3"
             >
 
-            {{-- Current Image --}}
-
             @if ($project->image)
 
                 <div class="mt-4">
@@ -207,7 +218,6 @@
 
             <p class="text-sm text-gray-500 mt-2">
                 Leave this empty to keep the current image.
-                Upload a JPG, JPEG, PNG, or WebP image to replace it.
             </p>
 
             <p class="text-sm text-gray-500 mt-1">
@@ -240,7 +250,7 @@
             </label>
 
             <p class="text-sm text-gray-500 mt-1">
-                Premium projects will eventually require a subscription.
+                Premium projects require an active subscription.
             </p>
 
         </div>
@@ -325,7 +335,7 @@
 
             <a
                 href="{{ route('admin.projects.index') }}"
-                class="px-6 py-3 rounded-xl border"
+                class="px-6 py-3 rounded-xl border hover:bg-gray-50 transition"
             >
                 Cancel
             </a>
@@ -340,6 +350,377 @@
         </div>
 
     </form>
+
+
+
+    {{-- ===================================================== --}}
+    {{-- PROJECT INSTRUCTIONS --}}
+    {{-- ===================================================== --}}
+
+    <div class="bg-white rounded-2xl shadow-sm border p-8 mt-8">
+
+        {{-- ================================================= --}}
+        {{-- HEADER --}}
+        {{-- ================================================= --}}
+
+        <div class="mb-6">
+
+            <p class="text-sm tracking-[0.3em] text-orange-500">
+                PROJECT GUIDE
+            </p>
+
+            <h2 class="text-2xl font-bold text-[#00485c] mt-1">
+                Project Instructions
+            </h2>
+
+            <p class="text-gray-600 mt-2">
+                Add step-by-step instructions for users to follow
+                when using or setting up this project.
+            </p>
+
+        </div>
+
+
+        {{-- ================================================= --}}
+        {{-- ADD INSTRUCTION --}}
+        {{-- ================================================= --}}
+
+        <div
+            class="border border-dashed
+                   border-gray-300
+                   rounded-2xl
+                   p-6"
+        >
+
+            <h3 class="text-lg font-bold text-[#00485c] mb-5">
+                Add New Instruction
+            </h3>
+
+
+            <form
+                action="{{ route(
+                    'admin.projects.instructions.store',
+                    $project
+                ) }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                @csrf
+
+
+                {{-- STEP NUMBER --}}
+
+                <div class="mb-5">
+
+                    <label class="block font-semibold mb-2">
+                        Step Number
+                    </label>
+
+                    <input
+                        type="number"
+                        name="step"
+                        min="1"
+                        value="{{ old('step', ($project->instructions->max('step') ?? 0) + 1) }}"
+                        class="w-full border rounded-xl px-4 py-3"
+                        required
+                    >
+
+                </div>
+
+
+                {{-- TITLE --}}
+
+                <div class="mb-5">
+
+                    <label class="block font-semibold mb-2">
+                        Step Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Example: Gather the Components"
+                        class="w-full border rounded-xl px-4 py-3"
+                        required
+                    >
+
+                </div>
+
+
+                {{-- DESCRIPTION --}}
+
+                <div class="mb-5">
+
+                    <label class="block font-semibold mb-2">
+                        Instructions
+                    </label>
+
+                    <textarea
+                        name="description"
+                        rows="6"
+                        placeholder="Explain what the user needs to do in this step..."
+                        class="w-full border rounded-xl px-4 py-3"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                {{-- IMAGE --}}
+
+                <div class="mb-5">
+
+                    <label class="block font-semibold mb-2">
+                        Step Image
+                        <span class="font-normal text-gray-500">
+                            (Optional)
+                        </span>
+                    </label>
+
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                        class="w-full border rounded-xl px-4 py-3"
+                    >
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        You can upload a screenshot, wiring diagram,
+                        setup photo, or any image related to this step.
+                    </p>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Maximum image size: 2MB.
+                    </p>
+
+                </div>
+
+
+                {{-- SUBMIT --}}
+
+                <button
+                    type="submit"
+                    class="px-6
+                           py-3
+                           rounded-xl
+                           bg-[#4f8775]
+                           text-white
+                           hover:bg-[#3e705f]
+                           transition"
+                >
+                    + Add Instruction
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        {{-- ================================================= --}}
+        {{-- EXISTING INSTRUCTIONS --}}
+        {{-- ================================================= --}}
+
+        <div class="mt-8">
+
+            <h3 class="text-lg font-bold text-[#00485c] mb-4">
+                Existing Instructions
+            </h3>
+
+
+            @if ($project->instructions->count())
+
+                <div class="space-y-5">
+
+                    @foreach ($project->instructions as $instruction)
+
+                        <div
+                            class="rounded-2xl
+                                   border
+                                   bg-gray-50
+                                   overflow-hidden"
+                        >
+
+                            {{-- ========================================= --}}
+                            {{-- INSTRUCTION HEADER --}}
+                            {{-- ========================================= --}}
+
+                            <div
+                                class="flex
+                                       items-center
+                                       justify-between
+                                       gap-4
+                                       p-5"
+                            >
+
+                                <div class="flex items-center gap-4">
+
+                                    {{-- STEP NUMBER --}}
+
+                                    <div
+                                        class="w-11
+                                               h-11
+                                               shrink-0
+                                               rounded-full
+                                               bg-[#4f8775]
+                                               text-white
+                                               flex
+                                               items-center
+                                               justify-center
+                                               font-bold"
+                                    >
+                                        {{ $instruction->step }}
+                                    </div>
+
+
+                                    {{-- TITLE --}}
+
+                                    <div>
+
+                                        <p
+                                            class="text-xs
+                                                   uppercase
+                                                   tracking-wider
+                                                   text-orange-500"
+                                        >
+                                            Step {{ $instruction->step }}
+                                        </p>
+
+                                        <h4
+                                            class="font-bold
+                                                   text-[#00485c]
+                                                   text-lg"
+                                        >
+                                            {{ $instruction->title }}
+                                        </h4>
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- DELETE --}}
+
+                                <form
+                                    action="{{ route(
+                                        'admin.projects.instructions.destroy',
+                                        $instruction
+                                    ) }}"
+                                    method="POST"
+                                    onsubmit="return confirm(
+                                        'Are you sure you want to delete this instruction?'
+                                    )"
+                                >
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="px-4
+                                               py-2
+                                               rounded-lg
+                                               bg-red-100
+                                               text-red-600
+                                               hover:bg-red-200
+                                               transition"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                            {{-- ========================================= --}}
+                            {{-- INSTRUCTION CONTENT --}}
+                            {{-- ========================================= --}}
+
+                            <div
+                                class="px-5
+                                       pb-5
+                                       border-t
+                                       bg-white"
+                            >
+
+                                <p
+                                    class="text-gray-700
+                                           leading-7
+                                           whitespace-pre-line
+                                           pt-5"
+                                >
+                                    {{ $instruction->description }}
+                                </p>
+
+
+                                {{-- IMAGE --}}
+
+                                @if ($instruction->image)
+
+                                    <div class="mt-5">
+
+                                        <p
+                                            class="text-sm
+                                                   font-semibold
+                                                   text-gray-600
+                                                   mb-2"
+                                        >
+                                            Step Image
+                                        </p>
+
+                                        <img
+                                            src="{{ asset(
+                                                'storage/' .
+                                                $instruction->image
+                                            ) }}"
+                                            alt="{{ $instruction->title }}"
+                                            class="max-w-full
+                                                   md:max-w-2xl
+                                                   rounded-xl
+                                                   border
+                                                   shadow-sm"
+                                        >
+
+                                    </div>
+
+                                @endif
+
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+            @else
+
+                <div
+                    class="p-6
+                           rounded-xl
+                           bg-gray-50
+                           text-center
+                           border"
+                >
+
+                    <p class="text-gray-500">
+                        No instructions have been added yet.
+                    </p>
+
+                    <p class="text-sm text-gray-400 mt-1">
+                        Add your first step using the form above.
+                    </p>
+
+                </div>
+
+            @endif
+
+        </div>
+
+    </div>
+
 
 
     {{-- ===================================================== --}}
@@ -359,26 +740,11 @@
             </h2>
 
             <p class="text-gray-600 mt-2">
-                Upload source code, documentation, ZIP files, and other
-                resources for this project.
+                Upload source code, documentation, ZIP files, and
+                other resources for this project.
             </p>
 
         </div>
-
-
-        {{-- ================================================= --}}
-        {{-- SUCCESS MESSAGE --}}
-        {{-- ================================================= --}}
-
-        @if (session('success'))
-
-            <div class="mb-6 p-4 rounded-xl bg-green-100 text-green-700">
-
-                {{ session('success') }}
-
-            </div>
-
-        @endif
 
 
         {{-- ================================================= --}}
@@ -386,10 +752,16 @@
         {{-- ================================================= --}}
 
         <form
-            action="{{ route('admin.projects.resources.store', $project) }}"
+            action="{{ route(
+                'admin.projects.resources.store',
+                $project
+            ) }}"
             method="POST"
             enctype="multipart/form-data"
-            class="border border-dashed border-gray-300 rounded-xl p-6"
+            class="border border-dashed
+                   border-gray-300
+                   rounded-xl
+                   p-6"
         >
 
             @csrf
@@ -398,22 +770,21 @@
                 Upload Resource
             </label>
 
-            <div>
+            <input
+                id="resource-file"
+                type="file"
+                name="file"
+                required
+                class="w-full border rounded-xl px-4 py-3"
+            >
 
-                <input
-                    id="resource-file"
-                    type="file"
-                    name="file"
-                    required
-                    class="w-full border rounded-xl px-4 py-3"
-                >
-
-                <p
-                    id="selected-file"
-                    class="text-sm text-[#4F806D] mt-2 hidden"
-                ></p>
-
-            </div>
+            <p
+                id="selected-file"
+                class="text-sm
+                       text-[#4F806D]
+                       mt-2
+                       hidden"
+            ></p>
 
             <p class="text-sm text-gray-500 mt-2">
                 Maximum file size: 10MB.
@@ -421,7 +792,14 @@
 
             <button
                 type="submit"
-                class="mt-4 px-6 py-3 rounded-xl bg-[#4f8775] text-white hover:bg-[#3e705f] transition"
+                class="mt-4
+                       px-6
+                       py-3
+                       rounded-xl
+                       bg-[#4f8775]
+                       text-white
+                       hover:bg-[#3e705f]
+                       transition"
             >
                 Upload Resource
             </button>
@@ -439,6 +817,7 @@
                 Existing Resources
             </h3>
 
+
             @if ($project->resources->count())
 
                 <div class="space-y-3">
@@ -446,12 +825,23 @@
                     @foreach ($project->resources as $resource)
 
                         <div
-                            class="flex items-center justify-between gap-4 p-4 rounded-xl bg-gray-50 border"
+                            class="flex
+                                   items-center
+                                   justify-between
+                                   gap-4
+                                   p-4
+                                   rounded-xl
+                                   bg-gray-50
+                                   border"
                         >
 
-                            <div>
+                            <div class="min-w-0">
 
-                                <p class="font-semibold text-[#00485c]">
+                                <p
+                                    class="font-semibold
+                                           text-[#00485c]
+                                           truncate"
+                                >
                                     {{ $resource->name }}
                                 </p>
 
@@ -459,9 +849,18 @@
 
                                     {{ $resource->file_type }}
 
-                                    ·
+                                    @if($resource->file_size)
 
-                                    {{ number_format($resource->file_size / 1024, 1) }} KB
+                                        ·
+
+                                        {{ number_format(
+                                            $resource->file_size / 1024,
+                                            1
+                                        ) }}
+
+                                        KB
+
+                                    @endif
 
                                 </p>
 
@@ -474,6 +873,9 @@
                                     $resource
                                 ) }}"
                                 method="POST"
+                                onsubmit="return confirm(
+                                    'Are you sure you want to delete this resource?'
+                                )"
                             >
 
                                 @csrf
@@ -481,7 +883,13 @@
 
                                 <button
                                     type="submit"
-                                    class="px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition"
+                                    class="px-4
+                                           py-2
+                                           rounded-lg
+                                           bg-red-100
+                                           text-red-600
+                                           hover:bg-red-200
+                                           transition"
                                 >
                                     Delete
                                 </button>
@@ -496,7 +904,12 @@
 
             @else
 
-                <div class="p-6 rounded-xl bg-gray-50 text-center">
+                <div
+                    class="p-6
+                           rounded-xl
+                           bg-gray-50
+                           text-center"
+                >
 
                     <p class="text-gray-500">
                         No resources uploaded yet.
