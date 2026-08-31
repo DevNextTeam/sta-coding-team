@@ -88,7 +88,11 @@
 
                 @if($hasAccess)
 
-                    {{-- Premium Access Message --}}
+
+                    {{-- ================================================= --}}
+                    {{-- PREMIUM ACCESS MESSAGE --}}
+                    {{-- ================================================= --}}
+
                     @if($project->is_premium)
 
                         <div class="mt-8 p-5 rounded-2xl
@@ -122,49 +126,153 @@
 
 
                     {{-- ================================================= --}}
-                    {{-- SOURCE CODE / DEMO --}}
+                    {{-- SOURCE CODE / GITHUB / DEMO --}}
                     {{-- ================================================= --}}
 
-                    @if($project->github_url || $project->demo_url)
+                    @php
 
-                        <div class="flex flex-wrap gap-4 mt-8">
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Find the first source-code resource
+                        |--------------------------------------------------------------------------
+                        */
 
-                            {{-- GitHub --}}
-                            @if($project->github_url)
+                        $sourceResource = $project->resources->first(
+                            function ($resource) {
 
-                                <a
-                                    href="{{ $project->github_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="px-5 py-3 rounded-xl
-                                           bg-[#0F3F4A] text-white
-                                           hover:opacity-90 transition"
-                                >
+                                $fileName = strtolower($resource->name ?? '');
+
+                                $allowedExtensions = [
+                                    '.php',
+                                    '.blade.php',
+                                    '.css',
+                                    '.js',
+                                    '.jsx',
+                                    '.ts',
+                                    '.tsx',
+                                    '.html',
+                                    '.htm',
+                                    '.json',
+                                    '.xml',
+                                    '.sql',
+                                    '.md',
+                                    '.txt',
+                                    '.vue',
+                                    '.env.example',
+                                    '.gitignore',
+                                ];
+
+                                foreach ($allowedExtensions as $extension) {
+
+                                    if (str_ends_with($fileName, $extension)) {
+                                        return true;
+                                    }
+
+                                }
+
+                                return false;
+                            }
+                        );
+
+                    @endphp
+
+
+                    <div class="flex flex-wrap gap-4 mt-8">
+
+
+                        {{-- ================================================= --}}
+                        {{-- VIEW SOURCE CODE --}}
+                        {{-- ================================================= --}}
+
+                        @if($sourceResource)
+
+                            <a
+                                href="{{ route(
+                                    'project-resources.view',
+                                    $sourceResource
+                                ) }}"
+                                class="inline-flex items-center gap-2
+                                       px-5 py-3
+                                       rounded-xl
+                                       bg-[#0F3F4A]
+                                       text-white
+                                       hover:opacity-90
+                                       transition"
+                            >
+
+                                <span>
+                                    &lt;/&gt;
+                                </span>
+
+                                <span>
                                     View Source Code
-                                </a>
+                                </span>
 
-                            @endif
+                            </a>
+
+                        @endif
 
 
-                            {{-- Live Demo --}}
-                            @if($project->demo_url)
+                        {{-- ================================================= --}}
+                        {{-- GITHUB --}}
+                        {{-- ================================================= --}}
 
-                                <a
-                                    href="{{ $project->demo_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="px-5 py-3 rounded-xl
-                                           bg-[#4F806D] text-white
-                                           hover:bg-[#3E735F] transition"
-                                >
+                        @if($project->github_url)
+
+                            <a
+                                href="{{ $project->github_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2
+                                       px-5 py-3
+                                       rounded-xl
+                                       bg-gray-800
+                                       text-white
+                                       hover:bg-gray-700
+                                       transition"
+                            >
+
+                                <span>
+                                    GitHub
+                                </span>
+
+                            </a>
+
+                        @endif
+
+
+                        {{-- ================================================= --}}
+                        {{-- LIVE DEMO --}}
+                        {{-- ================================================= --}}
+
+                        @if($project->demo_url)
+
+                            <a
+                                href="{{ $project->demo_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2
+                                       px-5 py-3
+                                       rounded-xl
+                                       bg-[#4F806D]
+                                       text-white
+                                       hover:bg-[#3E735F]
+                                       transition"
+                            >
+
+                                <span>
                                     Live Demo
-                                </a>
+                                </span>
 
-                            @endif
+                                <span>
+                                    ↗
+                                </span>
 
-                        </div>
+                            </a>
 
-                    @endif
+                        @endif
+
+                    </div>
 
 
                     {{-- ================================================= --}}
@@ -178,42 +286,104 @@
                         </h2>
 
                         <p class="text-[#315F6D] mt-2">
-                            Download the files and resources for this project.
+                            View or download the files and resources for this project.
                         </p>
 
 
                         @if($project->resources->count())
 
+
                             <div class="mt-5 space-y-3">
 
                                 @foreach($project->resources as $resource)
 
+
+                                    @php
+
+                                        /*
+                                        |--------------------------------------------------------------------------
+                                        | Determine if resource can be viewed
+                                        |--------------------------------------------------------------------------
+                                        */
+
+                                        $fileName = strtolower(
+                                            $resource->name ?? ''
+                                        );
+
+                                        $allowedExtensions = [
+                                            '.php',
+                                            '.blade.php',
+                                            '.css',
+                                            '.js',
+                                            '.jsx',
+                                            '.ts',
+                                            '.tsx',
+                                            '.html',
+                                            '.htm',
+                                            '.json',
+                                            '.xml',
+                                            '.sql',
+                                            '.md',
+                                            '.txt',
+                                            '.vue',
+                                            '.env.example',
+                                            '.gitignore',
+                                        ];
+
+                                        $canView = false;
+
+                                        foreach ($allowedExtensions as $extension) {
+
+                                            if (str_ends_with($fileName, $extension)) {
+                                                $canView = true;
+                                                break;
+                                            }
+
+                                        }
+
+                                    @endphp
+
+
                                     <div
                                         class="flex items-center justify-between
-                                               gap-4 p-4 rounded-xl
+                                               gap-4
+                                               p-4
+                                               rounded-xl
                                                bg-[#F5F1E8]
                                                border border-[#D5DDD8]"
                                     >
 
-                                        {{-- File Information --}}
+
+                                        {{-- ================================================= --}}
+                                        {{-- FILE INFORMATION --}}
+                                        {{-- ================================================= --}}
+
                                         <div class="min-w-0">
 
                                             <p
-                                                class="font-semibold text-[#0F3F4A]
+                                                class="font-semibold
+                                                       text-[#0F3F4A]
                                                        truncate"
                                             >
                                                 {{ $resource->name }}
                                             </p>
 
 
-                                            <p class="text-xs text-gray-500 mt-1">
+                                            <p
+                                                class="text-xs
+                                                       text-gray-500
+                                                       mt-1"
+                                            >
 
                                                 {{ strtoupper($resource->file_type ?? 'FILE') }}
 
                                                 @if($resource->file_size)
 
                                                     •
-                                                    {{ number_format($resource->file_size / 1024, 1) }}
+                                                    {{ number_format(
+                                                        $resource->file_size / 1024,
+                                                        1
+                                                    ) }}
                                                     KB
 
                                                 @endif
@@ -223,31 +393,98 @@
                                         </div>
 
 
-                                        {{-- Download --}}
-                                        <a
-                                            href="{{ route(
-                                                'project-resources.download',
-                                                $resource
-                                            ) }}"
-                                            class="shrink-0 inline-block px-5 py-2
-                                                   rounded-xl
-                                                   bg-[#4F806D] text-white
-                                                   hover:bg-[#3E735F]
-                                                   transition"
+                                        {{-- ================================================= --}}
+                                        {{-- RESOURCE BUTTONS --}}
+                                        {{-- ================================================= --}}
+
+                                        <div
+                                            class="flex
+                                                   flex-wrap
+                                                   gap-2
+                                                   shrink-0"
                                         >
-                                            Download
-                                        </a>
+
+
+                                            {{-- ================================================= --}}
+                                            {{-- VIEW --}}
+                                            {{-- ================================================= --}}
+
+                                            @if($canView)
+
+                                                <a
+                                                    href="{{ route(
+                                                        'project-resources.view',
+                                                        $resource
+                                                    ) }}"
+                                                    class="inline-flex
+                                                           items-center
+                                                           gap-1
+                                                           px-4
+                                                           py-2
+                                                           rounded-xl
+                                                           bg-[#0F3F4A]
+                                                           text-white
+                                                           hover:opacity-90
+                                                           transition"
+                                                >
+
+                                                    <span>
+                                                        View
+                                                    </span>
+
+                                                </a>
+
+                                            @endif
+
+
+                                            {{-- ================================================= --}}
+                                            {{-- DOWNLOAD --}}
+                                            {{-- ================================================= --}}
+
+                                            <a
+                                                href="{{ route(
+                                                    'project-resources.download',
+                                                    $resource
+                                                ) }}"
+                                                class="inline-flex
+                                                       items-center
+                                                       gap-1
+                                                       px-4
+                                                       py-2
+                                                       rounded-xl
+                                                       bg-[#4F806D]
+                                                       text-white
+                                                       hover:bg-[#3E735F]
+                                                       transition"
+                                            >
+
+                                                <span>
+                                                    Download
+                                                </span>
+
+                                            </a>
+
+                                        </div>
 
                                     </div>
+
 
                                 @endforeach
 
                             </div>
 
+
                         @else
 
+
+                            {{-- ================================================= --}}
+                            {{-- NO RESOURCES --}}
+                            {{-- ================================================= --}}
+
                             <div
-                                class="mt-5 p-6 rounded-2xl
+                                class="mt-5
+                                       p-6
+                                       rounded-2xl
                                        bg-[#F5F1E8]
                                        border border-[#D5DDD8]"
                             >
@@ -258,6 +495,7 @@
                                 </p>
 
                             </div>
+
 
                         @endif
 
@@ -270,8 +508,11 @@
 
                 @else
 
+
                     <div
-                        class="mt-8 p-6 rounded-2xl
+                        class="mt-8
+                               p-6
+                               rounded-2xl
                                bg-[#F5E6D8]
                                border border-[#E5CDB8]"
                     >
@@ -296,16 +537,22 @@
 
                             <a
                                 href="{{ route('login') }}"
-                                class="inline-block mt-4 px-5 py-3 rounded-xl
-                                       bg-[#4F806D] text-white
-                                       hover:bg-[#3E735F] transition"
+                                class="inline-block
+                                       mt-4
+                                       px-5
+                                       py-3
+                                       rounded-xl
+                                       bg-[#4F806D]
+                                       text-white
+                                       hover:bg-[#3E735F]
+                                       transition"
                             >
                                 Login to Continue
                             </a>
 
 
                         {{-- ================================================= --}}
-                        {{-- LOGGED IN WITHOUT ACTIVE SUBSCRIPTION --}}
+                        {{-- LOGGED IN WITHOUT SUBSCRIPTION --}}
                         {{-- ================================================= --}}
 
                         @else
@@ -320,9 +567,13 @@
 
                                 <button
                                     type="submit"
-                                    class="px-5 py-3 rounded-xl
-                                           bg-[#4F806D] text-white
-                                           hover:bg-[#3E735F] transition"
+                                    class="px-5
+                                           py-3
+                                           rounded-xl
+                                           bg-[#4F806D]
+                                           text-white
+                                           hover:bg-[#3E735F]
+                                           transition"
                                 >
                                     Subscribe for ₱99/month
                                 </button>

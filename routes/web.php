@@ -167,6 +167,22 @@ Route::middleware('auth')->group(function () {
 
 
     // =================================================
+    // VIEW SOURCE CODE
+    // =================================================
+    //
+    // Opens the uploaded source-code/resource file
+    // in the browser when the user has access.
+    //
+
+    Route::get(
+        '/project-resources/{resource}/view',
+        [ProjectResourceController::class, 'view']
+    )
+        ->middleware('subscription')
+        ->name('project-resources.view');
+
+
+    // =================================================
     // PREMIUM RESOURCE DOWNLOADS
     // =================================================
 
