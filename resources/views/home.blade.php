@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto space-y-8 sm:space-y-10">
+<div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
 
 
     {{-- =========================================================
@@ -19,8 +19,8 @@
 
         {{-- Decorative background --}}
         <div
-            class="absolute -top-24 -right-24
-                   w-72 h-72
+            class="absolute -top-20 -right-20 sm:-top-24 sm:-right-24
+                   w-56 h-56 sm:w-72 sm:h-72
                    rounded-full
                    bg-[#E5F0EB]
                    blur-3xl
@@ -28,8 +28,8 @@
         </div>
 
         <div
-            class="absolute -bottom-32 -left-20
-                   w-72 h-72
+            class="absolute -bottom-24 -left-16 sm:-bottom-32 sm:-left-20
+                   w-56 h-56 sm:w-72 sm:h-72
                    rounded-full
                    bg-[#F1EDE3]
                    blur-3xl
@@ -42,9 +42,9 @@
                    grid
                    grid-cols-1
                    lg:grid-cols-[1.2fr_0.8fr]
-                   gap-10
+                   gap-6 sm:gap-8 lg:gap-10
                    items-center
-                   p-7 sm:p-10 lg:p-16">
+                   p-5 sm:p-10 lg:p-16">
 
 
             {{-- HERO CONTENT --}}
@@ -55,7 +55,7 @@
                     class="inline-flex
                            items-center
                            gap-2
-                           px-4 py-2
+                           px-3 py-1.5 sm:px-4 sm:py-2
                            rounded-full
                            bg-[#E5F0EB]
                            border border-[#D4E4DD]
@@ -76,8 +76,8 @@
 
 
                 <p
-                    class="mt-7
-                           text-sm
+                    class="mt-5 sm:mt-7
+                           text-xs sm:text-sm
                            uppercase
                            tracking-[0.3em]
                            font-semibold
@@ -90,7 +90,7 @@
 
                 <h1
                     class="mt-3
-                           text-5xl
+                           text-4xl sm:text-5xl
                            sm:text-6xl
                            lg:text-7xl
                            font-black
@@ -104,8 +104,8 @@
 
 
                 <p
-                    class="mt-6
-                           text-lg
+                    class="mt-5 sm:mt-6
+                           text-base sm:text-lg
                            sm:text-xl
                            leading-relaxed
                            text-[#587067]
@@ -130,15 +130,15 @@
                            flex-col
                            sm:flex-row
                            gap-3
-                           mt-8">
+                           mt-6 sm:mt-8">
 
                     <a
                         href="/projects"
-                        class="inline-flex
+                        class="w-full sm:w-auto inline-flex
                                items-center
                                justify-center
                                gap-2
-                               px-7 py-3.5
+                               px-6 sm:px-7 py-3.5
                                rounded-full
                                bg-[#4F806D]
                                text-white
@@ -161,10 +161,10 @@
 
                     <a
                         href="/about"
-                        class="inline-flex
+                        class="w-full sm:w-auto inline-flex
                                items-center
                                justify-center
-                               px-7 py-3.5
+                               px-6 sm:px-7 py-3.5
                                rounded-full
                                border border-[#C8D8D1]
                                bg-white
@@ -188,10 +188,10 @@
                     class="flex
                            flex-wrap
                            items-center
-                           gap-x-6
+                           gap-x-4 sm:gap-x-6
                            gap-y-2
-                           mt-8
-                           text-sm
+                           mt-6 sm:mt-8
+                           text-xs sm:text-sm
                            text-[#71847D]">
 
                     <span class="flex items-center gap-2">
@@ -278,10 +278,10 @@
                         {{-- Code --}}
 
                         <div
-                            class="p-6 sm:p-8
+                            class="p-4 sm:p-8
                                    font-mono
-                                   text-sm
-                                   leading-8
+                                   text-xs sm:text-sm
+                                   leading-6 sm:leading-8
                                    text-white/80">
 
                             <p>
@@ -383,9 +383,9 @@
 
                 <div
                     class="absolute
-                           -bottom-5
-                           -left-3 sm:-left-6
-                           px-5 py-3
+                           -bottom-4
+                           left-2 sm:-left-6
+                           px-3 sm:px-5 py-2.5 sm:py-3
                            rounded-2xl
                            bg-[#F1EDE3]
                            border border-[#E4DDD0]
@@ -430,15 +430,15 @@
         class="grid
                grid-cols-1
                sm:grid-cols-3
-               gap-4">
+               gap-3 sm:gap-4">
 
 
         <div
             class="group
-                   rounded-[1.5rem]
+                   rounded-[1.25rem] sm:rounded-[1.5rem]
                    bg-[#E5F0EB]
                    border border-[#D4E4DD]
-                   p-6
+                   p-5 sm:p-6
                    hover:-translate-y-1
                    hover:shadow-md
                    transition-all
@@ -477,10 +477,10 @@
 
         <div
             class="group
-                   rounded-[1.5rem]
+                   rounded-[1.25rem] sm:rounded-[1.5rem]
                    bg-[#F1EDE3]
                    border border-[#E4DDD0]
-                   p-6
+                   p-5 sm:p-6
                    hover:-translate-y-1
                    hover:shadow-md
                    transition-all
@@ -519,10 +519,10 @@
 
         <div
             class="group
-                   rounded-[1.5rem]
+                   rounded-[1.25rem] sm:rounded-[1.5rem]
                    bg-[#E5F0EB]
                    border border-[#D4E4DD]
-                   p-6
+                   p-5 sm:p-6
                    hover:-translate-y-1
                    hover:shadow-md
                    transition-all
@@ -659,7 +659,7 @@
 
 
                 <h3
-                    class="text-xl
+                    class="text-lg sm:text-xl
                            font-bold
                            text-[#29483D]
                            mt-6">
@@ -727,7 +727,7 @@
 
 
                 <h3
-                    class="text-xl
+                    class="text-lg sm:text-xl
                            font-bold
                            text-[#29483D]
                            mt-6">
@@ -796,7 +796,7 @@
 
 
                 <h3
-                    class="text-xl
+                    class="text-lg sm:text-xl
                            font-bold
                            text-[#29483D]
                            mt-6">
@@ -934,10 +934,10 @@
             </p>
 
 
-            <div class="mt-7 space-y-6">
+            <div class="mt-6 sm:mt-7 space-y-5 sm:space-y-6">
 
 
-                <div class="flex gap-4">
+                <div class="flex gap-3 sm:gap-4">
 
                     <div
                         class="shrink-0
@@ -978,7 +978,7 @@
                 </div>
 
 
-                <div class="flex gap-4">
+                <div class="flex gap-3 sm:gap-4">
 
                     <div
                         class="shrink-0
@@ -1019,7 +1019,7 @@
                 </div>
 
 
-                <div class="flex gap-4">
+                <div class="flex gap-3 sm:gap-4">
 
                     <div
                         class="shrink-0
@@ -1075,7 +1075,7 @@
     <section
         class="relative
                overflow-hidden
-               rounded-[2rem]
+               rounded-[1.5rem] sm:rounded-[2rem]
                bg-[#F1EDE3]
                border border-[#E4DDD0]
                p-8 sm:p-10 lg:p-12">
