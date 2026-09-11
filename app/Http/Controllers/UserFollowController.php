@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\NewFollowerNotification;
 use Illuminate\Http\Request;
 
 class UserFollowController extends Controller
 {
-    /**
-     * Follow a developer.
-     */
     public function store(Request $request, User $user)
     {
         $currentUser = $request->user();
 
-        // Prevent following yourself.
         if ($currentUser->id === $user->id) {
             return response()->json([
                 'success' => false,
@@ -22,9 +19,21 @@ class UserFollowController extends Controller
             ], 422);
         }
 
+        $alreadyFollowing = $currentUser->following()
+            ->where('users.id', $user->id)
+            ->exists();
+
         $currentUser->following()->syncWithoutDetaching([
             $user->id,
         ]);
+
+        if (!$alreadyFollowing) {
+            $currentUser->load('profile');
+
+            $user->notify(
+                new NewFollowerNotification($currentUser)
+            );
+        }
 
         return response()->json([
             'success' => true,
@@ -33,9 +42,6 @@ class UserFollowController extends Controller
         ]);
     }
 
-    /**
-     * Unfollow a developer.
-     */
     public function destroy(Request $request, User $user)
     {
         $currentUser = $request->user();

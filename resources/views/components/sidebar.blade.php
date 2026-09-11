@@ -215,14 +215,90 @@
 
 
                 {{-- =================================================
-                MY PROJECTS
+                DEVELOPERS
                 ================================================== --}}
+
+                <a
+                    href="{{ route('developers.index') }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('developers.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+
+                    <span class="font-medium">
+                        Developers
+                    </span>
+
+                </a>
+
+
+                {{-- =================================================
+                NOTIFICATIONS
+                ================================================== --}}
+
+                <a
+                    href="{{ route('notifications.index') }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('notifications.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+
+                    <span class="font-medium">
+                        Notifications
+                    </span>
+
+                </a>
+
+
+                {{-- =================================================
+                SAVED PROJECTS
+                ================================================== --}}
+
                 <a
                     href="{{ route('saved-projects.index') }}"
-                    class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('saved-projects.*') ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm' : 'text-[#29483D] hover:bg-[#B8CEC5]' }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('saved-projects.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
                 >
-                    <span class="font-medium">Saved Projects</span>
+
+                    <span class="font-medium">
+                        Saved Projects
+                    </span>
+
                 </a>
+
+
+                {{-- =================================================
+                MY PROJECTS
+                ================================================== --}}
+
                 <a
                     href="{{ route('developer.projects.index') }}"
                     class="

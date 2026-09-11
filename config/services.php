@@ -39,4 +39,9 @@ return [
     'public_key' => env('PAYMONGO_PUBLIC_KEY'),
     'webhook_secret' => env('PAYMONGO_WEBHOOK_SECRET'),
 ],
+    'openai' => [
+    'api_key' => env('OPENAI_API_KEY'),
+    'model' => env('OPENAI_MODEL', 'gpt-5.6-luna'),
+    'mock_mode' => env('AI_MOCK_MODE', false),
+],
 ];

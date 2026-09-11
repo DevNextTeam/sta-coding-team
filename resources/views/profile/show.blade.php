@@ -13,10 +13,10 @@ BACK TO PROJECTS
 <div class="mb-6">
 
     <a
-        href="{{ route('projects.index') }}"
+        href="{{ route('developers.index') }}"
         class="inline-flex items-center gap-2 text-sm font-semibold text-[#4F806D] hover:text-[#3E735F] transition"
     >
-        ← Back to Projects
+        ← Back to Developers
     </a>
 
 </div>

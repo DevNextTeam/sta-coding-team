@@ -216,7 +216,9 @@
 
     </script>
 
+  <x-ai-assistant />
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </body>
 
 </html>

@@ -25,13 +25,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Developer\ProjectController as DeveloperProjectController;
 use App\Http\Controllers\Developer\ProjectResourceController as DeveloperProjectResourceController;
 use App\Http\Controllers\Developer\ProjectInstructionController as DeveloperProjectInstructionController;
+
 use App\Http\Controllers\SavedProjectController;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\UserFollowController;
 use App\Http\Controllers\UserFollowListController;
 use App\Http\Controllers\DeveloperDiscoveryController;
-
-
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AiAssistantController;
 
 
 /*
@@ -149,6 +150,46 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | AI ASSISTANT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/ai/chat',
+        [AiAssistantController::class, 'chat']
+    )
+        ->name('ai.chat');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NOTIFICATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/notifications',
+        [NotificationController::class, 'index']
+    )
+        ->name('notifications.index');
+
+
+    Route::post(
+        '/notifications/{notification}/read',
+        [NotificationController::class, 'read']
+    )
+        ->name('notifications.read');
+
+
+    Route::post(
+        '/notifications/read-all',
+        [NotificationController::class, 'readAll']
+    )
+        ->name('notifications.read-all');
+
+
+    /*
+    |--------------------------------------------------------------------------
     | DEVELOPER STUDIO
     |--------------------------------------------------------------------------
     |
@@ -165,9 +206,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('not.admin')->group(function () {
 
 
-        // =================================================
-        // DEVELOPER PROJECTS
-        // =================================================
+        /*
+        |--------------------------------------------------------------------------
+        | DEVELOPER PROJECTS
+        |--------------------------------------------------------------------------
+        */
 
         Route::get(
             '/dashboard/projects',
@@ -211,9 +254,11 @@ Route::middleware('auth')->group(function () {
             ->name('developer.projects.destroy');
 
 
-        // =================================================
-        // DEVELOPER PROJECT RESOURCES
-        // =================================================
+        /*
+        |--------------------------------------------------------------------------
+        | DEVELOPER PROJECT RESOURCES
+        |--------------------------------------------------------------------------
+        */
 
         Route::post(
             '/dashboard/projects/{project}/resources',
@@ -229,9 +274,11 @@ Route::middleware('auth')->group(function () {
             ->name('developer.projects.resources.destroy');
 
 
-        // =================================================
-        // DEVELOPER PROJECT INSTRUCTIONS
-        // =================================================
+        /*
+        |--------------------------------------------------------------------------
+        | DEVELOPER PROJECT INSTRUCTIONS
+        |--------------------------------------------------------------------------
+        */
 
         Route::post(
             '/dashboard/projects/{project}/instructions',
@@ -347,32 +394,105 @@ Route::middleware('auth')->group(function () {
         ->name('project-resources.download');
 
 
-    Route::post('/projects/{project}/like', [ProjectLikeController::class, 'store'])
-    ->name('projects.like');
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECT LIKES
+    |--------------------------------------------------------------------------
+    */
 
-    Route::delete('/projects/{project}/like', [ProjectLikeController::class, 'destroy'])
-    ->name('projects.unlike');
+    Route::post(
+        '/projects/{project}/like',
+        [ProjectLikeController::class, 'store']
+    )
+        ->name('projects.like');
 
-    Route::post('/projects/{project}/save', [ProjectSaveController::class, 'store'])
-    ->name('projects.save');
 
-Route::delete('/projects/{project}/save', [ProjectSaveController::class, 'destroy'])
-    ->name('projects.unsave');
-    Route::get('/dashboard/saved-projects', [SavedProjectController::class, 'index'])
-    ->name('saved-projects.index');
-    Route::post('/projects/{project}/comments', [ProjectCommentController::class, 'store'])
-    ->name('projects.comments.store');
+    Route::delete(
+        '/projects/{project}/like',
+        [ProjectLikeController::class, 'destroy']
+    )
+        ->name('projects.unlike');
 
-Route::put('/comments/{comment}', [ProjectCommentController::class, 'update'])
-    ->name('projects.comments.update');
 
-Route::delete('/comments/{comment}', [ProjectCommentController::class, 'destroy'])
-    ->name('projects.comments.destroy');
-    Route::post('/users/{user}/follow', [UserFollowController::class, 'store'])
-    ->name('users.follow');
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECT SAVES
+    |--------------------------------------------------------------------------
+    */
 
-Route::delete('/users/{user}/follow', [UserFollowController::class, 'destroy'])
-    ->name('users.unfollow');
+    Route::post(
+        '/projects/{project}/save',
+        [ProjectSaveController::class, 'store']
+    )
+        ->name('projects.save');
+
+
+    Route::delete(
+        '/projects/{project}/save',
+        [ProjectSaveController::class, 'destroy']
+    )
+        ->name('projects.unsave');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAVED PROJECTS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/dashboard/saved-projects',
+        [SavedProjectController::class, 'index']
+    )
+        ->name('saved-projects.index');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECT COMMENTS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/projects/{project}/comments',
+        [ProjectCommentController::class, 'store']
+    )
+        ->name('projects.comments.store');
+
+
+    Route::put(
+        '/comments/{comment}',
+        [ProjectCommentController::class, 'update']
+    )
+        ->name('projects.comments.update');
+
+
+    Route::delete(
+        '/comments/{comment}',
+        [ProjectCommentController::class, 'destroy']
+    )
+        ->name('projects.comments.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FOLLOW DEVELOPERS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/users/{user}/follow',
+        [UserFollowController::class, 'store']
+    )
+        ->name('users.follow');
+
+
+    Route::delete(
+        '/users/{user}/follow',
+        [UserFollowController::class, 'destroy']
+    )
+        ->name('users.unfollow');
+
 });
 
 
@@ -530,21 +650,41 @@ Route::post(
     ->name('profile.verify-password');
 
 
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PROFILES
+|--------------------------------------------------------------------------
+*/
+
 Route::get(
     '/u/{username}',
     [ProfileController::class, 'show']
 )
     ->name('profile.show');
-    Route::get(
+
+
+Route::get(
     '/u/{username}/followers',
     [UserFollowListController::class, 'followers']
 )
     ->name('profile.followers');
+
 
 Route::get(
     '/u/{username}/following',
     [UserFollowListController::class, 'following']
 )
     ->name('profile.following');
-Route::get('/developers', [DeveloperDiscoveryController::class, 'index'])
+
+
+/*
+|--------------------------------------------------------------------------
+| DEVELOPER DISCOVERY
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/developers',
+    [DeveloperDiscoveryController::class, 'index']
+)
     ->name('developers.index');
