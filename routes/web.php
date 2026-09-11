@@ -28,6 +28,10 @@ use App\Http\Controllers\Developer\ProjectInstructionController as DeveloperProj
 use App\Http\Controllers\SavedProjectController;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\UserFollowListController;
+use App\Http\Controllers\DeveloperDiscoveryController;
+
+
 
 
 /*
@@ -531,3 +535,16 @@ Route::get(
     [ProfileController::class, 'show']
 )
     ->name('profile.show');
+    Route::get(
+    '/u/{username}/followers',
+    [UserFollowListController::class, 'followers']
+)
+    ->name('profile.followers');
+
+Route::get(
+    '/u/{username}/following',
+    [UserFollowListController::class, 'following']
+)
+    ->name('profile.following');
+Route::get('/developers', [DeveloperDiscoveryController::class, 'index'])
+    ->name('developers.index');

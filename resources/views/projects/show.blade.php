@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('content')
@@ -3076,4 +3075,3 @@ confirmEditComment.addEventListener(
 @endauth
 
 @endsection
-```

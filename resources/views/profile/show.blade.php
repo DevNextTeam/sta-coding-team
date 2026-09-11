@@ -6,7 +6,6 @@
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-```
 {{-- =========================================================
 BACK TO PROJECTS
 ========================================================== --}}
@@ -217,34 +216,40 @@ PROFILE HEADER
 
 
             {{-- Followers --}}
-            <div>
+            <a
+                href="{{ route('profile.followers', $profile->username) }}"
+                class="group"
+            >
 
                 <p
                     id="followersCount"
-                    class="text-xl font-bold text-[#0F3F4A]"
+                    class="text-xl font-bold text-[#0F3F4A] group-hover:text-[#4F806D] transition"
                 >
                     {{ $profile->user->followers()->count() }}
                 </p>
 
-                <p class="text-xs uppercase tracking-wide text-[#7A8581]">
+                <p class="text-xs uppercase tracking-wide text-[#7A8581] group-hover:text-[#4F806D] transition">
                     Followers
                 </p>
 
-            </div>
+            </a>
 
 
             {{-- Following --}}
-            <div>
+            <a
+                href="{{ route('profile.following', $profile->username) }}"
+                class="group"
+            >
 
-                <p class="text-xl font-bold text-[#0F3F4A]">
+                <p class="text-xl font-bold text-[#0F3F4A] group-hover:text-[#4F806D] transition">
                     {{ $profile->user->following()->count() }}
                 </p>
 
-                <p class="text-xs uppercase tracking-wide text-[#7A8581]">
+                <p class="text-xs uppercase tracking-wide text-[#7A8581] group-hover:text-[#4F806D] transition">
                     Following
                 </p>
 
-            </div>
+            </a>
 
 
             {{-- Skills --}}
@@ -265,6 +270,7 @@ PROFILE HEADER
             @endif
 
         </div>
+
 
 
         {{-- =====================================================
@@ -666,7 +672,6 @@ PUBLISHED PROJECTS
     @endif
 
 </div>
-```
 
 </div>
 
@@ -676,7 +681,6 @@ FOLLOW SYSTEM
 
 @auth
 
-```
 @if(auth()->id() !== $profile->user_id)
 
     <script>
@@ -799,7 +803,6 @@ FOLLOW SYSTEM
     </script>
 
 @endif
-```
 
 @endauth
 

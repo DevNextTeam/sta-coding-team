@@ -25,7 +25,7 @@ class UserObserver
 
         $user->profile()->create([
             'username' => $username,
-            'headline' => 'Developer',
+            'headline' => 'User',
         ]);
     }
 }
