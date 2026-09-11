@@ -1,41 +1,46 @@
-<aside class="h-full min-h-[180px] md:min-h-full
-              bg-[#E8E3D8]
-              border-r border-[#D9D3C7]
-              px-5 sm:px-6
-              py-6 md:py-8">
+<aside
+    class="min-h-full
+           bg-[#E8E3D8]
+           px-4 py-6
+           sm:px-5
+           md:px-6 md:py-8"
+>
 
-    {{-- ================= SIDEBAR HEADER ================= --}}
 
-    <div class="mb-7">
+    {{-- =========================================================
+    SIDEBAR HEADER
+    ========================================================== --}}
 
-        <p class="text-xs
-                  uppercase
-                  tracking-[0.25em]
-                  text-[#B58A5A]
-                  font-semibold">
+    <div class="mb-6">
 
+        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#B58A5A]">
             Navigation
-
         </p>
 
     </div>
 
 
-    {{-- ================= NAVIGATION ================= --}}
+    {{-- =========================================================
+    NAVIGATION
+    ========================================================== --}}
 
-    <nav class="space-y-2">
+    <nav class="space-y-1">
 
 
-        {{-- Home --}}
-        <a href="/"
-           class="group flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl
-                  transition-all duration-200
-                  hover:bg-[#B8CEC5]
-                  hover:translate-x-1
-                  text-[#29483D]">
+        {{-- =====================================================
+        HOME
+        ====================================================== --}}
 
+        <a
+            href="/"
+            class="group flex items-center gap-3
+                   rounded-2xl
+                   px-4 py-3
+                   text-[#29483D]
+                   transition-all duration-200
+                   hover:translate-x-1
+                   hover:bg-[#B8CEC5]"
+        >
 
             <span class="font-medium">
                 Home
@@ -44,16 +49,20 @@
         </a>
 
 
-        {{-- About --}}
-        <a href="/about"
-           class="group flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl
-                  transition-all duration-200
-                  hover:bg-[#B8CEC5]
-                  hover:translate-x-1
-                  text-[#29483D]">
+        {{-- =====================================================
+        ABOUT
+        ====================================================== --}}
 
+        <a
+            href="/about"
+            class="group flex items-center gap-3
+                   rounded-2xl
+                   px-4 py-3
+                   text-[#29483D]
+                   transition-all duration-200
+                   hover:translate-x-1
+                   hover:bg-[#B8CEC5]"
+        >
 
             <span class="font-medium">
                 About
@@ -62,16 +71,20 @@
         </a>
 
 
-        {{-- Projects --}}
-        <a href="{{ route('projects.index') }}"
-           class="group flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl
-                  transition-all duration-200
-                  hover:bg-[#B8CEC5]
-                  hover:translate-x-1
-                  text-[#29483D]">
+        {{-- =====================================================
+        PROJECTS
+        ====================================================== --}}
 
+        <a
+            href="{{ route('projects.index') }}"
+            class="group flex items-center gap-3
+                   rounded-2xl
+                   px-4 py-3
+                   text-[#29483D]
+                   transition-all duration-200
+                   hover:translate-x-1
+                   hover:bg-[#B8CEC5]"
+        >
 
             <span class="font-medium">
                 Projects
@@ -80,17 +93,20 @@
         </a>
 
 
-        {{-- Contact --}}
-        <a href="/contact"
-           class="group flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl
-                  transition-all duration-200
-                  hover:bg-[#B8CEC5]
-                  hover:translate-x-1
-                  text-[#29483D]">
+        {{-- =====================================================
+        CONTACT
+        ====================================================== --}}
 
-           
+        <a
+            href="/contact"
+            class="group flex items-center gap-3
+                   rounded-2xl
+                   px-4 py-3
+                   text-[#29483D]
+                   transition-all duration-200
+                   hover:translate-x-1
+                   hover:bg-[#B8CEC5]"
+        >
 
             <span class="font-medium">
                 Contact
@@ -99,29 +115,36 @@
         </a>
 
 
-        {{-- ================= AUTHENTICATED ================= --}}
+        {{-- =====================================================
+        AUTHENTICATED USER
+        ====================================================== --}}
 
         @auth
 
+
             {{-- Divider --}}
-            <div class="pt-4 pb-2">
+
+            <div class="py-3">
 
                 <div class="border-t border-[#D0C9BC]"></div>
 
             </div>
 
 
-            {{-- Dashboard --}}
-            <a href="{{ route('dashboard') }}"
-               class="group flex items-center gap-3
-                      px-4 py-3
-                      rounded-2xl
-                      transition-all duration-200
-                      hover:bg-[#B8CEC5]
-                      hover:translate-x-1
-                      text-[#29483D]">
+            {{-- =================================================
+            DASHBOARD
+            ================================================== --}}
 
-               
+            <a
+                href="{{ route('dashboard') }}"
+                class="group flex items-center gap-3
+                       rounded-2xl
+                       px-4 py-3
+                       text-[#29483D]
+                       transition-all duration-200
+                       hover:translate-x-1
+                       hover:bg-[#B8CEC5]"
+            >
 
                 <span class="font-medium">
                     Dashboard
@@ -130,18 +153,25 @@
             </a>
 
 
-            {{-- Admin Navigation --}}
+            {{-- =================================================
+            ADMIN NAVIGATION
+            ================================================== --}}
+
             @if(auth()->user()->is_admin)
 
-                <a href="{{ route('admin.dashboard') }}"
-                   class="group flex items-center gap-3
-                          px-4 py-3
-                          rounded-2xl
-                          transition-all duration-200
-                          hover:bg-[#B8CEC5]
-                          hover:translate-x-1
-                          text-[#29483D]">
 
+                {{-- Admin Dashboard --}}
+
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="group flex items-center gap-3
+                           rounded-2xl
+                           px-4 py-3
+                           text-[#29483D]
+                           transition-all duration-200
+                           hover:translate-x-1
+                           hover:bg-[#B8CEC5]"
+                >
 
                     <span class="font-medium">
                         Admin Dashboard
@@ -150,16 +180,18 @@
                 </a>
 
 
-                <a href="{{ route('admin.users.index') }}"
-                   class="group flex items-center gap-3
-                          px-4 py-3
-                          rounded-2xl
-                          transition-all duration-200
-                          hover:bg-[#B8CEC5]
-                          hover:translate-x-1
-                          text-[#29483D]">
+                {{-- Manage Users --}}
 
-                   
+                <a
+                    href="{{ route('admin.users.index') }}"
+                    class="group flex items-center gap-3
+                           rounded-2xl
+                           px-4 py-3
+                           text-[#29483D]
+                           transition-all duration-200
+                           hover:translate-x-1
+                           hover:bg-[#B8CEC5]"
+                >
 
                     <span class="font-medium">
                         Manage Users
@@ -168,15 +200,18 @@
                 </a>
 
 
-                <a href="{{ route('admin.projects.index') }}"
-                   class="group flex items-center gap-3
-                          px-4 py-3
-                          rounded-2xl
-                          transition-all duration-200
-                          hover:bg-[#B8CEC5]
-                          hover:translate-x-1
-                          text-[#29483D]">
+                {{-- Manage Projects --}}
 
+                <a
+                    href="{{ route('admin.projects.index') }}"
+                    class="group flex items-center gap-3
+                           rounded-2xl
+                           px-4 py-3
+                           text-[#29483D]
+                           transition-all duration-200
+                           hover:translate-x-1
+                           hover:bg-[#B8CEC5]"
+                >
 
                     <span class="font-medium">
                         Manage Projects
@@ -184,9 +219,12 @@
 
                 </a>
 
+
             @endif
 
+
         @endauth
+
 
     </nav>
 
