@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
@@ -24,6 +25,17 @@ class Project extends Model
         'is_premium' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Owner
+    |--------------------------------------------------------------------------
+    */
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

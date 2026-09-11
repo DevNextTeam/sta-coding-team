@@ -3,19 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     /**
      * Display all published projects.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim($request->input('search', ''));
+
         $projects = Project::whereNotNull('published_at')
-            ->latest()
+            ->where('published_at', '<=', now())
+            ->when($search !== '', function ($query) use ($search) {
+
+                $query->where(function ($query) use ($search) {
+
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%");
+
+                });
+
+            })
+            ->latest('published_at')
             ->get();
 
-        return view('projects.index', compact('projects'));
+        return view('projects.index', compact(
+            'projects',
+            'search'
+        ));
     }
 
     /**

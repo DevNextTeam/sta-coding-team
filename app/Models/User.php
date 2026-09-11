@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -30,8 +31,27 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * User subscription.
+     */
     public function subscription(): HasOne
     {
         return $this->hasOne(Subscription::class);
+    }
+
+    /**
+     * User developer profile.
+     */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    /**
+     * User projects.
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 }

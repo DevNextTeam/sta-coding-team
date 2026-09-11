@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\ProfileController;
 
-
+use App\Http\Controllers\Developer\ProjectController as DeveloperProjectController;
 /*
 |--------------------------------------------------------------------------
 | PUBLIC PAGES
@@ -132,12 +132,42 @@ Route::post(
 */
 
 Route::middleware('auth')->group(function () {
+        // =================================================
+    // DEVELOPER PROFILE
+    // =================================================
 
+    Route::get(
+        '/dashboard/profile/edit',
+        [ProfileController::class, 'edit']
+    )
+        ->name('profile.edit');
+
+    Route::put(
+        '/dashboard/profile',
+        [ProfileController::class, 'update']
+    )
+        ->name('profile.update');
 
     // =================================================
     // SUBSCRIPTION CHECKOUT
     // =================================================
+    Route::get('/dashboard/projects', [DeveloperProjectController::class, 'index'])
+        ->name('developer.projects.index');
 
+    Route::get('/dashboard/projects/create', [DeveloperProjectController::class, 'create'])
+        ->name('developer.projects.create');
+
+    Route::post('/dashboard/projects', [DeveloperProjectController::class, 'store'])
+        ->name('developer.projects.store');
+    
+    Route::get('/dashboard/projects/{project}/edit', [DeveloperProjectController::class, 'edit'])
+    ->name('developer.projects.edit');
+
+Route::put('/dashboard/projects/{project}', [DeveloperProjectController::class, 'update'])
+    ->name('developer.projects.update');
+
+Route::delete('/dashboard/projects/{project}', [DeveloperProjectController::class, 'destroy'])
+    ->name('developer.projects.destroy');
     Route::post(
         '/subscribe',
         [PaymentController::class, 'checkout']
@@ -335,3 +365,6 @@ Route::post(
 )
     ->middleware('auth')
     ->name('profile.verify-password');
+
+Route::get('/u/{username}', [ProfileController::class, 'show'])
+    ->name('profile.show');
