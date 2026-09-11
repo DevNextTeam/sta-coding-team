@@ -10,20 +10,44 @@ use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | DISPLAY DEVELOPER PROJECTS
+    |--------------------------------------------------------------------------
+    */
+
     public function index(Request $request)
     {
         $projects = $request->user()
             ->projects()
+            ->with('user.profile')
             ->latest()
             ->get();
 
-        return view('developer.projects.index', compact('projects'));
+        return view(
+            'developer.projects.index',
+            compact('projects')
+        );
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE PROJECT PAGE
+    |--------------------------------------------------------------------------
+    */
 
     public function create()
     {
         return view('developer.projects.create');
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STORE PROJECT
+    |--------------------------------------------------------------------------
+    */
 
     public function store(Request $request)
     {
@@ -37,6 +61,7 @@ class ProjectController extends Controller
             'video_url' => ['nullable', 'url', 'max:255'],
         ]);
 
+
         /*
         |--------------------------------------------------------------------------
         | Generate Unique Slug
@@ -49,7 +74,9 @@ class ProjectController extends Controller
         $counter = 2;
 
         while (Project::where('slug', $slug)->exists()) {
+
             $slug = $originalSlug . '-' . $counter;
+
             $counter++;
         }
 
@@ -63,6 +90,7 @@ class ProjectController extends Controller
         $imagePath = null;
 
         if ($request->hasFile('image')) {
+
             $imagePath = $request
                 ->file('image')
                 ->store('projects', 'public');
@@ -73,33 +101,104 @@ class ProjectController extends Controller
         |--------------------------------------------------------------------------
         | Create Project
         |--------------------------------------------------------------------------
+        |
+        | Using the authenticated user's projects()
+        | relationship automatically assigns user_id.
+        |
         */
 
         $request->user()->projects()->create([
+
             'title' => $validated['title'],
+
             'slug' => $slug,
+
             'description' => $validated['description'],
+
             'category' => $validated['category'] ?? null,
+
             'image' => $imagePath,
+
             'is_premium' => false,
+
             'github_url' => $validated['github_url'] ?? null,
+
             'demo_url' => $validated['demo_url'] ?? null,
+
             'video_url' => $validated['video_url'] ?? null,
+
             'published_at' => $request->boolean('published')
                 ? now()
                 : null,
+
         ]);
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect
+        |--------------------------------------------------------------------------
+        */
+
         return redirect()
             ->route('developer.projects.index')
-            ->with('success', 'Project created successfully.');
+            ->with(
+                'success',
+                'Project created successfully.'
+            );
     }
 
 
-    public function edit(Request $request, Project $project)
-    {
-        $this->authorizeProject($request, $project);
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT PROJECT
+    |--------------------------------------------------------------------------
+    */
+
+    public function edit(
+        Request $request,
+        Project $project
+    ) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Security
+        |--------------------------------------------------------------------------
+        */
+
+        $this->authorizeProject(
+            $request,
+            $project
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Load Resources + Instructions
+        |--------------------------------------------------------------------------
+        |
+        | These relationships are used by the Developer Edit Project page.
+        |
+        */
+
+        $project->load([
+
+            'resources',
+
+            'instructions' => function ($query) {
+
+                $query->orderBy('step');
+
+            },
+
+        ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Edit View
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'developer.projects.edit',
@@ -108,9 +207,34 @@ class ProjectController extends Controller
     }
 
 
-    public function update(Request $request, Project $project)
-    {
-        $this->authorizeProject($request, $project);
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE PROJECT
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(
+        Request $request,
+        Project $project
+    ) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Security
+        |--------------------------------------------------------------------------
+        */
+
+        $this->authorizeProject(
+            $request,
+            $project
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate
+        |--------------------------------------------------------------------------
+        */
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -151,7 +275,9 @@ class ProjectController extends Controller
         if ($request->boolean('published')) {
 
             if (!$project->published_at) {
+
                 $project->published_at = now();
+
             }
 
         } else {
@@ -170,8 +296,11 @@ class ProjectController extends Controller
         if ($request->hasFile('image')) {
 
             if ($project->image) {
-                Storage::disk('public')->delete($project->image);
+
+                Storage::disk('public')
+                    ->delete($project->image);
             }
+
 
             $project->image = $request
                 ->file('image')
@@ -179,12 +308,27 @@ class ProjectController extends Controller
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Save
+        |--------------------------------------------------------------------------
+        */
+
         $project->save();
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect
+        |--------------------------------------------------------------------------
+        */
+
         return redirect()
             ->route('developer.projects.index')
-            ->with('success', 'Project updated successfully.');
+            ->with(
+                'success',
+                'Project updated successfully.'
+            );
     }
 
 
@@ -194,15 +338,21 @@ class ProjectController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function destroy(Request $request, Project $project)
-    {
+    public function destroy(
+        Request $request,
+        Project $project
+    ) {
+
         /*
         |--------------------------------------------------------------------------
         | Security
         |--------------------------------------------------------------------------
         */
 
-        $this->authorizeProject($request, $project);
+        $this->authorizeProject(
+            $request,
+            $project
+        );
 
 
         /*
@@ -215,7 +365,6 @@ class ProjectController extends Controller
 
             Storage::disk('public')
                 ->delete($project->image);
-
         }
 
 
@@ -244,8 +393,7 @@ class ProjectController extends Controller
         | AJAX / FETCH RESPONSE
         |--------------------------------------------------------------------------
         |
-        | Our modern frontend uses fetch() instead of submitting
-        | a traditional HTML form.
+        | Our modern frontend can use fetch() to delete projects.
         |
         */
 
@@ -255,19 +403,21 @@ class ProjectController extends Controller
                 'success' => true,
                 'message' => 'Project deleted successfully.',
             ], 200);
-
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Normal Browser Request Fallback
+        | Normal Browser Request
         |--------------------------------------------------------------------------
         */
 
         return redirect()
             ->route('developer.projects.index')
-            ->with('success', 'Project deleted successfully.');
+            ->with(
+                'success',
+                'Project deleted successfully.'
+            );
     }
 
 
@@ -286,6 +436,5 @@ class ProjectController extends Controller
             $project->user_id === $request->user()->id,
             403
         );
-
     }
 }

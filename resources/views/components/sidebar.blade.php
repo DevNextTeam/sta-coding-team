@@ -6,7 +6,6 @@
            md:px-6 md:py-8"
 >
 
-
     {{-- =========================================================
     SIDEBAR HEADER
     ========================================================== --}}
@@ -33,13 +32,19 @@
 
         <a
             href="/"
-            class="group flex items-center gap-3
-                   rounded-2xl
-                   px-4 py-3
-                   text-[#29483D]
-                   transition-all duration-200
-                   hover:translate-x-1
-                   hover:bg-[#B8CEC5]"
+            class="
+                group flex items-center gap-3
+                rounded-2xl
+                px-4 py-3
+                transition-all duration-200
+                hover:translate-x-1
+
+                {{ request()->routeIs('home')
+                    || request()->is('/')
+                    ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                    : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                }}
+            "
         >
 
             <span class="font-medium">
@@ -55,13 +60,18 @@
 
         <a
             href="/about"
-            class="group flex items-center gap-3
-                   rounded-2xl
-                   px-4 py-3
-                   text-[#29483D]
-                   transition-all duration-200
-                   hover:translate-x-1
-                   hover:bg-[#B8CEC5]"
+            class="
+                group flex items-center gap-3
+                rounded-2xl
+                px-4 py-3
+                transition-all duration-200
+                hover:translate-x-1
+
+                {{ request()->is('about')
+                    ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                    : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                }}
+            "
         >
 
             <span class="font-medium">
@@ -77,13 +87,18 @@
 
         <a
             href="{{ route('projects.index') }}"
-            class="group flex items-center gap-3
-                   rounded-2xl
-                   px-4 py-3
-                   text-[#29483D]
-                   transition-all duration-200
-                   hover:translate-x-1
-                   hover:bg-[#B8CEC5]"
+            class="
+                group flex items-center gap-3
+                rounded-2xl
+                px-4 py-3
+                transition-all duration-200
+                hover:translate-x-1
+
+                {{ request()->routeIs('projects.*')
+                    ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                    : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                }}
+            "
         >
 
             <span class="font-medium">
@@ -99,13 +114,18 @@
 
         <a
             href="/contact"
-            class="group flex items-center gap-3
-                   rounded-2xl
-                   px-4 py-3
-                   text-[#29483D]
-                   transition-all duration-200
-                   hover:translate-x-1
-                   hover:bg-[#B8CEC5]"
+            class="
+                group flex items-center gap-3
+                rounded-2xl
+                px-4 py-3
+                transition-all duration-200
+                hover:translate-x-1
+
+                {{ request()->is('contact')
+                    ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                    : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                }}
+            "
         >
 
             <span class="font-medium">
@@ -122,7 +142,9 @@
         @auth
 
 
-            {{-- Divider --}}
+            {{-- =================================================
+            DIVIDER
+            ================================================== --}}
 
             <div class="py-3">
 
@@ -137,13 +159,18 @@
 
             <a
                 href="{{ route('dashboard') }}"
-                class="group flex items-center gap-3
-                       rounded-2xl
-                       px-4 py-3
-                       text-[#29483D]
-                       transition-all duration-200
-                       hover:translate-x-1
-                       hover:bg-[#B8CEC5]"
+                class="
+                    group flex items-center gap-3
+                    rounded-2xl
+                    px-4 py-3
+                    transition-all duration-200
+                    hover:translate-x-1
+
+                    {{ request()->routeIs('dashboard')
+                        ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                        : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                    }}
+                "
             >
 
                 <span class="font-medium">
@@ -154,23 +181,99 @@
 
 
             {{-- =================================================
+            NORMAL USER NAVIGATION
+            ================================================== --}}
+
+            @if(!auth()->user()->is_admin)
+
+
+                {{-- =================================================
+                MY PROFILE
+                ================================================== --}}
+
+                <a
+                    href="{{ route('profile.show', auth()->user()->profile->username) }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('profile.show')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+
+                    <span class="font-medium">
+                        My Profile
+                    </span>
+
+                </a>
+
+
+                {{-- =================================================
+                MY PROJECTS
+                ================================================== --}}
+                <a
+                    href="{{ route('saved-projects.index') }}"
+                    class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('saved-projects.*') ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm' : 'text-[#29483D] hover:bg-[#B8CEC5]' }}"
+                >
+                    <span class="font-medium">Saved Projects</span>
+                </a>
+                <a
+                    href="{{ route('developer.projects.index') }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('developer.projects.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+
+                    <span class="font-medium">
+                        My Projects
+                    </span>
+
+                </a>
+
+
+            @endif
+
+
+            {{-- =================================================
             ADMIN NAVIGATION
             ================================================== --}}
 
             @if(auth()->user()->is_admin)
 
 
-                {{-- Admin Dashboard --}}
+                {{-- =================================================
+                ADMIN DASHBOARD
+                ================================================== --}}
 
                 <a
                     href="{{ route('admin.dashboard') }}"
-                    class="group flex items-center gap-3
-                           rounded-2xl
-                           px-4 py-3
-                           text-[#29483D]
-                           transition-all duration-200
-                           hover:translate-x-1
-                           hover:bg-[#B8CEC5]"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('admin.dashboard')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
                 >
 
                     <span class="font-medium">
@@ -180,17 +283,24 @@
                 </a>
 
 
-                {{-- Manage Users --}}
+                {{-- =================================================
+                MANAGE USERS
+                ================================================== --}}
 
                 <a
                     href="{{ route('admin.users.index') }}"
-                    class="group flex items-center gap-3
-                           rounded-2xl
-                           px-4 py-3
-                           text-[#29483D]
-                           transition-all duration-200
-                           hover:translate-x-1
-                           hover:bg-[#B8CEC5]"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('admin.users.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
                 >
 
                     <span class="font-medium">
@@ -200,17 +310,24 @@
                 </a>
 
 
-                {{-- Manage Projects --}}
+                {{-- =================================================
+                MANAGE PROJECTS
+                ================================================== --}}
 
                 <a
                     href="{{ route('admin.projects.index') }}"
-                    class="group flex items-center gap-3
-                           rounded-2xl
-                           px-4 py-3
-                           text-[#29483D]
-                           transition-all duration-200
-                           hover:translate-x-1
-                           hover:bg-[#B8CEC5]"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('admin.projects.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
                 >
 
                     <span class="font-medium">

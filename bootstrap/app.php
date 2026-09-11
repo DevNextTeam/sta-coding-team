@@ -12,17 +12,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-    $middleware->alias([
-    'subscription' => \App\Http\Middleware\EnsureActiveSubscription::class,
-    'admin' => \App\Http\Middleware\AdminMiddleware::class,
-]);
 
-    $middleware->validateCsrfTokens(except: [
-        'paymongo/webhook',
-    ]);
-})
+        $middleware->alias([
+            'subscription' => \App\Http\Middleware\EnsureActiveSubscription::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'not.admin' => \App\Http\Middleware\NotAdmin::class,
+        ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'paymongo/webhook',
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
-    })->create();
+    })
+    ->create();

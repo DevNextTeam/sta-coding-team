@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -54,4 +55,48 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
+
+    /**
+     * Projects liked by the user.
+     */
+    public function likedProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_likes')
+            ->withTimestamps();
+    }
+
+    /**
+     * Projects saved by the user.
+     */
+    public function savedProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_saves')
+            ->withTimestamps();
+    }
+    /**
+ * Projects comments by the user.
+ */
+public function comments(): HasMany
+{
+    return $this->hasMany(ProjectComment::class);
+}
+public function followers(): BelongsToMany
+{
+    return $this->belongsToMany(
+        User::class,
+        'user_follows',
+        'following_id',
+        'follower_id'
+    )->withTimestamps();
+}
+
+public function following(): BelongsToMany
+{
+    return $this->belongsToMany(
+        User::class,
+        'user_follows',
+        'follower_id',
+        'following_id'
+    )->withTimestamps();
+}
 }

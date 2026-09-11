@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\ProjectComment;
 
 class Project extends Model
 {
@@ -58,5 +60,41 @@ class Project extends Model
     {
         return $this->hasMany(ProjectInstruction::class)
             ->orderBy('step');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Likes
+    |--------------------------------------------------------------------------
+    */
+
+    public function likedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_likes')
+            ->withTimestamps();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Saves
+    |--------------------------------------------------------------------------
+    */
+
+    public function savedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_saves')
+            ->withTimestamps();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Project Comments
+    |--------------------------------------------------------------------------
+    */
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProjectComment::class)
+            ->latest();
     }
 }

@@ -49,7 +49,7 @@ class ProjectController extends Controller
         | Free projects can be viewed by everyone.
         |
         */
-
+        $project->load('user.profile');
         if (!$project->is_premium) {
 
             $hasAccess = true;

@@ -270,6 +270,96 @@
 
 
                         {{-- =================================================
+                           CREATOR
+                        ================================================== --}}
+
+                        <div class="mt-4">
+
+                            @if($project->user && $project->user->profile)
+
+                                <div class="flex items-center gap-3">
+
+                                    {{-- Avatar --}}
+                                    <div
+                                        class="w-9 h-9
+                                               rounded-full
+                                               overflow-hidden
+                                               bg-[#E4F0EC]
+                                               border border-[#D8E2DD]
+                                               flex
+                                               items-center
+                                               justify-center
+                                               shrink-0"
+                                    >
+
+                                        @if($project->user->profile->avatar)
+
+                                            <img
+                                                src="{{ asset('storage/' . $project->user->profile->avatar) }}"
+                                                alt="{{ $project->user->profile->username }}"
+                                                class="w-full h-full object-cover"
+                                            >
+
+                                        @else
+
+                                            <span
+                                                class="text-sm
+                                                       font-bold
+                                                       text-[#4F806D]"
+                                            >
+                                                {{ strtoupper(substr($project->user->profile->username, 0, 1)) }}
+                                            </span>
+
+                                        @endif
+
+                                    </div>
+
+
+                                    {{-- Username --}}
+                                    <div class="min-w-0">
+
+                                        <p class="text-[11px] text-[#7A8581]">
+                                            Created by
+                                        </p>
+
+                                        <a
+                                            href="{{ route('profile.show', $project->user->profile->username) }}"
+                                            class="text-sm
+                                                   font-semibold
+                                                   text-[#29483D]
+                                                   hover:text-[#4F806D]
+                                                   transition
+                                                   truncate
+                                                   block"
+                                        >
+                                            {{ '@' . $project->user->profile->username }}
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            @else
+
+                                {{-- Projects created before developer ownership --}}
+                                <div class="flex items-center gap-2 text-sm text-[#7A8581]">
+
+                                    <span>
+                                        👤
+                                    </span>
+
+                                    <span>
+                                        Created by DevNext Team
+                                    </span>
+
+                                </div>
+
+                            @endif
+
+                        </div>
+
+
+                        {{-- =================================================
                            PREMIUM / FREE
                         ================================================== --}}
 
