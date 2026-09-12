@@ -29,36 +29,131 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
-        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
-        Fortify::loginView(function () {
-        return view('auth.login');
-        });
-        Fortify::registerView(function () {
-        return view('auth.register');
-        });
-        Fortify::requestPasswordResetLinkView(function () {
-        return view('auth.forgot-password');
-        });
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+        /*
+        |--------------------------------------------------------------------------
+        | Fortify Actions
+        |--------------------------------------------------------------------------
+        */
 
-            return Limit::perMinute(5)->by($throttleKey);
+        Fortify::createUsersUsing(
+            CreateNewUser::class
+        );
+
+        Fortify::updateUserProfileInformationUsing(
+            UpdateUserProfileInformation::class
+        );
+
+        Fortify::updateUserPasswordsUsing(
+            UpdateUserPassword::class
+        );
+
+        Fortify::resetUserPasswordsUsing(
+            ResetUserPassword::class
+        );
+
+        Fortify::redirectUserForTwoFactorAuthenticationUsing(
+            RedirectIfTwoFactorAuthenticatable::class
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Authentication Views
+        |--------------------------------------------------------------------------
+        */
+
+        Fortify::loginView(function () {
+            return view('auth.login');
         });
+
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Forgot Password View
+        |--------------------------------------------------------------------------
+        */
+
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reset Password View
+        |--------------------------------------------------------------------------
+        */
+
+        Fortify::resetPasswordView(function (Request $request) {
+            return view('auth.reset-password', [
+                'request' => $request,
+            ]);
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Login Rate Limiting
+        |--------------------------------------------------------------------------
+        */
+
+        RateLimiter::for('login', function (Request $request) {
+
+            $throttleKey = Str::transliterate(
+                Str::lower(
+                    $request->input(
+                        Fortify::username()
+                    )
+                )
+                . '|'
+                . $request->ip()
+            );
+
+            return Limit::perMinute(5)
+                ->by($throttleKey);
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Two-Factor Rate Limiting
+        |--------------------------------------------------------------------------
+        */
 
         RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+
+            return Limit::perMinute(5)
+                ->by(
+                    $request
+                        ->session()
+                        ->get('login.id')
+                );
         });
 
-        RateLimiter::for('passkeys', function (Request $request) {
-            $credentialId = $request->input('credential.id');
 
-            return Limit::perMinute(10)->by(
-                ($credentialId ?: $request->session()->getId()).'|'.$request->ip()
+        /*
+        |--------------------------------------------------------------------------
+        | Passkey Rate Limiting
+        |--------------------------------------------------------------------------
+        */
+
+        RateLimiter::for('passkeys', function (Request $request) {
+
+            $credentialId = $request->input(
+                'credential.id'
             );
+
+            return Limit::perMinute(10)
+                ->by(
+                    ($credentialId ?: $request->session()->getId())
+                    . '|'
+                    . $request->ip()
+                );
         });
     }
 }

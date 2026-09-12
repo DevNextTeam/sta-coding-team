@@ -34,6 +34,7 @@ use App\Http\Controllers\DeveloperDiscoveryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AiAssistantController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\PasswordResetCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -717,3 +718,24 @@ Route::get(
 )
     ->middleware('auth')
     ->name('google.connect.callback');
+
+
+Route::get('/reset-code', [
+    PasswordResetCodeController::class,
+    'show',
+])->name('password.reset.code');
+
+Route::post('/reset-code', [
+    PasswordResetCodeController::class,
+    'verify',
+])->name('password.reset.code.verify');
+
+Route::get('/reset-code/password', [
+    PasswordResetCodeController::class,
+    'passwordForm',
+])->name('password.reset.code.form');
+
+Route::post('/reset-code/password', [
+    PasswordResetCodeController::class,
+    'resetPassword',
+])->name('password.reset.code.password');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\DevNextResetPassword;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -11,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Hash;
 
 #[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -30,6 +32,42 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Send the custom DevNext password reset notification.
+     *
+     * Fortify supplies the secure password reset token.
+     * DevNext generates a separate 6-digit verification code.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $code = (string) random_int(100000, 999999);
+
+        /*
+         * Remove any previous reset codes for this email.
+         */
+        PasswordResetCode::where('email', $this->getEmailForPasswordReset())
+            ->delete();
+
+        /*
+         * Store the code as a hash.
+         *
+         * The actual 6-digit code is never stored
+         * directly in the database.
+         */
+        PasswordResetCode::create([
+            'email' => $this->getEmailForPasswordReset(),
+            'code' => Hash::make($code),
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        /*
+         * Send the custom DevNext email.
+         */
+        $this->notify(
+            new DevNextResetPassword($token, $code)
+        );
     }
 
     /**
