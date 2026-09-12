@@ -185,7 +185,23 @@ App::latest()->take(20) ->get([‘id’, ‘name’, ‘email’, ‘role’,
 App::latest()->take(20) ->get([‘id’, ‘title’, ‘slug’, ‘is_premium’,
 ‘published_at’]);
 
-30. EXIT TINKER
+30. CHANGE ONE USER TO DEVELOPER
+
+$user = App\Models\User::where('email', 'devnextteam@gmail.com')->first();
+$user->update(['role' => 'admin']);
+$user->fresh()->role;
+
+31. FIND USER BY NAME
+
+$user = App\Models\User::where('name', 'Test Developer')->first();
+$user?->email;
+
+32. FIND USER BY ID
+
+$user = App\Models\User::find(USER_ID);
+$user?->email;
+
+33. EXIT TINKER
 
 exit
 

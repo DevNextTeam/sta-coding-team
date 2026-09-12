@@ -674,7 +674,7 @@
                  * role = user
                  */
 
-                $isAdmin = auth()->user()->role === 'admin';
+                $isAdmin = in_array(auth()->user()->role, ['admin', 'developer']);
 
             @endphp
 
@@ -737,10 +737,13 @@
 
                                 <div>
 
-                                    <h3 class="font-bold
-                                               text-[#0F3F4A]">
+                                    @php
+                                        $role = auth()->user()->role;
+                                    @endphp
 
-                                        Administrator
+                                    <h3 class="font-bold text-[#0F3F4A]">
+
+                                        {{ $role === 'developer' ? 'Developer' : 'Administrator' }}
 
                                     </h3>
 

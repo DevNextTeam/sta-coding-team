@@ -33,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'subscription' => \App\Http\Middleware\EnsureActiveSubscription::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'developer' => \App\Http\Middleware\DeveloperMiddleware::class,
             'not.admin' => \App\Http\Middleware\NotAdmin::class,
         ]);
 

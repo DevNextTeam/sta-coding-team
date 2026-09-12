@@ -172,7 +172,7 @@
             NORMAL USER NAVIGATION
             ================================================== --}}
 
-            @if(auth()->user()->role !== 'admin')
+            @if(!in_array(auth()->user()->role, ['admin', 'developer']))
 
 
                 {{-- =================================================
@@ -314,7 +314,7 @@
             ADMIN NAVIGATION
             ================================================== --}}
 
-            @if(auth()->user()->role === 'admin')
+            @if(in_array(auth()->user()->role, ['admin', 'developer']))
 
 
                 {{-- =================================================

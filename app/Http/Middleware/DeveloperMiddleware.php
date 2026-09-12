@@ -6,15 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class DeveloperMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check()) {
-            return redirect()->route('login');
-        }
-
-        if (!in_array(auth()->user()->role, ['admin', 'developer'])) {
+        if (!auth()->check() || !in_array(auth()->user()->role, ['developer', 'admin'])) {
             abort(403, 'Unauthorized.');
         }
 
