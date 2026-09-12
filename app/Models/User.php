@@ -76,27 +76,59 @@ class User extends Authenticatable
     /**
  * Projects comments by the user.
  */
-public function comments(): HasMany
-{
-    return $this->hasMany(ProjectComment::class);
-}
-public function followers(): BelongsToMany
-{
-    return $this->belongsToMany(
-        User::class,
-        'user_follows',
-        'following_id',
-        'follower_id'
-    )->withTimestamps();
-}
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProjectComment::class);
+    }
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follows',
+            'following_id',
+            'follower_id'
+        )->withTimestamps();
+    }
 
-public function following(): BelongsToMany
-{
+    public function following(): BelongsToMany
+    {
     return $this->belongsToMany(
         User::class,
         'user_follows',
         'follower_id',
         'following_id'
     )->withTimestamps();
-}
+    }
+        public function socialAccounts(): HasMany
+    {
+        return $this->hasMany(SocialAccount::class);
+    }
+           /**
+     * Queue a Google profile synchronization when needed.
+     */
+    public function queueGoogleProfileSync(): void
+    {
+        $googleAccount = $this->socialAccounts()
+            ->where('provider', 'google')
+            ->first();
+
+        if (!$googleAccount) {
+            return;
+        }
+
+        /*
+         * Don't queue another job if the profile was
+         * synchronized within the last 24 hours.
+         */
+        if (
+            $googleAccount->profile_synced_at &&
+            $googleAccount->profile_synced_at->gt(now()->subDay())
+        ) {
+            return;
+        }
+
+        \App\Jobs\SyncGoogleProfile::dispatch(
+            $googleAccount->id
+        );
+    }
 }

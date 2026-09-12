@@ -286,7 +286,9 @@
             <div class="p-6 sm:p-8 space-y-4">
 
 
+                {{-- ================================================= --}}
                 {{-- NAME --}}
+                {{-- ================================================= --}}
 
                 <div class="group
                             flex flex-col sm:flex-row
@@ -344,7 +346,9 @@
 
 
 
+                {{-- ================================================= --}}
                 {{-- EMAIL --}}
+                {{-- ================================================= --}}
 
                 <div class="flex flex-col sm:flex-row
                             sm:items-center
@@ -404,7 +408,9 @@
 
 
 
+                {{-- ================================================= --}}
                 {{-- PASSWORD --}}
+                {{-- ================================================= --}}
 
                 <div class="flex flex-col sm:flex-row
                             sm:items-center
@@ -462,6 +468,181 @@
 
                 </div>
 
+
+
+                {{-- ================================================= --}}
+                {{-- CONNECTED ACCOUNTS --}}
+                {{-- ================================================= --}}
+
+                @php
+
+                    $googleAccount = auth()->user()
+                        ->socialAccounts
+                        ->where('provider', 'google')
+                        ->first();
+
+                @endphp
+
+
+                <div class="flex flex-col sm:flex-row
+                            sm:items-center
+                            sm:justify-between
+                            gap-4
+                            p-5
+                            rounded-2xl
+                            border border-[#D5DDD8]
+                            bg-[#FAF9F5]
+                            hover:border-[#BFD8CE]
+                            hover:shadow-sm
+                            transition">
+
+                    <div class="flex items-center gap-4 min-w-0">
+
+                        {{-- GOOGLE ICON --}}
+
+                        <div class="w-12 h-12
+                                    rounded-xl
+                                    bg-white
+                                    border border-[#D5DDD8]
+                                    flex items-center justify-center
+                                    shrink-0">
+
+                            <svg
+                                class="w-6 h-6"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    fill="#4285F4"
+                                    d="M21.35 12.27c0-.72-.06-1.41-.18-2.07H12v3.92h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.24Z"
+                                />
+
+                                <path
+                                    fill="#34A853"
+                                    d="M12 21.73c2.63 0 4.84-.87 6.46-2.36l-3.14-2.45c-.87.58-1.98.93-3.32.93-2.55 0-4.71-1.72-5.49-4.04H3.27v2.53A9.75 9.75 0 0 0 12 21.73Z"
+                                />
+
+                                <path
+                                    fill="#FBBC05"
+                                    d="M6.51 13.81A5.86 5.86 0 0 1 6.2 12c0-.63.11-1.24.31-1.81V7.66H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.02 4.34l3.24-2.53Z"
+                                />
+
+                                <path
+                                    fill="#EA4335"
+                                    d="M12 6.15c1.43 0 2.71.49 3.72 1.46l2.79-2.79C16.83 3.25 14.63 2.27 12 2.27a9.75 9.75 0 0 0-8.73 5.39l3.24 2.53C7.29 7.87 9.45 6.15 12 6.15Z"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="min-w-0">
+
+                            <p class="text-xs uppercase
+                                      tracking-wider
+                                      text-[#B87945]">
+
+                                Connected Account
+
+                            </p>
+
+
+                            <p class="text-lg font-semibold
+                                      text-[#0F3F4A]
+                                      mt-1">
+
+                                Google
+
+                            </p>
+
+
+                            @if($googleAccount)
+
+                                <p class="text-sm
+                                          text-[#3E735F]
+                                          mt-1
+                                          break-all">
+
+                                    {{ auth()->user()->email }}
+
+                                </p>
+
+                                <p class="text-xs
+                                          text-[#3E735F]
+                                          mt-1">
+
+                                    ✓ Google account connected
+
+                                </p>
+
+                            @else
+
+                                <p class="text-sm
+                                          text-gray-500
+                                          mt-1">
+
+                                    Connect your Google account
+                                    for easier sign-in.
+
+                                </p>
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+
+
+                    {{-- CONNECTED STATUS / BUTTON --}}
+
+                    @if($googleAccount)
+
+                        <span
+                            class="shrink-0
+                                   inline-flex
+                                   items-center
+                                   justify-center
+                                   px-4 py-2
+                                   rounded-xl
+                                   bg-[#DCEAE4]
+                                   text-[#3E735F]
+                                   text-sm
+                                   font-semibold">
+
+                            Connected
+
+                        </span>
+
+                    @else
+
+                        <a
+                            href="{{ route('google.connect') }}"
+                            onclick="openGoogleConnectPopup(event)"
+                            class="shrink-0
+                                   inline-flex
+                                   items-center
+                                   justify-center
+                                   px-5 py-2.5
+                                   rounded-xl
+                                   bg-[#4F806D]
+                                   text-white
+                                   font-medium
+                                   hover:bg-[#3E735F]
+                                   hover:-translate-y-0.5
+                                   transition
+                                   text-center">
+
+                            Connect Google
+
+                        </a>
+
+                    @endif
+
+                </div>
+
             </div>
 
         </div>
@@ -475,7 +656,9 @@
         <div class="space-y-8">
 
 
+            {{-- ================================================= --}}
             {{-- SUBSCRIPTION --}}
+            {{-- ================================================= --}}
 
             @php
 
@@ -490,6 +673,7 @@
                  * Normal user:
                  * role = user
                  */
+
                 $isAdmin = auth()->user()->role === 'admin';
 
             @endphp
@@ -526,7 +710,9 @@
                 <div class="p-6">
 
 
+                    {{-- ================================================= --}}
                     {{-- ADMIN --}}
+                    {{-- ================================================= --}}
 
                     @if($isAdmin)
 
@@ -596,7 +782,9 @@
 
 
 
+                    {{-- ================================================= --}}
                     {{-- ACTIVE --}}
+                    {{-- ================================================= --}}
 
                     @elseif($subscription && $subscription->isActive())
 
@@ -618,6 +806,7 @@
                                     )
                                 );
 
+
                                 if($subscription->starts_at) {
 
                                     $totalDays = max(
@@ -629,6 +818,7 @@
                                     );
 
                                 }
+
 
                                 $progress = min(
                                     100,
@@ -810,7 +1000,9 @@
 
 
 
+                    {{-- ================================================= --}}
                     {{-- PENDING --}}
+                    {{-- ================================================= --}}
 
                     @elseif($subscription &&
                             $subscription->status === 'pending')
@@ -869,7 +1061,9 @@
 
 
 
+                    {{-- ================================================= --}}
                     {{-- EXPIRED --}}
+                    {{-- ================================================= --}}
 
                     @elseif($subscription &&
                             $subscription->status === 'expired')
@@ -937,7 +1131,9 @@
 
 
 
+                    {{-- ================================================= --}}
                     {{-- NONE --}}
+                    {{-- ================================================= --}}
 
                     @else
 
@@ -1195,6 +1391,8 @@
 
 </div>
 
+
+
 {{-- =============================================================== --}}
 {{-- NAME MODAL --}}
 {{-- =============================================================== --}}
@@ -1331,6 +1529,8 @@
 </div>
 
 </div>
+
+
 
 {{-- =============================================================== --}}
 {{-- PASSWORD MODAL --}}
@@ -1675,6 +1875,8 @@
 
 </div>
 
+
+
 {{-- =============================================================== --}}
 {{-- JAVASCRIPT --}}
 {{-- =============================================================== --}}
@@ -1857,7 +2059,88 @@
         );
 
     @endif
+/*
+|--------------------------------------------------------------------------
+| Google Connect Popup
+|--------------------------------------------------------------------------
+*/
 
+function openGoogleConnectPopup(event) {
+
+    event.preventDefault();
+
+    const url = event.currentTarget.href;
+
+    const width = 500;
+    const height = 650;
+
+    const left =
+        window.screenX +
+        (window.outerWidth - width) / 2;
+
+    const top =
+        window.screenY +
+        (window.outerHeight - height) / 2;
+
+    const popup = window.open(
+        url,
+        'google-connect',
+        `
+        width=${width},
+        height=${height},
+        left=${left},
+        top=${top},
+        resizable=yes,
+        scrollbars=yes
+        `
+    );
+
+
+    if (!popup) {
+
+        window.location.href = url;
+
+        return;
+
+    }
+
+    popup.focus();
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Google Connect Result
+|--------------------------------------------------------------------------
+*/
+
+window.addEventListener('message', function(event) {
+
+    if (event.origin !== window.location.origin) {
+        return;
+    }
+
+
+    if (event.data === 'google-login-success') {
+
+        window.location.reload();
+
+    }
+
+
+    if (
+        event.data &&
+        event.data.type === 'google-login-error'
+    ) {
+
+        alert(
+            event.data.message ||
+            'Unable to connect your Google account.'
+        );
+
+    }
+
+});
 </script>
 
 @endsection

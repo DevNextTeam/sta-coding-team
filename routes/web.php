@@ -33,7 +33,7 @@ use App\Http\Controllers\UserFollowListController;
 use App\Http\Controllers\DeveloperDiscoveryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AiAssistantController;
-
+use App\Http\Controllers\GoogleAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -688,3 +688,17 @@ Route::get(
     [DeveloperDiscoveryController::class, 'index']
 )
     ->name('developers.index');
+
+
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])
+    ->name('google.redirect');
+
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])
+    ->name('google.callback');
+Route::get('/auth/google/connect', [GoogleAuthController::class, 'connectRedirect'])
+    ->middleware('auth')
+    ->name('google.connect');
+
+Route::get('/auth/google/connect/callback', [GoogleAuthController::class, 'connectCallback'])
+    ->middleware('auth')
+    ->name('google.connect.callback');
