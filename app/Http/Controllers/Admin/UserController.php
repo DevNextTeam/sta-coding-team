@@ -13,6 +13,15 @@ class UserController extends Controller
         $search = $request->input('search');
         $status = $request->input('status', 'all');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Manage Regular Users Only
+        |--------------------------------------------------------------------------
+        |
+        | Admin and Developer accounts are excluded from user management.
+        |
+        */
+
         $users = User::with('subscription')
             ->where('role', 'user')
             ->when($search, function ($query, $search) {
@@ -64,8 +73,28 @@ class UserController extends Controller
         ));
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Activate Subscription
+    |--------------------------------------------------------------------------
+    */
+
     public function activate(User $user)
     {
+        /*
+        | Admin and Developer accounts have permanent access.
+        | They should never be given or modified through
+        | regular subscription management.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts have permanent premium access.'
+            );
+        }
+
         $subscription = $user->subscription()->firstOrNew();
 
         $subscription->status = 'active';
@@ -80,8 +109,26 @@ class UserController extends Controller
         );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Expire Subscription
+    |--------------------------------------------------------------------------
+    */
+
     public function expire(User $user)
     {
+        /*
+        | Admin and Developer accounts have permanent access.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts have permanent premium access.'
+            );
+        }
+
         if ($user->subscription) {
             $user->subscription->update([
                 'status' => 'expired',
@@ -95,17 +142,38 @@ class UserController extends Controller
         );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Extend Subscription
+    |--------------------------------------------------------------------------
+    */
+
     public function extend(User $user)
     {
+        /*
+        | Admin and Developer accounts have permanent access.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts have permanent premium access.'
+            );
+        }
+
         $subscription = $user->subscription;
 
         if (!$subscription) {
+
             $subscription = $user->subscription()->create([
                 'status' => 'active',
                 'starts_at' => now(),
                 'ends_at' => now()->addMonth(),
             ]);
+
         } else {
+
             $startFrom = $subscription->ends_at && $subscription->ends_at->isFuture()
                 ? $subscription->ends_at
                 : now();

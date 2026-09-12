@@ -193,114 +193,107 @@ Route::middleware('auth')->group(function () {
     | DEVELOPER STUDIO
     |--------------------------------------------------------------------------
     |
-    | These routes are protected by both:
+    | These routes require authentication.
     |
-    | auth      -> User must be logged in
-    | not.admin -> User must NOT be an administrator
-    |
-    | Normal users can access Developer Studio.
-    | Admin users receive a 403 Forbidden response.
+    | Regular users, Developers, and Administrators
+    | can access Developer Studio.
     |
     */
 
-    Route::middleware('not.admin')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | DEVELOPER PROJECTS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/dashboard/projects',
+        [DeveloperProjectController::class, 'index']
+    )
+        ->name('developer.projects.index');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DEVELOPER PROJECTS
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get(
-            '/dashboard/projects',
-            [DeveloperProjectController::class, 'index']
-        )
-            ->name('developer.projects.index');
+    Route::get(
+        '/dashboard/projects/create',
+        [DeveloperProjectController::class, 'create']
+    )
+        ->name('developer.projects.create');
 
 
-        Route::get(
-            '/dashboard/projects/create',
-            [DeveloperProjectController::class, 'create']
-        )
-            ->name('developer.projects.create');
+    Route::post(
+        '/dashboard/projects',
+        [DeveloperProjectController::class, 'store']
+    )
+        ->name('developer.projects.store');
 
 
-        Route::post(
-            '/dashboard/projects',
-            [DeveloperProjectController::class, 'store']
-        )
-            ->name('developer.projects.store');
+    Route::get(
+        '/dashboard/projects/{project}/edit',
+        [DeveloperProjectController::class, 'edit']
+    )
+        ->name('developer.projects.edit');
 
 
-        Route::get(
-            '/dashboard/projects/{project}/edit',
-            [DeveloperProjectController::class, 'edit']
-        )
-            ->name('developer.projects.edit');
+    Route::put(
+        '/dashboard/projects/{project}',
+        [DeveloperProjectController::class, 'update']
+    )
+        ->name('developer.projects.update');
 
 
-        Route::put(
-            '/dashboard/projects/{project}',
-            [DeveloperProjectController::class, 'update']
-        )
-            ->name('developer.projects.update');
+    Route::delete(
+        '/dashboard/projects/{project}',
+        [DeveloperProjectController::class, 'destroy']
+    )
+        ->name('developer.projects.destroy');
 
 
-        Route::delete(
-            '/dashboard/projects/{project}',
-            [DeveloperProjectController::class, 'destroy']
-        )
-            ->name('developer.projects.destroy');
+    /*
+    |--------------------------------------------------------------------------
+    | DEVELOPER PROJECT RESOURCES
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/dashboard/projects/{project}/resources',
+        [DeveloperProjectResourceController::class, 'store']
+    )
+        ->name('developer.projects.resources.store');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DEVELOPER PROJECT RESOURCES
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post(
-            '/dashboard/projects/{project}/resources',
-            [DeveloperProjectResourceController::class, 'store']
-        )
-            ->name('developer.projects.resources.store');
+    Route::delete(
+        '/dashboard/projects/resources/{resource}',
+        [DeveloperProjectResourceController::class, 'destroy']
+    )
+        ->name('developer.projects.resources.destroy');
 
 
-        Route::delete(
-            '/dashboard/projects/resources/{resource}',
-            [DeveloperProjectResourceController::class, 'destroy']
-        )
-            ->name('developer.projects.resources.destroy');
+    /*
+    |--------------------------------------------------------------------------
+    | DEVELOPER PROJECT INSTRUCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/dashboard/projects/{project}/instructions',
+        [DeveloperProjectInstructionController::class, 'store']
+    )
+        ->name('developer.projects.instructions.store');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DEVELOPER PROJECT INSTRUCTIONS
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post(
-            '/dashboard/projects/{project}/instructions',
-            [DeveloperProjectInstructionController::class, 'store']
-        )
-            ->name('developer.projects.instructions.store');
+    Route::put(
+        '/dashboard/projects/instructions/{instruction}',
+        [DeveloperProjectInstructionController::class, 'update']
+    )
+        ->name('developer.projects.instructions.update');
 
 
-        Route::put(
-            '/dashboard/projects/instructions/{instruction}',
-            [DeveloperProjectInstructionController::class, 'update']
-        )
-            ->name('developer.projects.instructions.update');
-
-
-        Route::delete(
-            '/dashboard/projects/instructions/{instruction}',
-            [DeveloperProjectInstructionController::class, 'destroy']
-        )
-            ->name('developer.projects.instructions.destroy');
-
-    });
+    Route::delete(
+        '/dashboard/projects/instructions/{instruction}',
+        [DeveloperProjectInstructionController::class, 'destroy']
+    )
+        ->name('developer.projects.instructions.destroy');
 
 
     /*
@@ -690,15 +683,37 @@ Route::get(
     ->name('developers.index');
 
 
-Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])
+/*
+|--------------------------------------------------------------------------
+| GOOGLE AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/auth/google',
+    [GoogleAuthController::class, 'redirect']
+)
     ->name('google.redirect');
 
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])
+
+Route::get(
+    '/auth/google/callback',
+    [GoogleAuthController::class, 'callback']
+)
     ->name('google.callback');
-Route::get('/auth/google/connect', [GoogleAuthController::class, 'connectRedirect'])
+
+
+Route::get(
+    '/auth/google/connect',
+    [GoogleAuthController::class, 'connectRedirect']
+)
     ->middleware('auth')
     ->name('google.connect');
 
-Route::get('/auth/google/connect/callback', [GoogleAuthController::class, 'connectCallback'])
+
+Route::get(
+    '/auth/google/connect/callback',
+    [GoogleAuthController::class, 'connectCallback']
+)
     ->middleware('auth')
     ->name('google.connect.callback');

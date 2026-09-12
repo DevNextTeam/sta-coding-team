@@ -1,44 +1,84 @@
-<nav class="w-full border-b border-[#A8C0B6] bg-[#B8CEC5]">
+<nav class="sticky top-0 z-50 w-full border-b border-[#A8C0B6]/70 bg-[#B8CEC5]/95 shadow-sm backdrop-blur-md">
 
-    <div class="flex min-h-20 items-center justify-between px-4 py-3 sm:px-6 md:min-h-24 md:px-8 lg:min-h-28 lg:px-12">
+    <div class="mx-auto flex min-h-[76px] items-center justify-between px-4 sm:px-6 md:min-h-[82px] md:px-8 lg:px-10">
 
-        {{-- LOGO --}}
-        <a href="/" class="flex shrink-0 items-center">
+        {{-- ==========================================================
+             LOGO
+        =========================================================== --}}
+        <a
+            href="/"
+            class="group flex shrink-0 items-center"
+        >
             <img
                 src="{{ asset('images/logo.png') }}"
                 alt="S.T.A Coding Team Logo"
-                class="h-16 w-auto object-contain transition duration-300 hover:scale-105 sm:h-20 md:h-24 lg:h-28"
+                class="h-14 w-auto object-contain transition duration-300 ease-out group-hover:scale-[1.04] sm:h-16 md:h-[68px]"
             >
         </a>
 
 
-        {{-- DESKTOP NAVIGATION --}}
-        <div class="hidden items-center gap-5 md:flex lg:gap-8 xl:gap-10">
+        {{-- ==========================================================
+             DESKTOP NAVIGATION
+        =========================================================== --}}
+        <div class="hidden items-center gap-1 md:flex">
 
-            <a href="/"
-               class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base">
+            {{-- HOME --}}
+            <a
+                href="/"
+                class="group relative rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
+            >
                 Home
+
+                <span
+                    class="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-[#4F806D] transition-all duration-200 group-hover:w-5"
+                ></span>
             </a>
 
-            <a href="/about"
-               class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base">
+
+            {{-- ABOUT --}}
+            <a
+                href="/about"
+                class="group relative rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
+            >
                 About
+
+                <span
+                    class="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-[#4F806D] transition-all duration-200 group-hover:w-5"
+                ></span>
             </a>
 
-            <a href="{{ route('projects.index') }}"
-               class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base">
+
+            {{-- PROJECTS --}}
+            <a
+                href="{{ route('projects.index') }}"
+                class="group relative rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
+            >
                 Projects
+
+                <span
+                    class="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-[#4F806D] transition-all duration-200 group-hover:w-5"
+                ></span>
             </a>
 
-            <a href="/contact"
-               class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base">
+
+            {{-- CONTACT --}}
+            <a
+                href="/contact"
+                class="group relative rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
+            >
                 Contact
+
+                <span
+                    class="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-[#4F806D] transition-all duration-200 group-hover:w-5"
+                ></span>
             </a>
 
 
             @auth
 
-                {{-- DESKTOP NOTIFICATION CENTER --}}
+                {{-- ==================================================
+                     NOTIFICATIONS
+                =================================================== --}}
                 @php
                     $latestNotifications = auth()->user()
                         ->notifications()
@@ -51,51 +91,63 @@
                         ->count();
                 @endphp
 
-                <div class="relative">
+                <div class="relative ml-2">
 
                     <button
                         type="button"
                         onclick="toggleNotificationDropdown()"
-                        class="relative flex h-11 w-11 items-center justify-center rounded-full text-[#29483D] transition hover:bg-white/40 hover:text-[#4F806D]"
+                        class="relative flex h-11 w-11 items-center justify-center rounded-xl text-[#29483D] transition duration-200 hover:bg-white/45 hover:text-[#3E735F] active:scale-95"
                         aria-label="Notifications"
+                        aria-expanded="false"
                     >
-                        <i class="bi bi-bell text-xl"></i>
+                        <i class="bi bi-bell text-[19px]"></i>
 
                         @if($unreadCount > 0)
                             <span
-                                class="absolute -right-0.5 -top-0.5 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[#A45F2C] px-1 text-[10px] font-bold text-white"
+                                class="absolute right-0 top-0 flex min-h-[19px] min-w-[19px] -translate-y-0.5 translate-x-0.5 items-center justify-center rounded-full bg-[#A45F2C] px-1 text-[9px] font-bold leading-none text-white shadow-sm"
                             >
                                 {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                             </span>
                         @endif
+
                     </button>
 
 
-                    {{-- NOTIFICATION DROPDOWN --}}
+                    {{-- ==================================================
+                         NOTIFICATION DROPDOWN
+                    =================================================== --}}
                     <div
                         id="notificationDropdown"
-                        class="absolute right-0 top-14 z-50 hidden w-80 overflow-hidden rounded-2xl border border-[#D8D0C3] bg-[#F5F1E8] shadow-xl"
+                        class="absolute right-0 top-[54px] z-50 hidden w-[340px] overflow-hidden rounded-2xl border border-[#D8D0C3] bg-[#F5F1E8] shadow-[0_15px_40px_rgba(41,72,61,0.16)]"
                     >
 
-                        <div class="flex items-center justify-between border-b border-[#D8D0C3] px-4 py-3">
+                        {{-- HEADER --}}
+                        <div class="flex items-center justify-between border-b border-[#D8D0C3] px-4 py-3.5">
 
                             <div>
-                                <h3 class="font-bold text-[#29483D]">
+                                <h3 class="text-sm font-bold text-[#29483D]">
                                     Notifications
                                 </h3>
 
                                 @if($unreadCount > 0)
-                                    <p class="text-xs text-[#6B756F]">
-                                        {{ $unreadCount }} unread
+
+                                    <p class="mt-0.5 text-[11px] text-[#7A827D]">
+                                        {{ $unreadCount }} unread notification{{ $unreadCount === 1 ? '' : 's' }}
                                     </p>
+
                                 @else
-                                    <p class="text-xs text-[#6B756F]">
+
+                                    <p class="mt-0.5 text-[11px] text-[#7A827D]">
                                         You're all caught up
                                     </p>
+
                                 @endif
+
                             </div>
 
+
                             @if($unreadCount > 0)
+
                                 <form
                                     method="POST"
                                     action="{{ route('notifications.read-all') }}"
@@ -104,18 +156,19 @@
 
                                     <button
                                         type="submit"
-                                        class="text-xs font-semibold text-[#4F806D] transition hover:text-[#29483D]"
+                                        class="rounded-lg px-2 py-1 text-[11px] font-semibold text-[#4F806D] transition hover:bg-[#DDEAE3] hover:text-[#29483D]"
                                     >
                                         Mark all read
                                     </button>
                                 </form>
+
                             @endif
 
                         </div>
 
 
                         {{-- NOTIFICATIONS --}}
-                        <div class="max-h-96 overflow-y-auto">
+                        <div class="max-h-[380px] overflow-y-auto">
 
                             @forelse($latestNotifications as $notification)
 
@@ -125,14 +178,14 @@
                                 @endphp
 
                                 <div
-                                    class="border-b border-[#E2DCD2] px-4 py-3 transition hover:bg-white/50 {{ $isUnread ? 'bg-white/40' : '' }}"
+                                    class="border-b border-[#E2DCD2] px-4 py-3.5 transition duration-200 hover:bg-white/55 {{ $isUnread ? 'bg-white/35' : '' }}"
                                 >
 
                                     <div class="flex gap-3">
 
                                         {{-- ICON --}}
                                         <div
-                                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full
+                                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl
                                             {{ ($data['type'] ?? '') === 'follow'
                                                 ? 'bg-[#DDEAE3] text-[#4F806D]'
                                                 : 'bg-[#E8E0D5] text-[#A45F2C]' }}"
@@ -152,17 +205,22 @@
                                                 {{ $data['message'] ?? 'You have a new notification.' }}
                                             </p>
 
-                                            <p class="mt-1 text-xs text-[#7A827D]">
+                                            <p class="mt-1 text-[11px] text-[#7A827D]">
                                                 {{ $notification->created_at->diffForHumans() }}
                                             </p>
 
-                                            @if(($data['type'] ?? '') === 'follow' && !empty($data['follower_username']))
+
+                                            @if(
+                                                ($data['type'] ?? '') === 'follow' &&
+                                                !empty($data['follower_username'])
+                                            )
 
                                                 <a
                                                     href="{{ route('profile.show', $data['follower_username']) }}"
-                                                    class="mt-2 inline-block text-xs font-semibold text-[#4F806D] hover:text-[#29483D]"
+                                                    class="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-[#4F806D] transition hover:text-[#29483D]"
                                                 >
                                                     View Profile
+                                                    <i class="bi bi-arrow-right text-[10px]"></i>
                                                 </a>
 
                                             @endif
@@ -182,11 +240,13 @@
 
                                                 <button
                                                     type="submit"
-                                                    class="text-xs font-semibold text-[#4F806D] hover:text-[#29483D]"
+                                                    class="flex h-7 w-7 items-center justify-center rounded-lg text-[#4F806D] transition hover:bg-[#DDEAE3] hover:text-[#29483D]"
                                                     title="Mark as read"
+                                                    aria-label="Mark as read"
                                                 >
-                                                    <i class="bi bi-check2"></i>
+                                                    <i class="bi bi-check2 text-sm"></i>
                                                 </button>
+
                                             </form>
 
                                         @endif
@@ -199,7 +259,9 @@
 
                                 <div class="px-5 py-10 text-center">
 
-                                    <i class="bi bi-bell-slash text-3xl text-[#A8B5AE]"></i>
+                                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#DDEAE3]">
+                                        <i class="bi bi-bell-slash text-xl text-[#4F806D]"></i>
+                                    </div>
 
                                     <p class="mt-3 text-sm font-semibold text-[#29483D]">
                                         No notifications yet
@@ -217,14 +279,15 @@
 
 
                         {{-- VIEW ALL --}}
-                        <div class="border-t border-[#D8D0C3] p-3">
+                        <div class="border-t border-[#D8D0C3] bg-[#F1ECE3] p-3">
 
                             <a
                                 href="{{ route('notifications.index') }}"
                                 onclick="closeNotificationDropdown()"
-                                class="block rounded-xl bg-[#4F806D] px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#3E735F]"
+                                class="flex items-center justify-center gap-2 rounded-xl bg-[#4F806D] px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-[#3E735F] hover:shadow-md active:scale-[0.98]"
                             >
                                 View All Notifications
+                                <i class="bi bi-arrow-right text-xs"></i>
                             </a>
 
                         </div>
@@ -234,23 +297,36 @@
                 </div>
 
 
-                {{-- DASHBOARD --}}
+                {{-- ==================================================
+                     DASHBOARD
+                =================================================== --}}
                 <a
                     href="{{ route('dashboard') }}"
-                    class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base"
+                    class="group relative ml-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
                 >
                     Dashboard
+
+                    <span
+                        class="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-[#4F806D] transition-all duration-200 group-hover:w-5"
+                    ></span>
                 </a>
 
 
-                {{-- LOGOUT --}}
-                <form method="POST" action="{{ route('logout') }}">
+                {{-- ==================================================
+                     LOGOUT
+                =================================================== --}}
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="ml-2"
+                >
                     @csrf
 
                     <button
                         type="submit"
-                        class="rounded-full bg-[#4F806D] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3E735F] lg:px-6"
+                        class="inline-flex items-center gap-2 rounded-xl bg-[#4F806D] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-[#3E735F] hover:shadow-md active:scale-[0.97] lg:px-5"
                     >
+                        <i class="bi bi-box-arrow-right text-sm"></i>
                         Logout
                     </button>
                 </form>
@@ -260,18 +336,26 @@
 
             @guest
 
+                {{-- ==================================================
+                     LOGIN
+                =================================================== --}}
                 <a
                     href="{{ route('login') }}"
-                    class="text-sm font-semibold text-[#29483D] transition hover:text-[#4F806D] lg:text-base"
+                    class="ml-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-[#29483D] transition duration-200 hover:bg-white/35 hover:text-[#3E735F] lg:px-5 lg:text-[15px]"
                 >
                     Login
                 </a>
 
+
+                {{-- ==================================================
+                     SIGN UP
+                =================================================== --}}
                 <a
                     href="{{ route('register') }}"
-                    class="rounded-full bg-[#4F806D] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3E735F] lg:px-6"
+                    class="ml-1 inline-flex items-center gap-2 rounded-xl bg-[#4F806D] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-[#3E735F] hover:shadow-md active:scale-[0.97] lg:px-5"
                 >
                     Sign Up
+                    <i class="bi bi-arrow-right text-xs"></i>
                 </a>
 
             @endguest
@@ -279,31 +363,36 @@
         </div>
 
 
-        {{-- MOBILE RIGHT SIDE --}}
-        <div class="flex items-center gap-2 md:hidden">
+        {{-- ==========================================================
+             MOBILE RIGHT SIDE
+        =========================================================== --}}
+        <div class="flex items-center gap-1.5 md:hidden">
 
             @auth
 
-                {{-- MOBILE NOTIFICATION BUTTON --}}
                 @php
                     $mobileUnreadCount = auth()->user()
                         ->unreadNotifications()
                         ->count();
                 @endphp
 
+
+                {{-- MOBILE NOTIFICATIONS --}}
                 <a
                     href="{{ route('notifications.index') }}"
-                    class="relative flex h-11 w-11 items-center justify-center rounded-full text-[#29483D] transition hover:bg-white/40 hover:text-[#4F806D]"
+                    class="relative flex h-11 w-11 items-center justify-center rounded-xl text-[#29483D] transition duration-200 hover:bg-white/45 hover:text-[#3E735F] active:scale-95"
                     aria-label="Notifications"
                 >
-                    <i class="bi bi-bell text-xl"></i>
+                    <i class="bi bi-bell text-[19px]"></i>
 
                     @if($mobileUnreadCount > 0)
+
                         <span
-                            class="absolute -right-0.5 -top-0.5 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[#A45F2C] px-1 text-[10px] font-bold text-white"
+                            class="absolute right-0 top-0 flex min-h-[19px] min-w-[19px] -translate-y-0.5 translate-x-0.5 items-center justify-center rounded-full bg-[#A45F2C] px-1 text-[9px] font-bold leading-none text-white shadow-sm"
                         >
                             {{ $mobileUnreadCount > 99 ? '99+' : $mobileUnreadCount }}
                         </span>
+
                     @endif
 
                 </a>
@@ -311,26 +400,31 @@
             @endauth
 
 
-            {{-- MOBILE MENU BUTTON --}}
+            {{-- MOBILE MENU --}}
             <button
                 type="button"
                 onclick="openMobileSidebar()"
-                class="flex h-11 w-11 items-center justify-center rounded-full text-[#29483D] transition hover:bg-white/40 hover:text-[#4F806D]"
+                class="flex h-11 w-11 items-center justify-center rounded-xl text-[#29483D] transition duration-200 hover:bg-white/45 hover:text-[#3E735F] active:scale-95"
                 aria-label="Open navigation"
             >
-                <i class="bi bi-list text-2xl"></i>
+                <i class="bi bi-list text-[24px]"></i>
             </button>
 
         </div>
 
     </div>
+
 </nav>
 
 
-{{-- NOTIFICATION DROPDOWN JAVASCRIPT --}}
+{{-- ================================================================
+     NOTIFICATION JAVASCRIPT
+================================================================ --}}
 @auth
+
 <script>
     function toggleNotificationDropdown() {
+
         const dropdown = document.getElementById('notificationDropdown');
 
         if (!dropdown) {
@@ -340,7 +434,9 @@
         dropdown.classList.toggle('hidden');
     }
 
+
     function closeNotificationDropdown() {
+
         const dropdown = document.getElementById('notificationDropdown');
 
         if (!dropdown) {
@@ -349,6 +445,7 @@
 
         dropdown.classList.add('hidden');
     }
+
 
     document.addEventListener('click', function (event) {
 
@@ -373,4 +470,5 @@
 
     });
 </script>
+
 @endauth

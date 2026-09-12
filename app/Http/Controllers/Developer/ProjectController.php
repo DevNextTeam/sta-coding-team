@@ -18,11 +18,34 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        $projects = $request->user()
-            ->projects()
-            ->with('user.profile')
-            ->latest()
-            ->get();
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | ADMIN & DEVELOPER
+        |--------------------------------------------------------------------------
+        |
+        | Admin and Developer accounts can see ALL projects.
+        |
+        | Regular users can only see their own projects.
+        |
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+
+            $projects = Project::with('user.profile')
+                ->latest()
+                ->get();
+
+        } else {
+
+            $projects = $user
+                ->projects()
+                ->with('user.profile')
+                ->latest()
+                ->get();
+        }
+
 
         return view(
             'developer.projects.index',
@@ -102,8 +125,7 @@ class ProjectController extends Controller
         | Create Project
         |--------------------------------------------------------------------------
         |
-        | Using the authenticated user's projects()
-        | relationship automatically assigns user_id.
+        | The project is assigned to the currently authenticated user.
         |
         */
 
@@ -176,9 +198,6 @@ class ProjectController extends Controller
         |--------------------------------------------------------------------------
         | Load Resources + Instructions
         |--------------------------------------------------------------------------
-        |
-        | These relationships are used by the Developer Edit Project page.
-        |
         */
 
         $project->load([
@@ -392,9 +411,6 @@ class ProjectController extends Controller
         |--------------------------------------------------------------------------
         | AJAX / FETCH RESPONSE
         |--------------------------------------------------------------------------
-        |
-        | Our modern frontend can use fetch() to delete projects.
-        |
         */
 
         if ($request->expectsJson()) {
@@ -423,8 +439,15 @@ class ProjectController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | AUTHORIZE PROJECT OWNER
+    | AUTHORIZE PROJECT
     |--------------------------------------------------------------------------
+    |
+    | Admin and Developer:
+    | Can edit/delete ANY project.
+    |
+    | Regular User:
+    | Can only edit/delete their OWN projects.
+    |
     */
 
     private function authorizeProject(
@@ -432,8 +455,28 @@ class ProjectController extends Controller
         Project $project
     ): void {
 
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin & Developer Have Full Access
+        |--------------------------------------------------------------------------
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Regular User Can Only Manage Their Own Project
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
-            $project->user_id === $request->user()->id,
+            $project->user_id === $user->id,
             403
         );
     }

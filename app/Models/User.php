@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -38,6 +38,21 @@ class User extends Authenticatable
     public function subscription(): HasOne
     {
         return $this->hasOne(Subscription::class);
+    }
+
+    /**
+     * Determine whether the user has premium access.
+     *
+     * Admin and Developer have permanent access.
+     * Regular users need an active subscription.
+     */
+    public function hasPremiumAccess(): bool
+    {
+        if (in_array($this->role, ['admin', 'developer'])) {
+            return true;
+        }
+
+        return $this->subscription?->isActive() ?? false;
     }
 
     /**
@@ -73,13 +88,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class, 'project_saves')
             ->withTimestamps();
     }
+
     /**
- * Projects comments by the user.
- */
+     * Projects comments by the user.
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(ProjectComment::class);
     }
+
+    /**
+     * Users following this user.
+     */
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -90,20 +110,28 @@ class User extends Authenticatable
         )->withTimestamps();
     }
 
+    /**
+     * Users this user is following.
+     */
     public function following(): BelongsToMany
     {
-    return $this->belongsToMany(
-        User::class,
-        'user_follows',
-        'follower_id',
-        'following_id'
-    )->withTimestamps();
+        return $this->belongsToMany(
+            User::class,
+            'user_follows',
+            'follower_id',
+            'following_id'
+        )->withTimestamps();
     }
-        public function socialAccounts(): HasMany
+
+    /**
+     * User social accounts.
+     */
+    public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class);
     }
-           /**
+
+    /**
      * Queue a Google profile synchronization when needed.
      */
     public function queueGoogleProfileSync(): void

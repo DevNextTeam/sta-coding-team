@@ -77,9 +77,25 @@ class ProjectResourceController extends Controller
     ) {
         $project = $resource->project;
 
+        /*
+        |--------------------------------------------------------------------------
+        | Security
+        |--------------------------------------------------------------------------
+        |
+        | Admin and Developer accounts can delete resources
+        | from ANY project.
+        |
+        | Regular users can only delete resources from
+        | their own projects.
+        |
+        */
+
         abort_unless(
             $project &&
-            $project->user_id === $request->user()->id,
+            (
+                in_array($request->user()->role, ['admin', 'developer']) ||
+                $project->user_id === $request->user()->id
+            ),
             403
         );
 
@@ -97,6 +113,12 @@ class ProjectResourceController extends Controller
             $resource->file_path
         );
 
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Resource Record
+        |--------------------------------------------------------------------------
+        */
+
         $resource->delete();
 
         return back()->with(
@@ -108,16 +130,41 @@ class ProjectResourceController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Project Ownership
+    | Project Authorization
     |--------------------------------------------------------------------------
+    |
+    | Admin and Developer:
+    | Can manage resources for ANY project.
+    |
+    | Regular User:
+    | Can only manage resources for their OWN project.
+    |
     */
 
     private function authorizeProject(
         Request $request,
         Project $project
     ): void {
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin & Developer Have Full Access
+        |--------------------------------------------------------------------------
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Regular User Can Only Manage Their Own Project
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
-            $project->user_id === $request->user()->id,
+            $project->user_id === $user->id,
             403
         );
     }

@@ -55,6 +55,7 @@ class ProjectInstructionController extends Controller
         */
 
         if ($request->hasFile('image')) {
+
             $validated['image'] = $request
                 ->file('image')
                 ->store(
@@ -210,16 +211,41 @@ class ProjectInstructionController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Project Ownership
+    | Project Authorization
     |--------------------------------------------------------------------------
+    |
+    | Admin and Developer:
+    | Can manage instructions for ANY project.
+    |
+    | Regular User:
+    | Can only manage instructions for their OWN project.
+    |
     */
 
     private function authorizeProject(
         Request $request,
         Project $project
     ): void {
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin & Developer Have Full Access
+        |--------------------------------------------------------------------------
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Regular User Can Only Manage Their Own Project
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
-            $project->user_id === $request->user()->id,
+            $project->user_id === $user->id,
             403
         );
     }
@@ -227,17 +253,43 @@ class ProjectInstructionController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Instruction Ownership
+    | Instruction Authorization
     |--------------------------------------------------------------------------
+    |
+    | Admin and Developer:
+    | Can manage instructions for ANY project.
+    |
+    | Regular User:
+    | Can only manage instructions belonging to their
+    | own project.
+    |
     */
 
     private function authorizeInstruction(
         Request $request,
         ProjectInstruction $instruction
     ): void {
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin & Developer Have Full Access
+        |--------------------------------------------------------------------------
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Regular User Can Only Manage Their Own Project
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
             $instruction->project &&
-            $instruction->project->user_id === $request->user()->id,
+            $instruction->project->user_id === $user->id,
             403
         );
     }

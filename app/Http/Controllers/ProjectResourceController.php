@@ -31,9 +31,7 @@ class ProjectResourceController extends Controller
                 return redirect()->route('login');
             }
 
-            $subscription = $user->subscription;
-
-            if (!$subscription || !$subscription->isActive()) {
+            if (!$user->hasPremiumAccess()) {
                 return redirect()
                     ->route('dashboard')
                     ->with(
@@ -183,9 +181,7 @@ class ProjectResourceController extends Controller
             return redirect()->route('login');
         }
 
-        $subscription = $user->subscription;
-
-        if (!$subscription || !$subscription->isActive()) {
+        if (!$user->hasPremiumAccess()) {
 
             return redirect()
                 ->route('dashboard')

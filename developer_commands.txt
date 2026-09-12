@@ -187,8 +187,8 @@ App::latest()->take(20) ->get([‘id’, ‘title’, ‘slug’, ‘is_premium�
 
 30. CHANGE ONE USER TO DEVELOPER
 
-$user = App\Models\User::where('email', 'devnextteam@gmail.com')->first();
-$user->update(['role' => 'admin']);
+$user = App\Models\User::where('email', 'cherymaetallie11@gmail.com')->first();
+$user->update(['role' => 'developer']);
 $user->fresh()->role;
 
 31. FIND USER BY NAME

@@ -12,13 +12,27 @@ class PaymentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Check Existing Subscription
+        | Check Existing Premium Access
         |--------------------------------------------------------------------------
         */
 
-        $subscription = $user->subscription;
+        if ($user->hasPremiumAccess()) {
 
-        if ($subscription && $subscription->isActive()) {
+            /*
+             * Admin and Developer have permanent access.
+             * Regular users with an active subscription
+             * also already have access.
+             */
+            if (in_array($user->role, ['admin', 'developer'])) {
+
+                return redirect()
+                    ->route('dashboard')
+                    ->with(
+                        'success',
+                        'You already have permanent premium access.'
+                    );
+            }
+
             return redirect()
                 ->route('dashboard')
                 ->with(
@@ -26,6 +40,14 @@ class PaymentController extends Controller
                     'You already have an active subscription.'
                 );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get Existing Subscription
+        |--------------------------------------------------------------------------
+        */
+
+        $subscription = $user->subscription;
 
         /*
         |--------------------------------------------------------------------------
@@ -86,7 +108,6 @@ class PaymentController extends Controller
                 'error',
                 'Unable to create payment session. Please try again.'
             );
-
         }
 
         /*
@@ -126,7 +147,6 @@ class PaymentController extends Controller
                 'ends_at' => null,
                 'paymongo_checkout_session_id' => $checkoutSessionId,
             ]);
-
         }
 
         /*

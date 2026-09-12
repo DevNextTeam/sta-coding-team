@@ -16,6 +16,30 @@ class EnsureActiveSubscription
             return redirect()->route('login');
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | ADMIN & DEVELOPER
+        |--------------------------------------------------------------------------
+        |
+        | Admin and Developer accounts have permanent premium access.
+        | They do not need an active subscription.
+        |
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return $next($request);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | REGULAR USERS
+        |--------------------------------------------------------------------------
+        |
+        | Regular users must have an active subscription.
+        |
+        */
+
         $subscription = $user->subscription;
 
         if (!$subscription || !$subscription->isActive()) {
@@ -26,6 +50,7 @@ class EnsureActiveSubscription
                     'You need an active subscription to access premium projects.'
                 );
         }
+
 
         return $next($request);
     }
