@@ -126,43 +126,82 @@ DEVELOPER GRID
 
             <article
                 class="group flex h-full flex-col overflow-hidden
-                       rounded-3xl border border-[#D9D3C7]
-                       bg-white shadow-sm
-                       transition duration-300
-                       hover:-translate-y-1 hover:shadow-lg"
+                       rounded-[1.5rem]
+                       border border-[#E4DED2]
+                       bg-white
+                       shadow-[0_4px_20px_rgba(41,72,61,0.06)]
+                       transition-all duration-300
+                       hover:-translate-y-1
+                       hover:border-[#C8D8D0]
+                       hover:shadow-[0_12px_30px_rgba(41,72,61,0.12)]"
             >
 
-                {{-- Card top --}}
+                {{-- =================================================
+                CARD CONTENT
+                ================================================== --}}
 
-                <div class="p-6">
+                <div class="p-6 sm:p-7">
 
                     <div class="flex items-start gap-4">
 
-                        {{-- Avatar --}}
+                        {{-- =================================================
+                        AVATAR
+                        ================================================== --}}
 
                         <a
-                            href="{{ route('profile.show', $profile->username) }}"
+                            href="{{ route('profile.show', [
+                                'username' => $profile->username,
+                                'from' => 'developers',
+                            ]) }}"
                             class="shrink-0"
+                            aria-label="View {{ $profile->user->name }}'s profile"
                         >
 
                             @if($profile->avatar)
+
+                                {{-- Uploaded Avatar --}}
 
                                 <img
                                     src="{{ asset('storage/' . $profile->avatar) }}"
                                     alt="{{ $profile->username }}"
                                     class="h-16 w-16 rounded-2xl object-cover
-                                           ring-2 ring-[#E8E3D8]"
+                                           ring-1 ring-[#D9D3C7]
+                                           shadow-sm
+                                           transition duration-300
+                                           group-hover:ring-[#B8CEC5]"
                                 >
 
                             @else
 
+                                {{-- Default Avatar --}}
+
                                 <div
                                     class="flex h-16 w-16 items-center justify-center
-                                           rounded-2xl bg-[#B8CEC5]
-                                           text-2xl font-bold text-[#29483D]
-                                           ring-2 ring-[#E8E3D8]"
+                                           overflow-hidden rounded-2xl
+                                           bg-[#E7EFEA]
+                                           text-[#4F806D]
+                                           ring-1 ring-[#D6E1DB]
+                                           shadow-sm
+                                           transition duration-300
+                                           group-hover:bg-[#DDEAE3]
+                                           group-hover:ring-[#B8CEC5]"
+                                    aria-label="Default profile avatar"
                                 >
-                                    {{ strtoupper(substr($profile->username, 0, 1)) }}
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="h-9 w-9"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM4.5 20.25a7.5 7.5 0 0 1 15 0 .75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75Z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+
                                 </div>
 
                             @endif
@@ -170,14 +209,21 @@ DEVELOPER GRID
                         </a>
 
 
-                        {{-- Identity --}}
+                        {{-- =================================================
+                        IDENTITY
+                        ================================================== --}}
 
                         <div class="min-w-0 flex-1">
 
                             <a
-                                href="{{ route('profile.show', $profile->username) }}"
-                                class="block truncate text-lg font-bold text-[#0F3F4A]
-                                       transition hover:text-[#4F806D]"
+                                href="{{ route('profile.show', [
+                                    'username' => $profile->username,
+                                    'from' => 'developers',
+                                ]) }}"
+                                class="block truncate text-lg font-bold
+                                       text-[#0F3F4A]
+                                       transition
+                                       hover:text-[#4F806D]"
                             >
                                 {{ $profile->user->name }}
                             </a>
@@ -191,7 +237,9 @@ DEVELOPER GRID
                     </div>
 
 
-                    {{-- Headline --}}
+                    {{-- =================================================
+                    HEADLINE
+                    ================================================== --}}
 
                     @if($profile->headline)
 
@@ -202,7 +250,9 @@ DEVELOPER GRID
                     @endif
 
 
-                    {{-- Bio --}}
+                    {{-- =================================================
+                    BIO
+                    ================================================== --}}
 
                     @if($profile->bio)
 
@@ -219,7 +269,9 @@ DEVELOPER GRID
                     @endif
 
 
-                    {{-- Skills --}}
+                    {{-- =================================================
+                    SKILLS
+                    ================================================== --}}
 
                     @if(is_array($profile->skills) && count($profile->skills))
 
@@ -228,8 +280,12 @@ DEVELOPER GRID
                             @foreach(array_slice($profile->skills, 0, 5) as $skill)
 
                                 <span
-                                    class="rounded-full bg-[#E8E3D8] px-3 py-1
-                                           text-xs font-medium text-[#29483D]"
+                                    class="rounded-full
+                                           border border-[#DDE5E0]
+                                           bg-[#F1F5F2]
+                                           px-3 py-1
+                                           text-xs font-medium
+                                           text-[#29483D]"
                                 >
                                     {{ $skill }}
                                 </span>
@@ -239,8 +295,12 @@ DEVELOPER GRID
                             @if(count($profile->skills) > 5)
 
                                 <span
-                                    class="rounded-full bg-[#F5F1E8] px-3 py-1
-                                           text-xs font-medium text-[#7A8581]"
+                                    class="rounded-full
+                                           border border-[#E8E3D8]
+                                           bg-[#F5F1E8]
+                                           px-3 py-1
+                                           text-xs font-medium
+                                           text-[#7A8581]"
                                 >
                                     +{{ count($profile->skills) - 5 }}
                                 </span>
@@ -252,20 +312,40 @@ DEVELOPER GRID
                     @endif
 
 
-                    {{-- Followers --}}
+                    {{-- =================================================
+                    FOLLOWERS / PROJECTS
+                    ================================================== --}}
 
-                    <div class="mt-5 flex items-center gap-4 text-sm text-[#7A8581]">
+                    <div
+                        class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2
+                               text-sm text-[#7A8581]"
+                    >
 
                         <span class="flex items-center gap-1.5">
+
                             <i class="bi bi-people"></i>
+
                             {{ $profile->user->followers()->count() }}
-                            {{ Str::plural('follower', $profile->user->followers()->count()) }}
+
+                            {{ Str::plural(
+                                'follower',
+                                $profile->user->followers()->count()
+                            ) }}
+
                         </span>
 
+
                         <span class="flex items-center gap-1.5">
+
                             <i class="bi bi-folder2-open"></i>
+
                             {{ $profile->user->projects()->count() }}
-                            {{ Str::plural('project', $profile->user->projects()->count()) }}
+
+                            {{ Str::plural(
+                                'project',
+                                $profile->user->projects()->count()
+                            ) }}
+
                         </span>
 
                     </div>
@@ -273,20 +353,36 @@ DEVELOPER GRID
                 </div>
 
 
-                {{-- Card footer --}}
+                {{-- =================================================
+                CARD FOOTER
+                ================================================== --}}
 
-                <div class="mt-auto border-t border-[#E8E3D8] bg-[#FCFAF5] p-5">
+                <div
+                    class="mt-auto border-t border-[#E8E3D8]
+                           bg-[#FCFAF5] p-5"
+                >
 
                     <a
-                        href="{{ route('profile.show', $profile->username) }}"
+                        href="{{ route('profile.show', [
+                            'username' => $profile->username,
+                            'from' => 'developers',
+                        ]) }}"
                         class="flex w-full items-center justify-center gap-2
-                               rounded-2xl bg-[#4F806D] px-5 py-3
+                               rounded-2xl
+                               bg-[#4F806D]
+                               px-5 py-3
                                text-sm font-semibold text-white
-                               transition hover:bg-[#3E735F]
+                               shadow-sm
+                               transition-all duration-200
+                               hover:bg-[#3E735F]
+                               hover:shadow-md
                                active:scale-[0.98]"
                     >
+
                         <i class="bi bi-person"></i>
+
                         View Profile
+
                     </a>
 
                 </div>
@@ -319,37 +415,57 @@ DEVELOPER GRID
     ================================================== --}}
 
     <div
-        class="rounded-3xl border border-[#D9D3C7]
-               bg-white px-6 py-16 text-center shadow-sm"
+        class="rounded-3xl
+               border border-[#D9D3C7]
+               bg-white
+               px-6 py-16
+               text-center
+               shadow-sm"
     >
 
         <div
             class="mx-auto flex h-16 w-16 items-center justify-center
-                   rounded-2xl bg-[#E8E3D8] text-2xl text-[#4F806D]"
+                   rounded-2xl
+                   bg-[#E7EFEA]
+                   text-[#4F806D]
+                   ring-1 ring-[#D6E1DB]"
         >
-            <i class="bi bi-person-x"></i>
+
+            <i class="bi bi-person-x text-2xl"></i>
+
         </div>
+
 
         <h2 class="mt-5 text-xl font-bold text-[#0F3F4A]">
             No developers found
         </h2>
+
 
         <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#7A8581]">
             We couldn't find any developers matching your search.
             Try a different name, username, or keyword.
         </p>
 
+
         @if($search)
 
             <a
                 href="{{ route('developers.index') }}"
                 class="mt-6 inline-flex items-center gap-2
-                       rounded-2xl bg-[#4F806D] px-5 py-3
+                       rounded-2xl
+                       bg-[#4F806D]
+                       px-5 py-3
                        text-sm font-semibold text-white
-                       transition hover:bg-[#3E735F]"
+                       shadow-sm
+                       transition
+                       hover:bg-[#3E735F]
+                       hover:shadow-md"
             >
+
                 <i class="bi bi-arrow-counterclockwise"></i>
+
                 Show All Developers
+
             </a>
 
         @endif

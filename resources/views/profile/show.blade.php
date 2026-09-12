@@ -7,20 +7,18 @@
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
 {{-- =========================================================
-BACK TO Developers
+BACK TO DEVELOPERS
 ========================================================== --}}
 
 @if(request('from') === 'developers')
 
     <div class="mb-6">
-
         <a
             href="{{ route('developers.index') }}"
             class="inline-flex items-center gap-2 text-sm font-semibold text-[#4F806D] hover:text-[#3E735F] transition"
         >
             ← Back to Developers
         </a>
-
     </div>
 
 @endif
@@ -58,13 +56,15 @@ PROFILE HEADER
 
                 <div
                     class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden
-                           bg-[#E8EEE9]
+                           bg-[#E7EFEA]
                            border-4 border-white
                            shadow-lg
                            flex items-center justify-center"
                 >
 
                     @if($profile->avatar)
+
+                        {{-- Uploaded Profile Avatar --}}
 
                         <img
                             src="{{ asset('storage/' . $profile->avatar) }}"
@@ -74,9 +74,31 @@ PROFILE HEADER
 
                     @else
 
-                        <span class="text-4xl sm:text-5xl font-bold text-[#4F806D]">
-                            {{ strtoupper(substr($profile->username, 0, 1)) }}
-                        </span>
+                        {{-- Default Profile Avatar --}}
+
+                        <div
+                            class="w-full h-full
+                                   flex items-center justify-center
+                                   bg-[#E7EFEA]
+                                   text-[#4F806D]"
+                            aria-label="Default profile avatar"
+                        >
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="w-16 h-16 sm:w-20 sm:h-20"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM4.5 20.25a7.5 7.5 0 0 1 15 0 .75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75Z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+
+                        </div>
 
                     @endif
 
@@ -94,12 +116,14 @@ PROFILE HEADER
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
 
                     {{-- Real Name --}}
+
                     <h1 class="text-2xl sm:text-3xl font-bold text-[#0F3F4A]">
                         {{ $profile->user->name }}
                     </h1>
 
 
                     {{-- User Badge --}}
+
                     <span
                         class="inline-flex w-fit items-center
                                px-3 py-1
@@ -115,12 +139,14 @@ PROFILE HEADER
 
 
                 {{-- Username --}}
+
                 <p class="mt-1 text-[#6B7773] text-sm sm:text-base">
                     {{ '@' . $profile->username }}
                 </p>
 
 
                 {{-- Headline --}}
+
                 @if($profile->headline)
 
                     <p class="mt-2 text-[#5D6B68] text-base sm:text-lg">
@@ -141,6 +167,7 @@ PROFILE HEADER
                 @auth
 
                     {{-- Owner --}}
+
                     @if(auth()->id() === $profile->user_id)
 
                         <a
@@ -158,7 +185,9 @@ PROFILE HEADER
                             Edit Profile
                         </a>
 
+
                     {{-- Other User --}}
+
                     @else
 
                         @php
@@ -206,6 +235,7 @@ PROFILE HEADER
         <div class="mt-7 flex flex-wrap gap-6">
 
             {{-- Projects --}}
+
             <div>
 
                 <p class="text-xl font-bold text-[#0F3F4A]">
@@ -220,6 +250,7 @@ PROFILE HEADER
 
 
             {{-- Followers --}}
+
             <a
                 href="{{ route('profile.followers', $profile->username) }}"
                 class="group"
@@ -240,6 +271,7 @@ PROFILE HEADER
 
 
             {{-- Following --}}
+
             <a
                 href="{{ route('profile.following', $profile->username) }}"
                 class="group"
@@ -257,6 +289,7 @@ PROFILE HEADER
 
 
             {{-- Skills --}}
+
             @if(is_array($profile->skills) && count($profile->skills))
 
                 <div>
@@ -274,7 +307,6 @@ PROFILE HEADER
             @endif
 
         </div>
-
 
 
         {{-- =====================================================
@@ -426,11 +458,15 @@ PUBLISHED PROJECTS
 
 
         {{-- Project Count --}}
+
         @if($profile->user->projects->count())
 
             <div class="text-sm text-[#6B7773]">
+
                 {{ $profile->user->projects->count() }}
+
                 {{ $profile->user->projects->count() === 1 ? 'project' : 'projects' }}
+
             </div>
 
         @endif
@@ -507,6 +543,7 @@ PUBLISHED PROJECTS
 
 
                         {{-- Category + Status --}}
+
                         <div class="flex items-center justify-between gap-3">
 
                             @if($project->category)
@@ -560,6 +597,7 @@ PUBLISHED PROJECTS
 
 
                         {{-- Project Title --}}
+
                         <h3 class="mt-3 text-xl font-bold text-[#0F3F4A]">
 
                             <a
@@ -573,12 +611,14 @@ PUBLISHED PROJECTS
 
 
                         {{-- Description --}}
+
                         <p class="mt-2 text-sm text-[#6B7773] leading-6 line-clamp-3">
                             {{ $project->description }}
                         </p>
 
 
                         {{-- View Project --}}
+
                         <div class="mt-5">
 
                             <a
@@ -645,6 +685,7 @@ PUBLISHED PROJECTS
 
 
             {{-- Owner shortcut --}}
+
             @auth
 
                 @if(auth()->id() === $profile->user_id)
@@ -701,6 +742,7 @@ FOLLOW SYSTEM
             }
 
             let isFollowing = followButton.dataset.following === 'true';
+
 
             function updateButton() {
 
@@ -761,34 +803,46 @@ FOLLOW SYSTEM
                     ? 'DELETE'
                     : 'POST';
 
+
                 try {
 
                     const response = await fetch(url, {
+
                         method: method,
+
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         }
+
                     });
+
 
                     const data = await response.json();
 
+
                     if (!response.ok || !data.success) {
+
                         throw new Error(
                             data.message || 'Something went wrong.'
                         );
+
                     }
+
 
                     isFollowing = data.following;
 
                     followButton.dataset.following =
                         isFollowing ? 'true' : 'false';
 
+
                     followersCount.textContent =
                         data.followers_count;
 
+
                     updateButton();
+
 
                 } catch (error) {
 

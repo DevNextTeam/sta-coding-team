@@ -1,0 +1,227 @@
+DEVNEXT ADMIN / DEVELOPER COMMANDS
+
+Current DevNext role system: - user - admin
+
+In the current codebase, admin is the elevated role with administrative
+permissions.
+
+OPEN TINKER
+
+php artisan tinker
+
+1. MAKE A SPECIFIC EMAIL AN ADMIN / DEVELOPER
+
+$user = App\Models\User::where('email', 'developer@example.com')->first();$user?->update([‘role’
+=> ‘admin’]);
+
+Check: App::where(‘email’, ‘developer@example.com’)->value(‘role’);
+
+2. REMOVE ADMIN / DEVELOPER ACCESS
+
+$user = App\Models\User::where('email', 'developer@example.com')->first();$user?->update([‘role’
+=> ‘user’]);
+
+3. FIND USER BY EMAIL
+
+$user = App\Models\User::where('email', 'user@example.com')->first();$user?->only([‘id’,
+‘name’, ‘email’, ‘role’]);
+
+4. FIND USER BY NAME
+
+App::where(‘name’, ‘John Doe’)->get([‘id’, ‘name’, ‘email’, ‘role’]);
+
+5. SEARCH PART OF AN EMAIL
+
+App::where(‘email’, ‘like’, ‘%gmail.com%’) ->get([‘id’, ‘name’, ‘email’,
+‘role’]);
+
+6. FIND USER BY ID
+
+$user = App\Models\User::find(123);$user?->only([‘id’, ‘name’, ‘email’,
+‘role’]);
+
+7. GIVE USER 30 DAYS PREMIUM
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user) { $user->subscription()->updateOrCreate( [‘user_id’ =>
+$user->id], [ ‘status’ => ‘active’, ‘starts_at’ => now(), ‘ends_at’ =>
+now()->addDays(30), ] ); }
+
+8. GIVE USER 1 MONTH PREMIUM
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user) { $user->subscription()->updateOrCreate( [‘user_id’ =>
+$user->id], [ ‘status’ => ‘active’, ‘starts_at’ => now(), ‘ends_at’ =>
+now()->addMonth(), ] ); }
+
+9. GIVE CUSTOM NUMBER OF DAYS
+
+Example: 90 days
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user) { $user->subscription()->updateOrCreate( [‘user_id’ =>
+$user->id], [ ‘status’ => ‘active’, ‘starts_at’ => now(), ‘ends_at’ =>
+now()->addDays(90), ] ); }
+
+10. EXPIRE SUBSCRIPTION
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user?->subscription) { $user->subscription->update([ ‘status’ =>
+‘expired’, ‘ends_at’ => now(), ]); }
+
+11. CHECK SUBSCRIPTION
+
+$user = App\Models\User::where('email', 'user@example.com')->first();$user?->subscription;
+
+12. LIST ACTIVE SUBSCRIPTIONS
+
+App::where(‘status’, ‘active’) ->where(‘ends_at’, ‘>’, now())
+->with(‘user’) ->get();
+
+13. LIST ALL ADMINS / DEVELOPERS
+
+App::where(‘role’, ‘admin’) ->get([‘id’, ‘name’, ‘email’, ‘role’]);
+
+14. DELETE A USER
+
+WARNING: This is permanent. Verify the account first.
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+$user?->only([‘id’, ‘name’, ‘email’, ‘role’]);
+
+After confirming the correct account:
+
+$user?->delete();
+
+15. BAN / SUSPEND A USER
+
+The current users table does NOT have a dedicated banned/suspended
+status.
+
+Recommended future system: - users.status = active / suspended /
+banned - middleware blocks suspended/banned users - keep role separate
+from account status
+
+After that system is implemented:
+
+$user = App\Models\User::where('email', 'user@example.com')->first();$user?->update([‘status’
+=> ‘banned’]);
+
+16. UNBAN / UNSUSPEND
+
+After the status system is implemented:
+
+$user = App\Models\User::where('email', 'user@example.com')->first();$user?->update([‘status’
+=> ‘active’]);
+
+17. CHANGE USER NAME
+
+$user = App\Models\User::where('email', 'user@example.com')->first();$user?->update([‘name’
+=> ‘New Name’]);
+
+18. REMOVE USER SUBSCRIPTION
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user?->subscription) { $user->subscription->delete(); }
+
+19. SET SUBSCRIPTION TO PENDING
+
+$user = App::where(‘email’, ‘user@example.com’)->first();
+
+if ($user?->subscription) { $user->subscription->update([ ‘status’ =>
+‘pending’, ‘starts_at’ => null, ‘ends_at’ => null, ]); }
+
+20. COUNT USERS
+
+App::count();
+
+21. COUNT PROJECTS
+
+App::count();
+
+22. FIND PROJECTS BY TITLE
+
+App::where(‘title’, ‘like’, ‘%calculator%’) ->get([‘id’, ‘title’,
+‘slug’, ‘is_premium’, ‘published_at’, ‘user_id’]);
+
+23. FIND A USER’S PROJECTS
+
+$user = App\Models\User::where('email', 'developer@example.com')->first();$user?->projects()->get([‘id’,
+‘title’, ‘slug’, ‘published_at’]);
+
+24. MAKE PROJECT PREMIUM
+
+$project = App\Models\Project::find(123);$project?->update([‘is_premium’
+=> true]);
+
+25. MAKE PROJECT FREE
+
+$project = App\Models\Project::find(123);$project?->update([‘is_premium’
+=> false]);
+
+26. PUBLISH PROJECT
+
+$project = App\Models\Project::find(123);$project?->update([‘published_at’
+=> now()]);
+
+27. UNPUBLISH PROJECT
+
+$project = App\Models\Project::find(123);$project?->update([‘published_at’
+=> null]);
+
+28. LIST RECENT USERS
+
+App::latest()->take(20) ->get([‘id’, ‘name’, ‘email’, ‘role’,
+‘created_at’]);
+
+29. LIST RECENT PROJECTS
+
+App::latest()->take(20) ->get([‘id’, ‘title’, ‘slug’, ‘is_premium’,
+‘published_at’]);
+
+30. EXIT TINKER
+
+exit
+
+RECOMMENDED ADMIN PANEL FEATURES
+
+USER MANAGEMENT - Search by name/email - View profile - Promote to
+admin/developer - Remove elevated access - Suspend - Ban - Unban -
+Delete - View subscription - Grant subscription - Extend subscription -
+Expire subscription - View user’s projects
+
+DEVELOPER MANAGEMENT - Search developers - View developer profile - View
+projects - Manage project visibility - Manage developer access
+
+SUBSCRIPTION MANAGEMENT - Search user - Grant 7/30/90 days - Grant 1
+month - Extend - Expire - View payment status
+
+PROJECT MANAGEMENT - Search projects - Publish/unpublish -
+Premium/free - Edit/delete - Manage resources - Manage instructions
+
+MODERATION - Suspend - Ban - Unban - Record moderation reason - Keep
+moderation/audit history
+
+IMPORTANT ROLE DESIGN
+
+Current system: user = normal account admin = full administrative access
+
+If you eventually want developers to have LESS permission than
+administrators, change to: user developer admin
+
+Suggested meaning: user = normal account developer = manages own
+profile/projects admin = manages users, subscriptions, projects,
+moderation, and the whole site
+
+For now, use role = admin when an account must have the SAME permissions
+as the current admin.
+
+Always verify the email/account before destructive actions. Never put
+passwords, PayMongo keys, webhook secrets, or other credentials in this
+file.

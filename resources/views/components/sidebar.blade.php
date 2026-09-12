@@ -188,9 +188,11 @@
                         transition-all duration-200
                         hover:translate-x-1
 
-                        {{ request()->routeIs('profile.show')
-                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
-                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        {{
+                            request()->routeIs('profile.show')
+                            && request('from') !== 'developers'
+                                ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                                : 'text-[#29483D] hover:bg-[#B8CEC5]'
                         }}
                     "
                 >
@@ -213,9 +215,14 @@
                         transition-all duration-200
                         hover:translate-x-1
 
-                        {{ request()->routeIs('developers.*')
-                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
-                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        {{
+                            request()->routeIs('developers.*')
+                            || (
+                                request()->routeIs('profile.show')
+                                && request('from') === 'developers'
+                            )
+                                ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                                : 'text-[#29483D] hover:bg-[#B8CEC5]'
                         }}
                     "
                 >
@@ -398,9 +405,14 @@
                         transition-all duration-200
                         hover:translate-x-1
 
-                        {{ request()->routeIs('developers.*')
-                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
-                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        {{
+                            request()->routeIs('developers.*')
+                            || (
+                                request()->routeIs('profile.show')
+                                && request('from') === 'developers'
+                            )
+                                ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                                : 'text-[#29483D] hover:bg-[#B8CEC5]'
                         }}
                     "
                 >
@@ -423,9 +435,11 @@
                         transition-all duration-200
                         hover:translate-x-1
 
-                        {{ request()->routeIs('profile.show')
-                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
-                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        {{
+                            request()->routeIs('profile.show')
+                            && request('from') !== 'developers'
+                                ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                                : 'text-[#29483D] hover:bg-[#B8CEC5]'
                         }}
                     "
                 >
