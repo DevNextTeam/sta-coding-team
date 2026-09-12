@@ -7,19 +7,23 @@
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
 {{-- =========================================================
-BACK TO PROJECTS
+BACK TO Developers
 ========================================================== --}}
 
-<div class="mb-6">
+@if(request('from') === 'developers')
 
-    <a
-        href="{{ route('developers.index') }}"
-        class="inline-flex items-center gap-2 text-sm font-semibold text-[#4F806D] hover:text-[#3E735F] transition"
-    >
-        ← Back to Developers
-    </a>
+    <div class="mb-6">
 
-</div>
+        <a
+            href="{{ route('developers.index') }}"
+            class="inline-flex items-center gap-2 text-sm font-semibold text-[#4F806D] hover:text-[#3E735F] transition"
+        >
+            ← Back to Developers
+        </a>
+
+    </div>
+
+@endif
 
 
 {{-- =========================================================
@@ -675,9 +679,10 @@ PUBLISHED PROJECTS
 
 </div>
 
+
 {{-- =========================================================
 FOLLOW SYSTEM
-========================================================= --}}
+========================================================== --}}
 
 @auth
 
@@ -734,7 +739,9 @@ FOLLOW SYSTEM
                         'text-white',
                         'hover:bg-[#3E735F]'
                     );
+
                 }
+
             }
 
 

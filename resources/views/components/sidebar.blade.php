@@ -46,11 +46,9 @@
                 }}
             "
         >
-
             <span class="font-medium">
                 Home
             </span>
-
         </a>
 
 
@@ -73,11 +71,9 @@
                 }}
             "
         >
-
             <span class="font-medium">
                 About
             </span>
-
         </a>
 
 
@@ -100,11 +96,9 @@
                 }}
             "
         >
-
             <span class="font-medium">
                 Projects
             </span>
-
         </a>
 
 
@@ -127,11 +121,9 @@
                 }}
             "
         >
-
             <span class="font-medium">
                 Contact
             </span>
-
         </a>
 
 
@@ -147,9 +139,7 @@
             ================================================== --}}
 
             <div class="py-3">
-
                 <div class="border-t border-[#D0C9BC]"></div>
-
             </div>
 
 
@@ -172,11 +162,9 @@
                     }}
                 "
             >
-
                 <span class="font-medium">
                     Dashboard
                 </span>
-
             </a>
 
 
@@ -206,11 +194,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         My Profile
                     </span>
-
                 </a>
 
 
@@ -233,11 +219,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Developers
                     </span>
-
                 </a>
 
 
@@ -260,11 +244,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Notifications
                     </span>
-
                 </a>
 
 
@@ -287,11 +269,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Saved Projects
                     </span>
-
                 </a>
 
 
@@ -314,11 +294,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         My Projects
                     </span>
-
                 </a>
 
 
@@ -351,11 +329,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Admin Dashboard
                     </span>
-
                 </a>
 
 
@@ -378,11 +354,9 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Manage Users
                     </span>
-
                 </a>
 
 
@@ -405,11 +379,59 @@
                         }}
                     "
                 >
-
                     <span class="font-medium">
                         Manage Projects
                     </span>
+                </a>
 
+
+                {{-- =================================================
+                DEVELOPERS
+                ================================================== --}}
+
+                <a
+                    href="{{ route('developers.index') }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('developers.*')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+                    <span class="font-medium">
+                        Developers
+                    </span>
+                </a>
+
+
+                {{-- =================================================
+                MY PROFILE
+                ================================================== --}}
+
+                <a
+                    href="{{ route('profile.show', auth()->user()->profile->username) }}"
+                    class="
+                        group flex items-center gap-3
+                        rounded-2xl
+                        px-4 py-3
+                        transition-all duration-200
+                        hover:translate-x-1
+
+                        {{ request()->routeIs('profile.show')
+                            ? 'bg-[#B8CEC5] text-[#29483D] shadow-sm'
+                            : 'text-[#29483D] hover:bg-[#B8CEC5]'
+                        }}
+                    "
+                >
+                    <span class="font-medium">
+                        My Profile
+                    </span>
                 </a>
 
 
