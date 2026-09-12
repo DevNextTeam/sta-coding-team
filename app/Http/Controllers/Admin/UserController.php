@@ -14,6 +14,7 @@ class UserController extends Controller
         $status = $request->input('status', 'all');
 
         $users = User::with('subscription')
+            ->where('role', 'user')
             ->when($search, function ($query, $search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")

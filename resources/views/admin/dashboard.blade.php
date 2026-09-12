@@ -27,16 +27,46 @@
         {{-- Statistics --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {{-- Users --}}
+            {{-- Regular Users --}}
             <div class="bg-white rounded-2xl border border-[#D5DDD8]
                         shadow-sm p-6">
 
                 <p class="text-sm uppercase tracking-wider text-[#B87945]">
-                    Total Users
+                    Regular Users
                 </p>
 
                 <p class="text-4xl font-bold text-[#0F3F4A] mt-3">
                     {{ $totalUsers }}
+                </p>
+
+            </div>
+
+
+            {{-- Developers --}}
+            <div class="bg-white rounded-2xl border border-[#D5DDD8]
+                        shadow-sm p-6">
+
+                <p class="text-sm uppercase tracking-wider text-[#B87945]">
+                    Developers
+                </p>
+
+                <p class="text-4xl font-bold text-[#5B52B5] mt-3">
+                    {{ $totalDevelopers }}
+                </p>
+
+            </div>
+
+
+            {{-- Administrators --}}
+            <div class="bg-white rounded-2xl border border-[#D5DDD8]
+                        shadow-sm p-6">
+
+                <p class="text-sm uppercase tracking-wider text-[#B87945]">
+                    Administrators
+                </p>
+
+                <p class="text-4xl font-bold text-[#A45F2C] mt-3">
+                    {{ $totalAdmins }}
                 </p>
 
             </div>
@@ -140,14 +170,16 @@
                 >
                     + Add Project
                 </a>
-                 <a
+
+                <a
                     href="{{ route('admin.users.index') }}"
                     class="px-6 py-3 rounded-xl
-                            bg-[#B87945] text-white
-                            hover:opacity-90 transition"
-                    >
-                     Manage Users
-    </a>
+                           bg-[#B87945] text-white
+                           hover:opacity-90 transition"
+                >
+                    Manage Users
+                </a>
+
             </div>
 
         </div>

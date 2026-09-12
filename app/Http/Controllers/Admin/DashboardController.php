@@ -11,7 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = User::count();
+        $totalUsers = User::where('role', 'user')->count();
+
+        $totalDevelopers = User::where('role', 'developer')->count();
+
+        $totalAdmins = User::where('role', 'admin')->count();
 
         $totalProjects = Project::count();
 
@@ -27,6 +31,8 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact(
             'totalUsers',
+            'totalDevelopers',
+            'totalAdmins',
             'totalProjects',
             'activeSubscriptions',
             'premiumProjects',
