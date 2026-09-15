@@ -189,4 +189,75 @@ class UserController extends Controller
             "{$user->name}'s subscription has been extended by 1 month."
         );
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete User
+    |--------------------------------------------------------------------------
+    */
+
+    public function destroy(User $user)
+    {
+        /*
+        | Admin and Developer accounts must never be deleted
+        | through regular User Management.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts cannot be deleted from User Management.'
+            );
+        }
+
+        /*
+        | Extra protection:
+        | Only regular users should be deleted through this controller.
+        */
+
+        if ($user->role !== 'user') {
+            return back()->with(
+                'error',
+                'This account cannot be deleted from User Management.'
+            );
+        }
+
+        $userName = $user->name;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Subscription
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->subscription) {
+            $user->subscription->delete();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Profile
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->profile) {
+            $user->profile->delete();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete User
+        |--------------------------------------------------------------------------
+        */
+
+        $user->delete();
+
+        return redirect()
+            ->route('admin.users.index')
+            ->with(
+                'success',
+                "{$userName}'s account has been permanently deleted."
+            );
+    }
 }

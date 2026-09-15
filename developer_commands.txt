@@ -90,7 +90,7 @@ App::where(‘role’, ‘admin’) ->get([‘id’, ‘name’, ‘email’, �
 
 WARNING: This is permanent. Verify the account first.
 
-$user = App::where(‘email’, ‘user@example.com’)->first();
+$user = App\Models\User::where('email', 'arielsarong1@gmail.com')->first();
 
 $user?->only([‘id’, ‘name’, ‘email’, ‘role’]);
 

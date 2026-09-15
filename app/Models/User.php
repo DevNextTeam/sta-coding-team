@@ -14,7 +14,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Hash;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable([
+    'name',
+    'email',
+    'password',
+    'role',
+    'status',
+    'status_until',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -31,6 +38,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status_until' => 'datetime',
         ];
     }
 
@@ -91,6 +99,38 @@ class User extends Authenticatable
         }
 
         return $this->subscription?->isActive() ?? false;
+    }
+
+    /**
+     * Determine whether the account is currently suspended.
+     */
+    public function isSuspended(): bool
+    {
+        return $this->status === 'suspended'
+            && $this->status_until
+            && $this->status_until->isFuture();
+    }
+
+    /**
+     * Determine whether the account is currently banned.
+     *
+     * A null status_until means the ban is permanent.
+     */
+    public function isBanned(): bool
+    {
+        return $this->status === 'banned'
+            && (
+                is_null($this->status_until)
+                || $this->status_until->isFuture()
+            );
+    }
+
+    /**
+     * Determine whether the account is currently blocked.
+     */
+    public function isBlocked(): bool
+    {
+        return $this->isSuspended() || $this->isBanned();
     }
 
     /**

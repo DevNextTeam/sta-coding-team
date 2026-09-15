@@ -35,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'developer' => \App\Http\Middleware\DeveloperMiddleware::class,
             'not.admin' => \App\Http\Middleware\NotAdmin::class,
+            'account.status' => \App\Http\Middleware\CheckAccountStatus::class,
         ]);
 
 

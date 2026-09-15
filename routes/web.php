@@ -36,6 +36,7 @@ use App\Http\Controllers\AiAssistantController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PasswordResetCodeController;
 
+
 /*
 |--------------------------------------------------------------------------
 | PUBLIC PAGES
@@ -146,8 +147,7 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
-
+Route::middleware(['auth', 'account.status'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -571,6 +571,19 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
+        | DELETE USER
+        |--------------------------------------------------------------------------
+        */
+
+        Route::delete(
+            'users/{user}',
+            [AdminUserController::class, 'destroy']
+        )
+            ->name('users.destroy');
+
+
+        /*
+        |--------------------------------------------------------------------------
         | ADMIN PROJECT MANAGEMENT
         |--------------------------------------------------------------------------
         */
@@ -720,20 +733,29 @@ Route::get(
     ->name('google.connect.callback');
 
 
+/*
+|--------------------------------------------------------------------------
+| PASSWORD RESET CODE
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/reset-code', [
     PasswordResetCodeController::class,
     'show',
 ])->name('password.reset.code');
+
 
 Route::post('/reset-code', [
     PasswordResetCodeController::class,
     'verify',
 ])->name('password.reset.code.verify');
 
+
 Route::get('/reset-code/password', [
     PasswordResetCodeController::class,
     'passwordForm',
 ])->name('password.reset.code.form');
+
 
 Route::post('/reset-code/password', [
     PasswordResetCodeController::class,
