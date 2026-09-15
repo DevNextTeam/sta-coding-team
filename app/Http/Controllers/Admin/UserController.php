@@ -193,6 +193,182 @@ class UserController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | Suspend User
+    |--------------------------------------------------------------------------
+    */
+
+    public function suspend(Request $request, User $user)
+    {
+        /*
+        | Admin and Developer accounts cannot be suspended.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts cannot be suspended.'
+            );
+        }
+
+        /*
+        | Extra protection:
+        | Only regular users can be suspended here.
+        */
+
+        if ($user->role !== 'user') {
+            return back()->with(
+                'error',
+                'This account cannot be suspended from User Management.'
+            );
+        }
+
+        /*
+        | Validate suspension duration.
+        |
+        | Duration is measured in days.
+        */
+
+        $validated = $request->validate([
+            'duration' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:3650',
+            ],
+        ]);
+
+        $duration = (int) $validated['duration'];
+
+        $user->update([
+            'status' => 'suspended',
+            'status_until' => now()->addDays($duration),
+        ]);
+
+        return back()->with(
+            'success',
+            "{$user->name}'s account has been suspended for {$duration} "
+            . ($duration === 1 ? 'day.' : 'days.')
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ban User
+    |--------------------------------------------------------------------------
+    */
+
+    public function ban(Request $request, User $user)
+    {
+        /*
+        | Admin and Developer accounts cannot be banned.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts cannot be banned.'
+            );
+        }
+
+        /*
+        | Extra protection:
+        | Only regular users can be banned here.
+        */
+
+        if ($user->role !== 'user') {
+            return back()->with(
+                'error',
+                'This account cannot be banned from User Management.'
+            );
+        }
+
+        /*
+        | Validate ban duration.
+        |
+        | "permanent" means status_until will remain null.
+        */
+
+        $validated = $request->validate([
+            'duration' => [
+                'required',
+                'in:7,30,90,365,permanent',
+            ],
+        ]);
+
+        if ($validated['duration'] === 'permanent') {
+
+            $user->update([
+                'status' => 'banned',
+                'status_until' => null,
+            ]);
+
+            return back()->with(
+                'success',
+                "{$user->name}'s account has been permanently banned."
+            );
+        }
+
+        $duration = (int) $validated['duration'];
+
+        $user->update([
+            'status' => 'banned',
+            'status_until' => now()->addDays($duration),
+        ]);
+
+        return back()->with(
+            'success',
+            "{$user->name}'s account has been banned for {$duration} "
+            . ($duration === 1 ? 'day.' : 'days.')
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Unban / Unsuspend User
+    |--------------------------------------------------------------------------
+    */
+
+    public function unban(User $user)
+    {
+        /*
+        | Admin and Developer accounts should never reach this action.
+        */
+
+        if (in_array($user->role, ['admin', 'developer'])) {
+            return back()->with(
+                'error',
+                'Admin and Developer accounts do not need to be unbanned.'
+            );
+        }
+
+        /*
+        | Extra protection:
+        | Only regular users can be restored here.
+        */
+
+        if ($user->role !== 'user') {
+            return back()->with(
+                'error',
+                'This account cannot be restored from User Management.'
+            );
+        }
+
+        $user->update([
+            'status' => 'active',
+            'status_until' => null,
+        ]);
+
+        return back()->with(
+            'success',
+            "{$user->name}'s account has been restored."
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Delete User
     |--------------------------------------------------------------------------
     */

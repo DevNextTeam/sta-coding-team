@@ -23,11 +23,13 @@ BACK TO DEVELOPERS
 
 @endif
 
+
 {{-- =========================================================
 PROFILE HEADER
 ========================================================== --}}
 
 <div class="bg-white rounded-3xl border border-[#D8DED9] shadow-sm overflow-hidden">
+
 
 {{-- =====================================================
 COVER
@@ -120,7 +122,9 @@ PROFILE INFORMATION
                 </h1>
 
 
-                {{-- Role Badge --}}
+                {{-- =================================================
+                ROLE + ACCOUNT STATUS
+                ================================================== --}}
 
                 @php
                     $role = $profile->user->role ?? 'user';
@@ -136,7 +140,52 @@ PROFILE INFORMATION
                         'developer' => 'bg-[#E8E7FF] text-[#5B52B5]',
                         default => 'bg-[#E8EEE9] text-[#4F806D]',
                     };
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Account Status
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $accountStatus = $profile->user->status ?? 'active';
+
+                    $statusUntil = $profile->user->status_until;
+
+                    $isTemporaryRestriction =
+                        $statusUntil &&
+                        $statusUntil->isFuture();
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Determine Current Status
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if ($accountStatus === 'suspended' && $isTemporaryRestriction) {
+
+                        $statusLabel = 'Suspended';
+
+                        $statusClasses = 'bg-[#FFF4E5] text-[#B87945]';
+
+                    } elseif ($accountStatus === 'banned') {
+
+                        $statusLabel = 'Banned';
+
+                        $statusClasses = 'bg-[#FDECEC] text-[#B42318]';
+
+                    } else {
+
+                        $statusLabel = null;
+
+                        $statusClasses = null;
+
+                    }
                 @endphp
+
+
+                {{-- Role Badge --}}
 
                 <span
                     class="inline-flex w-fit items-center
@@ -148,6 +197,43 @@ PROFILE INFORMATION
                     {{ $roleLabel }}
                 </span>
 
+
+                {{-- =================================================
+                ACCOUNT STATUS BADGE
+                ================================================== --}}
+
+                @if($statusLabel)
+
+                    <span
+                        class="inline-flex w-fit items-center gap-1.5
+                               px-3 py-1
+                               rounded-full
+                               text-xs font-semibold
+                               {{ $statusClasses }}"
+                    >
+
+                        @if($accountStatus === 'suspended')
+
+                            <span
+                                class="w-1.5 h-1.5 rounded-full bg-[#B87945]"
+                                aria-hidden="true"
+                            ></span>
+
+                        @elseif($accountStatus === 'banned')
+
+                            <span
+                                class="w-1.5 h-1.5 rounded-full bg-[#B42318]"
+                                aria-hidden="true"
+                            ></span>
+
+                        @endif
+
+                        {{ $statusLabel }}
+
+                    </span>
+
+                @endif
+
             </div>
 
 
@@ -156,6 +242,39 @@ PROFILE INFORMATION
             <p class="mt-1 text-[#6B7773] text-sm sm:text-base">
                 {{ '@' . $profile->username }}
             </p>
+
+
+            {{-- Status Information --}}
+
+            @if($statusLabel)
+
+                <div class="mt-2">
+
+                    @if($accountStatus === 'suspended' && $isTemporaryRestriction)
+
+                        <p class="text-sm font-medium text-[#B87945]">
+                            Account suspended until
+                            {{ $statusUntil->format('M d, Y h:i A') }}.
+                        </p>
+
+                    @elseif($accountStatus === 'banned' && $isTemporaryRestriction)
+
+                        <p class="text-sm font-medium text-[#B42318]">
+                            Account banned until
+                            {{ $statusUntil->format('M d, Y h:i A') }}.
+                        </p>
+
+                    @elseif($accountStatus === 'banned')
+
+                        <p class="text-sm font-medium text-[#B42318]">
+                            This account has been permanently banned.
+                        </p>
+
+                    @endif
+
+                </div>
+
+            @endif
 
 
             {{-- Headline --}}
@@ -439,11 +558,13 @@ PROFILE INFORMATION
 
 </div>
 
+
 {{-- =========================================================
 PUBLISHED PROJECTS
 ========================================================== --}}
 
 <div class="mt-8">
+
 
 {{-- =====================================================
 SECTION HEADER
@@ -730,6 +851,7 @@ EMPTY STATE
 </div>
 
 </div>
+
 
 {{-- =========================================================
 FOLLOW SYSTEM

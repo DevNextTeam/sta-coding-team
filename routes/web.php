@@ -48,14 +48,16 @@ use App\Http\Controllers\PasswordResetCodeController;
 // HOME
 // =====================================================
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get(
+    '/',
+    [HomeController::class, 'home']
+)->name('home');
 
 
 // =====================================================
 // ABOUT PAGE
 // =====================================================
 //
-// IMPORTANT:
 // The public About page is loaded from the Page Builder
 // database record with slug = "about".
 //
@@ -64,14 +66,13 @@ Route::get('/about', function () {
 
     return app(PageController::class)->show('about');
 
-});
+})->name('about');
 
 
 // =====================================================
 // CONTACT PAGE
 // =====================================================
 //
-// IMPORTANT:
 // The public Contact page is loaded from the Page Builder
 // database record with slug = "contact".
 //
@@ -80,7 +81,7 @@ Route::get('/contact', function () {
 
     return app(PageController::class)->show('contact');
 
-});
+})->name('contact');
 
 
 // =====================================================
@@ -90,7 +91,7 @@ Route::get('/contact', function () {
 Route::post(
     '/contact',
     [ContactController::class, 'store']
-);
+)->name('contact.store');
 
 
 /*
@@ -147,7 +148,22 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'account.status'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCOUNT BLOCKED PAGE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/account/blocked', function () {
+
+        return view('account.blocked');
+
+    })
+        ->name('account.blocked');
+
 
     /*
     |--------------------------------------------------------------------------
@@ -571,6 +587,45 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |--------------------------------------------------------------------------
+        | SUSPEND USER
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post(
+            'users/{user}/suspend',
+            [AdminUserController::class, 'suspend']
+        )
+            ->name('users.suspend');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BAN USER
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post(
+            'users/{user}/ban',
+            [AdminUserController::class, 'ban']
+        )
+            ->name('users.ban');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UNBAN / UNSUSPEND USER
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post(
+            'users/{user}/unban',
+            [AdminUserController::class, 'unban']
+        )
+            ->name('users.unban');
+
+
+        /*
+        |--------------------------------------------------------------------------
         | DELETE USER
         |--------------------------------------------------------------------------
         */
@@ -739,25 +794,41 @@ Route::get(
 |--------------------------------------------------------------------------
 */
 
-Route::get('/reset-code', [
-    PasswordResetCodeController::class,
-    'show',
-])->name('password.reset.code');
+Route::get(
+    '/reset-code',
+    [
+        PasswordResetCodeController::class,
+        'show',
+    ]
+)
+    ->name('password.reset.code');
 
 
-Route::post('/reset-code', [
-    PasswordResetCodeController::class,
-    'verify',
-])->name('password.reset.code.verify');
+Route::post(
+    '/reset-code',
+    [
+        PasswordResetCodeController::class,
+        'verify',
+    ]
+)
+    ->name('password.reset.code.verify');
 
 
-Route::get('/reset-code/password', [
-    PasswordResetCodeController::class,
-    'passwordForm',
-])->name('password.reset.code.form');
+Route::get(
+    '/reset-code/password',
+    [
+        PasswordResetCodeController::class,
+        'passwordForm',
+    ]
+)
+    ->name('password.reset.code.form');
 
 
-Route::post('/reset-code/password', [
-    PasswordResetCodeController::class,
-    'resetPassword',
-])->name('password.reset.code.password');
+Route::post(
+    '/reset-code/password',
+    [
+        PasswordResetCodeController::class,
+        'resetPassword',
+    ]
+)
+    ->name('password.reset.code.password');

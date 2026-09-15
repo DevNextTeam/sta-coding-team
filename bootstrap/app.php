@@ -15,12 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         /*
         |--------------------------------------------------------------------------
-        | Google Profile Synchronization
+        | Global Web Middleware
         |--------------------------------------------------------------------------
         */
 
         $middleware->web(append: [
             \App\Http\Middleware\SyncGoogleProfile::class,
+            \App\Http\Middleware\CheckAccountStatus::class,
         ]);
 
 

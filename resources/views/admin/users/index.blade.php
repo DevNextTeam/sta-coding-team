@@ -7,7 +7,6 @@
     <div class="max-w-6xl mx-auto">
 
         {{-- Header --}}
-
         <div class="mb-10">
 
             <a
@@ -26,14 +25,13 @@
             </h1>
 
             <p class="text-[#315F6D] mt-2">
-                View users and manage their subscription status.
+                View users and manage their subscription and account status.
             </p>
 
         </div>
 
 
         {{-- Success Message --}}
-
         @if(session('success'))
 
             <div class="mb-6 p-4 rounded-xl bg-green-100 text-green-700">
@@ -44,7 +42,6 @@
 
 
         {{-- Error Message --}}
-
         @if(session('error'))
 
             <div class="mb-6 p-4 rounded-xl bg-red-100 text-red-700">
@@ -55,7 +52,6 @@
 
 
         {{-- Validation Errors --}}
-
         @if ($errors->any())
 
             <div class="mb-6 p-4 rounded-xl bg-red-100 text-red-700">
@@ -76,7 +72,6 @@
 
 
         {{-- Search & Filter --}}
-
         <form
             method="GET"
             action="{{ route('admin.users.index') }}"
@@ -87,7 +82,6 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                 {{-- Search --}}
-
                 <div class="md:col-span-2">
 
                     <label
@@ -115,7 +109,6 @@
 
 
                 {{-- Subscription Filter --}}
-
                 <div>
 
                     <label
@@ -180,7 +173,6 @@
 
 
             {{-- Search Buttons --}}
-
             <div class="flex flex-wrap gap-3 mt-5">
 
                 <button
@@ -208,7 +200,6 @@
 
 
         {{-- Result Count --}}
-
         <div class="mb-4">
 
             <p class="text-sm text-gray-500">
@@ -237,7 +228,6 @@
 
 
         {{-- Users --}}
-
         <div class="space-y-4">
 
             @forelse($users as $user)
@@ -248,24 +238,22 @@
                 >
 
                     {{-- User Header --}}
-
                     <div
                         class="flex flex-col lg:flex-row
                                lg:items-center lg:justify-between gap-6"
                     >
 
                         {{-- User Information --}}
-
                         <div>
 
-                            <div class="flex items-center gap-3">
+                            <div class="flex flex-wrap items-center gap-3">
 
                                 <h2 class="text-xl font-bold text-[#0F3F4A]">
                                     {{ $user->name }}
                                 </h2>
 
-                                {{-- Role Protection Badge --}}
 
+                                {{-- Role Badge --}}
                                 @if($user->role === 'admin')
 
                                     <span
@@ -288,7 +276,42 @@
 
                                 @endif
 
+
+                                {{-- Account Status Badge --}}
+                                @if($user->status === 'banned')
+
+                                    <span
+                                        class="px-3 py-1 rounded-full
+                                               text-xs font-semibold
+                                               bg-red-100 text-red-700"
+                                    >
+                                        BANNED
+                                    </span>
+
+                                @elseif($user->status === 'suspended')
+
+                                    <span
+                                        class="px-3 py-1 rounded-full
+                                               text-xs font-semibold
+                                               bg-yellow-100 text-yellow-700"
+                                    >
+                                        SUSPENDED
+                                    </span>
+
+                                @else
+
+                                    <span
+                                        class="px-3 py-1 rounded-full
+                                               text-xs font-semibold
+                                               bg-[#DCEAE4] text-[#3E735F]"
+                                    >
+                                        ACTIVE
+                                    </span>
+
+                                @endif
+
                             </div>
+
 
                             <p class="text-gray-500 mt-1">
                                 {{ $user->email }}
@@ -298,7 +321,6 @@
 
 
                         {{-- Subscription Status --}}
-
                         <div class="lg:text-right">
 
                             <p
@@ -308,10 +330,10 @@
                                 Subscription
                             </p>
 
+
                             @if($user->subscription)
 
                                 {{-- ACTIVE --}}
-
                                 @if($user->subscription->isActive())
 
                                     <span
@@ -324,7 +346,6 @@
 
 
                                 {{-- PENDING --}}
-
                                 @elseif($user->subscription->status === 'pending')
 
                                     <span
@@ -337,7 +358,6 @@
 
 
                                 {{-- EXPIRED --}}
-
                                 @else
 
                                     <span
@@ -350,11 +370,9 @@
 
                                 @endif
 
-
                             @else
 
                                 {{-- NO SUBSCRIPTION --}}
-
                                 <span
                                     class="inline-block mt-1 px-3 py-1
                                            rounded-full text-sm font-semibold
@@ -370,8 +388,82 @@
                     </div>
 
 
-                    {{-- Subscription Details --}}
+                    {{-- Account Restriction Details --}}
+                    @if($user->status !== 'active')
 
+                        <div
+                            class="mt-6 p-4 rounded-xl
+                                   border
+                                   @if($user->status === 'banned')
+                                       bg-red-50 border-red-200
+                                   @else
+                                       bg-yellow-50 border-yellow-200
+                                   @endif"
+                        >
+
+                            <div class="flex flex-col sm:flex-row
+                                        sm:items-center sm:justify-between
+                                        gap-3">
+
+                                <div>
+
+                                    <p
+                                        class="text-xs uppercase
+                                               tracking-wider
+                                               text-gray-500"
+                                    >
+                                        Account Restriction
+                                    </p>
+
+                                    <p
+                                        class="font-semibold mt-1
+                                            @if($user->status === 'banned')
+                                                text-red-700
+                                            @else
+                                                text-yellow-700
+                                            @endif"
+                                    >
+
+                                        @if($user->status === 'banned')
+
+                                            Account is banned
+
+                                        @else
+
+                                            Account is suspended
+
+                                        @endif
+
+                                    </p>
+
+                                </div>
+
+
+                                <div class="text-sm text-gray-600">
+
+                                    @if($user->status_until)
+
+                                        Until
+                                        <span class="font-semibold">
+                                            {{ $user->status_until->format('M d, Y h:i A') }}
+                                        </span>
+
+                                    @else
+
+                                        Permanent
+
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- Subscription Details --}}
                     @if($user->subscription)
 
                         <div
@@ -381,7 +473,6 @@
                         >
 
                             {{-- Started --}}
-
                             <div>
 
                                 <p
@@ -411,7 +502,6 @@
 
 
                             {{-- Expires --}}
-
                             <div>
 
                                 <p
@@ -441,7 +531,6 @@
 
 
                             {{-- Payment Session --}}
-
                             <div>
 
                                 <p
@@ -466,7 +555,6 @@
 
 
                     {{-- Subscription Management --}}
-
                     <div
                         class="mt-6 pt-6 border-t border-[#D5DDD8]"
                     >
@@ -482,7 +570,6 @@
                         <div class="flex flex-wrap gap-3">
 
                             {{-- Activate --}}
-
                             <form
                                 action="{{ route('admin.users.activate', $user) }}"
                                 method="POST"
@@ -504,7 +591,6 @@
 
 
                             {{-- Extend --}}
-
                             <form
                                 action="{{ route('admin.users.extend', $user) }}"
                                 method="POST"
@@ -526,7 +612,6 @@
 
 
                             {{-- Expire --}}
-
                             <button
                                 type="button"
                                 onclick="openExpireModal(
@@ -541,9 +626,128 @@
                                 Expire
                             </button>
 
+                        </div>
+
+                    </div>
+
+
+                    {{-- Account Management --}}
+                    <div
+                        class="mt-6 pt-6 border-t border-[#D5DDD8]"
+                    >
+
+                        <p
+                            class="text-xs uppercase tracking-wider
+                                   text-gray-500 mb-3"
+                        >
+                            Account Management
+                        </p>
+
+
+                        <div class="flex flex-wrap gap-3">
+
+                            {{-- Active Account --}}
+                            @if($user->status === 'active')
+
+                                {{-- Suspend --}}
+                                <button
+                                    type="button"
+                                    onclick="openSuspendModal(
+                                        {{ $user->id }},
+                                        @js($user->name)
+                                    )"
+                                    class="px-4 py-2 rounded-xl
+                                           bg-yellow-100 text-yellow-700
+                                           hover:bg-yellow-200
+                                           transition"
+                                >
+                                    Suspend
+                                </button>
+
+
+                                {{-- Ban --}}
+                                <button
+                                    type="button"
+                                    onclick="openBanModal(
+                                        {{ $user->id }},
+                                        @js($user->name)
+                                    )"
+                                    class="px-4 py-2 rounded-xl
+                                           bg-red-100 text-red-700
+                                           hover:bg-red-200
+                                           transition"
+                                >
+                                    Ban
+                                </button>
+
+
+                            {{-- Suspended Account --}}
+                            @elseif($user->status === 'suspended')
+
+                                {{-- Restore --}}
+                                <form
+                                    action="{{ route('admin.users.unban', $user) }}"
+                                    method="POST"
+                                >
+
+                                    @csrf
+
+                                    <button
+                                        type="submit"
+                                        class="px-4 py-2 rounded-xl
+                                               bg-[#DCEAE4] text-[#3E735F]
+                                               hover:bg-[#C9DED5]
+                                               transition"
+                                    >
+                                        Restore Account
+                                    </button>
+
+                                </form>
+
+
+                                {{-- Ban Suspended User --}}
+                                <button
+                                    type="button"
+                                    onclick="openBanModal(
+                                        {{ $user->id }},
+                                        @js($user->name)
+                                    )"
+                                    class="px-4 py-2 rounded-xl
+                                           bg-red-100 text-red-700
+                                           hover:bg-red-200
+                                           transition"
+                                >
+                                    Ban
+                                </button>
+
+
+                            {{-- Banned Account --}}
+                            @elseif($user->status === 'banned')
+
+                                {{-- Unban --}}
+                                <form
+                                    action="{{ route('admin.users.unban', $user) }}"
+                                    method="POST"
+                                >
+
+                                    @csrf
+
+                                    <button
+                                        type="submit"
+                                        class="px-4 py-2 rounded-xl
+                                               bg-[#DCEAE4] text-[#3E735F]
+                                               hover:bg-[#C9DED5]
+                                               transition"
+                                    >
+                                        Unban / Restore
+                                    </button>
+
+                                </form>
+
+                            @endif
+
 
                             {{-- Delete User --}}
-
                             <button
                                 type="button"
                                 onclick="openDeleteModal(
@@ -565,7 +769,368 @@
                 </div>
 
 
-                {{-- Expire Confirmation Modal --}}
+                {{-- ===================================================== --}}
+                {{-- SUSPEND MODAL --}}
+                {{-- ===================================================== --}}
+
+                <div
+                    id="suspend-modal-{{ $user->id }}"
+                    class="hidden fixed inset-0 z-50
+                           items-center justify-center
+                           bg-black/50 px-6"
+                >
+
+                    <div
+                        class="w-full max-w-md bg-white
+                               rounded-2xl shadow-xl p-8"
+                    >
+
+                        {{-- Icon --}}
+                        <div class="flex justify-center mb-5">
+
+                            <div
+                                class="w-14 h-14 rounded-full
+                                       bg-yellow-100
+                                       flex items-center justify-center"
+                            >
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-7 h-7 text-yellow-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M18.364 5.636a9 9 0 11-12.728 0M12 8v4m0 4h.01"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Title --}}
+                        <h2
+                            class="text-2xl font-bold
+                                   text-[#0F3F4A]
+                                   text-center"
+                        >
+                            Suspend User?
+                        </h2>
+
+
+                        {{-- Message --}}
+                        <p
+                            class="text-gray-600 text-center
+                                   mt-3 leading-relaxed"
+                        >
+
+                            Suspend
+
+                            <span
+                                id="suspend-user-name-{{ $user->id }}"
+                                class="font-semibold text-[#0F3F4A]"
+                            >
+                                {{ $user->name }}
+                            </span>
+
+                            temporarily?
+
+                        </p>
+
+
+                        {{-- Form --}}
+                        <form
+                            action="{{ route('admin.users.suspend', $user) }}"
+                            method="POST"
+                            class="mt-6"
+                        >
+
+                            @csrf
+
+                            <label
+                                for="suspend-duration-{{ $user->id }}"
+                                class="block text-sm font-semibold
+                                       text-[#0F3F4A] mb-2"
+                            >
+                                Suspension Duration
+                            </label>
+
+                            <select
+                                id="suspend-duration-{{ $user->id }}"
+                                name="duration"
+                                required
+                                class="w-full border border-[#D5DDD8]
+                                       rounded-xl px-4 py-3
+                                       bg-white
+                                       focus:outline-none
+                                       focus:ring-2
+                                       focus:ring-[#4F806D]"
+                            >
+
+                                <option value="1">
+                                    1 Day
+                                </option>
+
+                                <option value="7" selected>
+                                    7 Days
+                                </option>
+
+                                <option value="30">
+                                    30 Days
+                                </option>
+
+                                <option value="90">
+                                    90 Days
+                                </option>
+
+                                <option value="365">
+                                    1 Year
+                                </option>
+
+                            </select>
+
+
+                            {{-- Actions --}}
+                            <div
+                                class="flex justify-center
+                                       gap-3 mt-7"
+                            >
+
+                                <button
+                                    type="button"
+                                    onclick="closeSuspendModal({{ $user->id }})"
+                                    class="px-5 py-2.5 rounded-xl
+                                           border border-gray-300
+                                           text-gray-700
+                                           hover:bg-gray-100
+                                           transition"
+                                >
+                                    Cancel
+                                </button>
+
+
+                                <button
+                                    type="submit"
+                                    class="px-5 py-2.5 rounded-xl
+                                           bg-yellow-500 text-white
+                                           hover:bg-yellow-600
+                                           transition"
+                                >
+                                    Suspend User
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                {{-- ===================================================== --}}
+                {{-- BAN MODAL --}}
+                {{-- ===================================================== --}}
+
+                <div
+                    id="ban-modal-{{ $user->id }}"
+                    class="hidden fixed inset-0 z-50
+                           items-center justify-center
+                           bg-black/50 px-6"
+                >
+
+                    <div
+                        class="w-full max-w-md bg-white
+                               rounded-2xl shadow-xl p-8"
+                    >
+
+                        {{-- Icon --}}
+                        <div class="flex justify-center mb-5">
+
+                            <div
+                                class="w-14 h-14 rounded-full
+                                       bg-red-100
+                                       flex items-center justify-center"
+                            >
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-7 h-7 text-red-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M18.364 5.636a9 9 0 11-12.728 0M12 8v4m0 4h.01"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Title --}}
+                        <h2
+                            class="text-2xl font-bold
+                                   text-[#0F3F4A]
+                                   text-center"
+                        >
+                            Ban User?
+                        </h2>
+
+
+                        {{-- Message --}}
+                        <p
+                            class="text-gray-600 text-center
+                                   mt-3 leading-relaxed"
+                        >
+
+                            Ban
+
+                            <span
+                                id="ban-user-name-{{ $user->id }}"
+                                class="font-semibold text-[#0F3F4A]"
+                            >
+                                {{ $user->name }}
+                            </span>
+
+                            from accessing the website?
+
+                        </p>
+
+
+                        <p
+                            class="text-sm text-gray-500
+                                   text-center mt-2"
+                        >
+                            You can choose a temporary or permanent ban.
+                        </p>
+
+
+                        {{-- Form --}}
+                        <form
+                            action="{{ route('admin.users.ban', $user) }}"
+                            method="POST"
+                            class="mt-6"
+                        >
+
+                            @csrf
+
+                            <label
+                                for="ban-duration-{{ $user->id }}"
+                                class="block text-sm font-semibold
+                                       text-[#0F3F4A] mb-2"
+                            >
+                                Ban Duration
+                            </label>
+
+                            <select
+                                id="ban-duration-{{ $user->id }}"
+                                name="duration"
+                                required
+                                class="w-full border border-[#D5DDD8]
+                                       rounded-xl px-4 py-3
+                                       bg-white
+                                       focus:outline-none
+                                       focus:ring-2
+                                       focus:ring-red-400"
+                            >
+
+                                <option value="7">
+                                    7 Days
+                                </option>
+
+                                <option value="30" selected>
+                                    30 Days
+                                </option>
+
+                                <option value="90">
+                                    90 Days
+                                </option>
+
+                                <option value="365">
+                                    1 Year
+                                </option>
+
+                                <option value="permanent">
+                                    Permanent Ban
+                                </option>
+
+                            </select>
+
+
+                            {{-- Warning --}}
+                            <div
+                                class="mt-4 p-3 rounded-xl
+                                       bg-red-50 border border-red-200"
+                            >
+
+                                <p
+                                    class="text-sm text-red-700"
+                                >
+                                    A banned user will be unable to access
+                                    their account until the ban expires or
+                                    an administrator restores the account.
+                                </p>
+
+                            </div>
+
+
+                            {{-- Actions --}}
+                            <div
+                                class="flex justify-center
+                                       gap-3 mt-7"
+                            >
+
+                                <button
+                                    type="button"
+                                    onclick="closeBanModal({{ $user->id }})"
+                                    class="px-5 py-2.5 rounded-xl
+                                           border border-gray-300
+                                           text-gray-700
+                                           hover:bg-gray-100
+                                           transition"
+                                >
+                                    Cancel
+                                </button>
+
+
+                                <button
+                                    type="submit"
+                                    class="px-5 py-2.5 rounded-xl
+                                           bg-red-600 text-white
+                                           hover:bg-red-700
+                                           transition"
+                                >
+                                    Ban User
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                {{-- ===================================================== --}}
+                {{-- EXPIRE CONFIRMATION MODAL --}}
+                {{-- ===================================================== --}}
 
                 <div
                     id="expire-modal-{{ $user->id }}"
@@ -580,7 +1145,6 @@
                     >
 
                         {{-- Warning Icon --}}
-
                         <div class="flex justify-center mb-5">
 
                             <div
@@ -612,7 +1176,6 @@
 
 
                         {{-- Title --}}
-
                         <h2
                             class="text-2xl font-bold
                                    text-[#0F3F4A]
@@ -623,7 +1186,6 @@
 
 
                         {{-- Message --}}
-
                         <p
                             class="text-gray-600 text-center
                                    mt-3 leading-relaxed"
@@ -645,19 +1207,15 @@
                             class="text-sm text-gray-500
                                    text-center mt-2"
                         >
-                            Their premium access will be removed
-                            immediately.
+                            Their premium access will be removed immediately.
                         </p>
 
 
                         {{-- Actions --}}
-
                         <div
                             class="flex justify-center
                                    gap-3 mt-7"
                         >
-
-                            {{-- Cancel --}}
 
                             <button
                                 type="button"
@@ -671,8 +1229,6 @@
                                 Cancel
                             </button>
 
-
-                            {{-- Confirm Expire --}}
 
                             <form
                                 action="{{ route('admin.users.expire', $user) }}"
@@ -700,7 +1256,9 @@
                 </div>
 
 
-                {{-- Delete Confirmation Modal --}}
+                {{-- ===================================================== --}}
+                {{-- DELETE CONFIRMATION MODAL --}}
+                {{-- ===================================================== --}}
 
                 <div
                     id="delete-modal-{{ $user->id }}"
@@ -715,7 +1273,6 @@
                     >
 
                         {{-- Warning Icon --}}
-
                         <div class="flex justify-center mb-5">
 
                             <div
@@ -736,7 +1293,7 @@
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
-                                        d="M12 9v4m0 4h.01M10.29 3.86l-7.82 14a2 2 0 001.74 3h15.58a2 2 0 001.74 3l-7.82-14a2 2 0 00-3.48 0z"
+                                        d="M12 9v4m0 4h.01M10.29 3.86l-7.82 14a2 2 0 001.74 3h15.58a2 2 0 001.74-3l-7.82-14a2 2 0 00-3.48 0z"
                                     />
 
                                 </svg>
@@ -747,7 +1304,6 @@
 
 
                         {{-- Title --}}
-
                         <h2
                             class="text-2xl font-bold
                                    text-[#0F3F4A]
@@ -758,7 +1314,6 @@
 
 
                         {{-- Message --}}
-
                         <p
                             class="text-gray-600 text-center
                                    mt-3 leading-relaxed"
@@ -771,8 +1326,7 @@
                                 class="font-semibold text-[#0F3F4A]"
                             >
                                 {{ $user->name }}
-                            </span>
-                            ?
+                            </span>?
 
                         </p>
 
@@ -795,13 +1349,10 @@
 
 
                         {{-- Actions --}}
-
                         <div
                             class="flex justify-center
                                    gap-3 mt-7"
                         >
-
-                            {{-- Cancel --}}
 
                             <button
                                 type="button"
@@ -816,15 +1367,12 @@
                             </button>
 
 
-                            {{-- Confirm Delete --}}
-
                             <form
                                 action="{{ route('admin.users.destroy', $user) }}"
                                 method="POST"
                             >
 
                                 @csrf
-
                                 @method('DELETE')
 
                                 <button
@@ -881,9 +1429,109 @@
 </div>
 
 
-{{-- Modal JavaScript --}}
+{{-- ================================================================ --}}
+{{-- MODAL JAVASCRIPT --}}
+{{-- ================================================================ --}}
 
 <script>
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic Modal Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    function openModal(modalId) {
+
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            document.body.classList.add('overflow-hidden');
+
+        }
+
+    }
+
+
+    function closeModal(modalId) {
+
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            document.body.classList.remove('overflow-hidden');
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Suspend Modal
+    |--------------------------------------------------------------------------
+    */
+
+    function openSuspendModal(userId, userName) {
+
+        const name = document.getElementById(
+            'suspend-user-name-' + userId
+        );
+
+        if (name) {
+
+            name.textContent = userName;
+
+        }
+
+        openModal('suspend-modal-' + userId);
+
+    }
+
+
+    function closeSuspendModal(userId) {
+
+        closeModal('suspend-modal-' + userId);
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ban Modal
+    |--------------------------------------------------------------------------
+    */
+
+    function openBanModal(userId, userName) {
+
+        const name = document.getElementById(
+            'ban-user-name-' + userId
+        );
+
+        if (name) {
+
+            name.textContent = userName;
+
+        }
+
+        openModal('ban-modal-' + userId);
+
+    }
+
+
+    function closeBanModal(userId) {
+
+        closeModal('ban-modal-' + userId);
+
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -893,39 +1541,25 @@
 
     function openExpireModal(userId, userName) {
 
-        const modal = document.getElementById(
-            'expire-modal-' + userId
-        );
-
         const name = document.getElementById(
             'expire-user-name-' + userId
         );
 
         if (name) {
+
             name.textContent = userName;
+
         }
 
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        openModal('expire-modal-' + userId);
 
-            document.body.classList.add('overflow-hidden');
-        }
     }
 
 
     function closeExpireModal(userId) {
 
-        const modal = document.getElementById(
-            'expire-modal-' + userId
-        );
+        closeModal('expire-modal-' + userId);
 
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-
-            document.body.classList.remove('overflow-hidden');
-        }
     }
 
 
@@ -937,39 +1571,25 @@
 
     function openDeleteModal(userId, userName) {
 
-        const modal = document.getElementById(
-            'delete-modal-' + userId
-        );
-
         const name = document.getElementById(
             'delete-user-name-' + userId
         );
 
         if (name) {
+
             name.textContent = userName;
+
         }
 
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        openModal('delete-modal-' + userId);
 
-            document.body.classList.add('overflow-hidden');
-        }
     }
 
 
     function closeDeleteModal(userId) {
 
-        const modal = document.getElementById(
-            'delete-modal-' + userId
-        );
+        closeModal('delete-modal-' + userId);
 
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-
-            document.body.classList.remove('overflow-hidden');
-        }
     }
 
 
@@ -989,6 +1609,7 @@
             modal.classList.remove('flex');
 
             document.body.classList.remove('overflow-hidden');
+
         }
 
     });
@@ -1006,7 +1627,10 @@
 
             document
                 .querySelectorAll(
-                    '[id^="expire-modal-"], [id^="delete-modal-"]'
+                    '[id^="suspend-modal-"],' +
+                    '[id^="ban-modal-"],' +
+                    '[id^="expire-modal-"],' +
+                    '[id^="delete-modal-"]'
                 )
                 .forEach(function (modal) {
 
@@ -1016,6 +1640,7 @@
                 });
 
             document.body.classList.remove('overflow-hidden');
+
         }
 
     });

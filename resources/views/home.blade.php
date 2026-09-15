@@ -1,177 +1,240 @@
 @extends('layouts.app')
-
-
 @section('content')
 
-<div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
-
+<div class="w-full overflow-hidden bg-[#F5F1E8]">
 
     {{-- =========================================================
-       HERO
+       HERO SECTION
     ========================================================== --}}
 
-    <section
-        class="relative overflow-hidden
-               rounded-[2rem]
-               border border-[#DDE7E1]
-               bg-[#FFFDFC]
-               shadow-sm">
+    <section class="relative">
 
-        {{-- Decorative background --}}
+        {{-- Background glow --}}
+
         <div
-            class="absolute -top-20 -right-20 sm:-top-24 sm:-right-24
-                   w-56 h-56 sm:w-72 sm:h-72
+            class="absolute
+                   -top-40
+                   right-[-10rem]
+                   w-[32rem]
+                   h-[32rem]
                    rounded-full
-                   bg-[#E5F0EB]
+                   bg-[#DCEAE4]
                    blur-3xl
-                   opacity-70">
+                   opacity-70
+                   pointer-events-none">
         </div>
 
         <div
-            class="absolute -bottom-24 -left-16 sm:-bottom-32 sm:-left-20
-                   w-56 h-56 sm:w-72 sm:h-72
+            class="absolute
+                   top-[35rem]
+                   left-[-12rem]
+                   w-[30rem]
+                   h-[30rem]
                    rounded-full
-                   bg-[#F1EDE3]
+                   bg-[#E9DDCD]
                    blur-3xl
-                   opacity-80">
+                   opacity-50
+                   pointer-events-none">
         </div>
 
 
         <div
             class="relative
-                   grid
-                   grid-cols-1
-                   lg:grid-cols-[1.2fr_0.8fr]
-                   gap-6 sm:gap-8 lg:gap-10
-                   items-center
-                   p-5 sm:p-10 lg:p-16">
+                   max-w-7xl
+                   mx-auto
+                   px-4 sm:px-6 lg:px-8
+                   pt-6 sm:pt-10 lg:pt-16
+                   pb-12 sm:pb-16 lg:pb-20">
 
 
-            {{-- HERO CONTENT --}}
+            {{-- =============================================
+               TOP LABEL
+            ============================================== --}}
 
-            <div>
+            <div class="flex justify-center">
 
                 <div
                     class="inline-flex
                            items-center
                            gap-2
-                           px-3 py-1.5 sm:px-4 sm:py-2
+                           px-4 py-2
                            rounded-full
-                           bg-[#E5F0EB]
-                           border border-[#D4E4DD]
-                           text-[#4F806D]
-                           text-sm
-                           font-semibold">
+                           border border-[#C9D9D2]
+                           bg-white/80
+                           backdrop-blur-sm
+                           shadow-sm">
 
                     <span
-                        class="w-2 h-2
-                               rounded-full
-                               bg-[#4F806D]
-                               animate-pulse">
+                        class="relative
+                               flex
+                               w-2.5 h-2.5">
+
+                        <span
+                            class="absolute
+                                   inline-flex
+                                   w-full h-full
+                                   rounded-full
+                                   bg-[#4F806D]
+                                   opacity-60
+                                   animate-ping">
+                        </span>
+
+                        <span
+                            class="relative
+                                   inline-flex
+                                   w-2.5 h-2.5
+                                   rounded-full
+                                   bg-[#4F806D]">
+                        </span>
+
                     </span>
 
-                    S.T.A Coding Team
+                    <span
+                        class="text-xs sm:text-sm
+                               font-semibold
+                               text-[#29483D]">
+
+                        S.T.A Coding Team
+
+                    </span>
 
                 </div>
 
+            </div>
+
+
+            {{-- =============================================
+               HERO CONTENT
+            ============================================== --}}
+
+            <div
+                class="max-w-5xl
+                       mx-auto
+                       text-center
+                       mt-8 sm:mt-10">
+
 
                 <p
-                    class="mt-5 sm:mt-7
-                           text-xs sm:text-sm
+                    class="text-xs sm:text-sm
                            uppercase
-                           tracking-[0.3em]
-                           font-semibold
-                           text-[#B58A5A]">
+                           tracking-[0.35em]
+                           font-bold
+                           text-[#B87945]">
 
-                    Welcome to
+                    Welcome to DevNext
 
                 </p>
 
 
                 <h1
-                    class="mt-3
-                           text-4xl sm:text-5xl
+                    class="mt-5
+                           text-[3.2rem]
                            sm:text-6xl
-                           lg:text-7xl
+                           md:text-7xl
+                           lg:text-8xl
                            font-black
-                           tracking-tight
-                           leading-[0.95]
-                           text-[#29483D]">
+                           tracking-[-0.055em]
+                           leading-[0.9]
+                           text-[#173F46]">
 
-                    Dev<span class="text-[#B58A5A]">Next</span>
+                    We don't just
+                    <span class="text-[#4F806D]">
+                        learn.
+                    </span>
+
+                    <br>
+
+                    We
+                    <span class="text-[#B87945]">
+                        build.
+                    </span>
 
                 </h1>
 
 
                 <p
-                    class="mt-5 sm:mt-6
-                           text-base sm:text-lg
-                           sm:text-xl
-                           leading-relaxed
-                           text-[#587067]
-                           max-w-2xl">
+                    class="max-w-2xl
+                           mx-auto
+                           mt-7
+                           text-base sm:text-lg lg:text-xl
+                           leading-8
+                           text-[#657873]">
 
-                    A modern space for
+                    DevNext is the digital home of the
                     <span class="font-semibold text-[#29483D]">
-                        projects, ideas, and code.
+                        S.T.A Coding Team
                     </span>
 
-                    Built by the S.T.A Coding Team
-                    as we learn, create, and grow through
-                    real-world web development.
+                    — where ideas become projects,
+                    lessons become experience,
+                    and curiosity becomes something real.
 
                 </p>
 
 
-                {{-- BUTTONS --}}
+                {{-- =============================================
+                   HERO BUTTONS
+                ============================================== --}}
 
                 <div
                     class="flex
-                           flex-col
-                           sm:flex-row
+                           flex-col sm:flex-row
+                           items-center
+                           justify-center
                            gap-3
-                           mt-6 sm:mt-8">
+                           mt-8">
+
 
                     <a
-                        href="/projects"
-                        class="w-full sm:w-auto inline-flex
+                        href="{{ route('projects.index') }}"
+                        class="group
+                               w-full sm:w-auto
+                               inline-flex
                                items-center
                                justify-center
-                               gap-2
-                               px-6 sm:px-7 py-3.5
-                               rounded-full
-                               bg-[#4F806D]
+                               gap-3
+                               px-7 py-4
+                               rounded-2xl
+                               bg-[#29483D]
                                text-white
-                               font-semibold
-                               shadow-sm
-                               hover:bg-[#3F6D5B]
-                               hover:-translate-y-0.5
-                               hover:shadow-md
+                               font-bold
+                               shadow-lg
+                               shadow-[#29483D]/10
+                               hover:bg-[#1F3C33]
+                               hover:-translate-y-1
+                               hover:shadow-xl
                                transition-all
                                duration-300">
 
                         Explore Projects
 
-                        <span class="text-lg">
+                        <span
+                            class="text-xl
+                                   group-hover:translate-x-1
+                                   transition-transform">
+
                             →
+
                         </span>
 
                     </a>
 
 
                     <a
-                        href="/about"
-                        class="w-full sm:w-auto inline-flex
+                        href="{{ route('about') }}"
+                        class="w-full sm:w-auto
+                               inline-flex
                                items-center
                                justify-center
-                               px-6 sm:px-7 py-3.5
-                               rounded-full
-                               border border-[#C8D8D1]
+                               gap-2
+                               px-7 py-4
+                               rounded-2xl
                                bg-white
-                               text-[#4F806D]
-                               font-semibold
-                               hover:bg-[#E5F0EB]
-                               hover:-translate-y-0.5
+                               border border-[#D4DED9]
+                               text-[#29483D]
+                               font-bold
+                               hover:bg-[#E8EEE9]
+                               hover:-translate-y-1
                                transition-all
                                duration-300">
 
@@ -182,31 +245,91 @@
                 </div>
 
 
-                {{-- SMALL TRUST LINE --}}
+                {{-- =============================================
+                   HERO TRUST POINTS
+                ============================================== --}}
 
                 <div
                     class="flex
                            flex-wrap
+                           justify-center
                            items-center
-                           gap-x-4 sm:gap-x-6
-                           gap-y-2
-                           mt-6 sm:mt-8
+                           gap-x-6
+                           gap-y-3
+                           mt-7
                            text-xs sm:text-sm
-                           text-[#71847D]">
+                           text-[#71817C]">
 
                     <span class="flex items-center gap-2">
-                        <span class="text-[#4F806D]">✓</span>
-                        Responsive Design
-                    </span>
 
-                    <span class="flex items-center gap-2">
-                        <span class="text-[#4F806D]">✓</span>
+                        <span
+                            class="flex
+                                   w-5 h-5
+                                   items-center
+                                   justify-center
+                                   rounded-full
+                                   bg-[#DCEAE4]
+                                   text-[#4F806D]
+                                   font-bold">
+
+                            ✓
+
+                        </span>
+
                         Real Projects
+
                     </span>
 
+
+                    <span class="hidden sm:block text-[#C5CEC9]">
+                        •
+                    </span>
+
+
                     <span class="flex items-center gap-2">
-                        <span class="text-[#4F806D]">✓</span>
-                        Continuous Learning
+
+                        <span
+                            class="flex
+                                   w-5 h-5
+                                   items-center
+                                   justify-center
+                                   rounded-full
+                                   bg-[#DCEAE4]
+                                   text-[#4F806D]
+                                   font-bold">
+
+                            ✓
+
+                        </span>
+
+                        Modern Development
+
+                    </span>
+
+
+                    <span class="hidden sm:block text-[#C5CEC9]">
+                        •
+                    </span>
+
+
+                    <span class="flex items-center gap-2">
+
+                        <span
+                            class="flex
+                                   w-5 h-5
+                                   items-center
+                                   justify-center
+                                   rounded-full
+                                   bg-[#DCEAE4]
+                                   text-[#4F806D]
+                                   font-bold">
+
+                            ✓
+
+                        </span>
+
+                        Always Learning
+
                     </span>
 
                 </div>
@@ -214,40 +337,60 @@
             </div>
 
 
+            {{-- =================================================
+               PREMIUM CODE VISUAL
+            ================================================== --}}
 
-            {{-- HERO VISUAL / CODE CARD --}}
+            <div
+                class="relative
+                       max-w-5xl
+                       mx-auto
+                       mt-14 sm:mt-16 lg:mt-20">
 
-            <div class="relative">
+
+                {{-- Glow behind code card --}}
 
                 <div
-                    class="rounded-[1.75rem]
-                           bg-[#29483D]
-                           p-1
-                           shadow-xl
-                           rotate-1
-                           hover:rotate-0
-                           transition-transform
-                           duration-500">
+                    class="absolute
+                           inset-8
+                           rounded-[2.5rem]
+                           bg-[#4F806D]
+                           blur-3xl
+                           opacity-20">
+                </div>
+
+
+                <div
+                    class="relative
+                           rounded-[2rem]
+                           sm:rounded-[2.5rem]
+                           bg-[#19352D]
+                           p-2
+                           shadow-2xl">
+
 
                     <div
-                        class="rounded-[1.5rem]
-                               bg-[#213B32]
-                               overflow-hidden">
+                        class="rounded-[1.6rem]
+                               sm:rounded-[2rem]
+                               overflow-hidden
+                               bg-[#112A24]">
 
 
-                        {{-- Window bar --}}
+                        {{-- Browser Header --}}
 
                         <div
                             class="flex
                                    items-center
                                    gap-2
-                                   px-5 py-4
+                                   px-5 sm:px-7
+                                   py-4
                                    border-b border-white/10">
+
 
                             <span
                                 class="w-3 h-3
                                        rounded-full
-                                       bg-[#D8C7AC]">
+                                       bg-[#D6B99A]">
                             </span>
 
                             <span
@@ -259,116 +402,274 @@
                             <span
                                 class="w-3 h-3
                                        rounded-full
-                                       bg-[#E5F0EB]">
+                                       bg-[#E4EEE9]">
                             </span>
+
+
+                            <div
+                                class="ml-4
+                                       flex-1
+                                       max-w-xs
+                                       h-7
+                                       rounded-lg
+                                       bg-white/5
+                                       border border-white/5
+                                       flex items-center
+                                       px-3">
+
+                                <span
+                                    class="text-[10px]
+                                           font-mono
+                                           text-white/30">
+
+                                    devnext.local
+
+                                </span>
+
+                            </div>
+
 
                             <span
                                 class="ml-auto
                                        text-xs
-                                       text-white/40
-                                       font-mono">
+                                       font-mono
+                                       text-white/30">
 
-                                devnext
+                                S.T.A
 
                             </span>
 
                         </div>
 
 
-                        {{-- Code --}}
+                        {{-- Code Area --}}
 
                         <div
-                            class="p-4 sm:p-8
-                                   font-mono
-                                   text-xs sm:text-sm
-                                   leading-6 sm:leading-8
-                                   text-white/80">
-
-                            <p>
-                                <span class="text-[#B8CEC5]">
-                                    const
-                                </span>
-
-                                <span class="text-[#FFFDFC]">
-                                    devNext
-                                </span>
-
-                                <span class="text-white/50">
-                                    =
-                                </span>
-
-                                <span class="text-[#D8C7AC]">
-                                    {
-                                </span>
-                            </p>
+                            class="grid
+                                   grid-cols-1
+                                   md:grid-cols-[1fr_0.7fr]
+                                   min-h-[22rem]">
 
 
-                            <p class="pl-5">
-                                <span class="text-[#B8CEC5]">
-                                    team
-                                </span>:
-
-                                <span class="text-[#D8C7AC]">
-                                    "S.T.A"
-                                </span>,
-                            </p>
-
-
-                            <p class="pl-5">
-                                <span class="text-[#B8CEC5]">
-                                    focus
-                                </span>:
-
-                                <span class="text-[#D8C7AC]">
-                                    "Web Development"
-                                </span>,
-                            </p>
-
-
-                            <p class="pl-5">
-                                <span class="text-[#B8CEC5]">
-                                    projects
-                                </span>:
-
-                                <span class="text-[#D8C7AC]">
-                                    "Real World"
-                                </span>,
-                            </p>
-
-
-                            <p class="pl-5">
-                                <span class="text-[#B8CEC5]">
-                                    mindset
-                                </span>:
-
-                                <span class="text-[#D8C7AC]">
-                                    "Keep Learning"
-                                </span>
-                            </p>
-
-
-                            <p>
-                                <span class="text-[#D8C7AC]">
-                                    };
-                                </span>
-                            </p>
-
+                            {{-- Code --}}
 
                             <div
-                                class="mt-6
-                                       pt-5
-                                       border-t border-white/10
-                                       text-white/40">
+                                class="p-6 sm:p-10
+                                       font-mono
+                                       text-xs sm:text-sm
+                                       leading-7
+                                       text-white/70">
 
-                                <span class="text-[#B8CEC5]">
-                                    $
-                                </span>
 
-                                build something meaningful
+                                <p>
 
-                                <span class="animate-pulse">
-                                    _
-                                </span>
+                                    <span class="text-[#B8CEC5]">
+                                        const
+                                    </span>
+
+                                    <span class="text-white">
+                                        devNext
+                                    </span>
+
+                                    <span class="text-white/40">
+                                        =
+                                    </span>
+
+                                    <span class="text-[#D8C7AC]">
+                                        {
+                                    </span>
+
+                                </p>
+
+
+                                <p class="pl-5">
+
+                                    <span class="text-[#B8CEC5]">
+                                        mission
+                                    </span>:
+
+                                    <span class="text-[#D8C7AC]">
+                                        "Build meaningful things"
+                                    </span>,
+
+                                </p>
+
+
+                                <p class="pl-5">
+
+                                    <span class="text-[#B8CEC5]">
+                                        team
+                                    </span>:
+
+                                    <span class="text-[#D8C7AC]">
+                                        "S.T.A Coding Team"
+                                    </span>,
+
+                                </p>
+
+
+                                <p class="pl-5">
+
+                                    <span class="text-[#B8CEC5]">
+                                        focus
+                                    </span>:
+
+                                    <span class="text-[#D8C7AC]">
+                                        "Web Development"
+                                    </span>,
+
+                                </p>
+
+
+                                <p class="pl-5">
+
+                                    <span class="text-[#B8CEC5]">
+                                        mindset
+                                    </span>:
+
+                                    <span class="text-[#D8C7AC]">
+                                        "Keep Learning"
+                                    </span>,
+
+                                </p>
+
+
+                                <p class="pl-5">
+
+                                    <span class="text-[#B8CEC5]">
+                                        future
+                                    </span>:
+
+                                    <span class="text-[#D8C7AC]">
+                                        "Unlimited"
+                                    </span>
+
+                                </p>
+
+
+                                <p>
+
+                                    <span class="text-[#D8C7AC]">
+                                        };
+                                    </span>
+
+                                </p>
+
+
+                                <div
+                                    class="mt-7
+                                           pt-5
+                                           border-t border-white/10
+                                           flex
+                                           items-center
+                                           gap-2
+                                           text-white/35">
+
+                                    <span class="text-[#B8CEC5]">
+                                        $
+                                    </span>
+
+                                    <span>
+                                        npm run build-future
+                                    </span>
+
+                                    <span class="animate-pulse">
+                                        █
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            {{-- Side Panel --}}
+
+                            <div
+                                class="hidden md:flex
+                                       border-l border-white/10
+                                       p-8
+                                       flex-col
+                                       justify-center">
+
+
+                                <p
+                                    class="text-xs
+                                           uppercase
+                                           tracking-[0.25em]
+                                           text-[#B8CEC5]
+                                           font-semibold">
+
+                                    Current Status
+
+                                </p>
+
+
+                                <h3
+                                    class="mt-3
+                                           text-3xl
+                                           font-black
+                                           text-white">
+
+                                    Building.
+
+                                </h3>
+
+
+                                <p
+                                    class="mt-3
+                                           text-sm
+                                           leading-6
+                                           text-white/45">
+
+                                    Every project is another
+                                    step toward becoming
+                                    better developers.
+
+                                </p>
+
+
+                                <div
+                                    class="mt-7
+                                           flex
+                                           items-center
+                                           gap-3">
+
+                                    <div
+                                        class="w-9 h-9
+                                               rounded-xl
+                                               bg-[#4F806D]/20
+                                               border border-[#4F806D]/30
+                                               flex
+                                               items-center
+                                               justify-center
+                                               text-[#B8CEC5]">
+
+                                        ↗
+
+                                    </div>
+
+                                    <div>
+
+                                        <p
+                                            class="text-xs
+                                                   text-white/30">
+
+                                            NEXT STEP
+
+                                        </p>
+
+                                        <p
+                                            class="text-sm
+                                                   font-semibold
+                                                   text-white/70">
+
+                                            Ship something real.
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -379,36 +680,98 @@
                 </div>
 
 
-                {{-- Floating badge --}}
+                {{-- Floating status card --}}
 
                 <div
                     class="absolute
-                           -bottom-4
-                           left-2 sm:-left-6
-                           px-3 sm:px-5 py-2.5 sm:py-3
+                           -bottom-6
+                           left-3 sm:left-[-2rem]
+                           bg-white
+                           border border-[#D8E1DC]
                            rounded-2xl
-                           bg-[#F1EDE3]
-                           border border-[#E4DDD0]
-                           shadow-lg">
+                           shadow-xl
+                           px-4 sm:px-5
+                           py-3 sm:py-4">
+
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="w-9 h-9
+                                   rounded-xl
+                                   bg-[#E5F0EB]
+                                   flex
+                                   items-center
+                                   justify-center
+                                   text-[#4F806D]">
+
+                            ✓
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="text-[10px]
+                                       uppercase
+                                       tracking-wider
+                                       text-[#84918C]">
+
+                                Team Goal
+
+                            </p>
+
+                            <p
+                                class="text-sm
+                                       font-bold
+                                       text-[#29483D]">
+
+                                Build. Learn. Improve.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {{-- Floating year card --}}
+
+                <div
+                    class="absolute
+                           -top-5
+                           right-3 sm:right-[-1.5rem]
+                           hidden sm:block
+                           rounded-2xl
+                           bg-[#F1E6D7]
+                           border border-[#E3D4C1]
+                           shadow-lg
+                           px-5
+                           py-4">
+
 
                     <p
-                        class="text-xs
+                        class="text-[10px]
                                uppercase
                                tracking-wider
-                               text-[#B58A5A]
-                               font-semibold">
+                               text-[#B87945]
+                               font-bold">
 
-                        Current Goal
+                        Founded on learning
 
                     </p>
 
-                    <p
-                        class="text-sm
-                               font-bold
-                               text-[#29483D]
-                               mt-1">
 
-                        Build. Learn. Improve.
+                    <p
+                        class="mt-1
+                               text-lg
+                               font-black
+                               text-[#29483D]">
+
+                        S.T.A Coding Team
 
                     </p>
 
@@ -423,138 +786,175 @@
 
 
     {{-- =========================================================
-       QUICK STATS
+       NUMBERS / STATS
     ========================================================== --}}
 
     <section
-        class="grid
-               grid-cols-1
-               sm:grid-cols-3
-               gap-3 sm:gap-4">
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               py-8 sm:py-12">
 
 
         <div
-            class="group
-                   rounded-[1.25rem] sm:rounded-[1.5rem]
-                   bg-[#E5F0EB]
-                   border border-[#D4E4DD]
-                   p-5 sm:p-6
-                   hover:-translate-y-1
-                   hover:shadow-md
-                   transition-all
-                   duration-300">
-
-            <p
-                class="text-sm
-                       text-[#587067]
-                       font-medium">
-
-                Team Members
-
-            </p>
-
-            <p
-                class="mt-2
-                       text-3xl
-                       font-black
-                       text-[#29483D]">
-
-                03
-
-            </p>
-
-            <p
-                class="mt-1
-                       text-sm
-                       text-[#71847D]">
-
-                One team, one direction.
-
-            </p>
-
-        </div>
+            class="grid
+                   grid-cols-2
+                   lg:grid-cols-4
+                   rounded-[2rem]
+                   overflow-hidden
+                   border border-[#D9E1DC]
+                   bg-white
+                   shadow-sm">
 
 
-        <div
-            class="group
-                   rounded-[1.25rem] sm:rounded-[1.5rem]
-                   bg-[#F1EDE3]
-                   border border-[#E4DDD0]
-                   p-5 sm:p-6
-                   hover:-translate-y-1
-                   hover:shadow-md
-                   transition-all
-                   duration-300">
+            <div
+                class="p-6 sm:p-8
+                       border-b
+                       border-r
+                       lg:border-b-0
+                       border-[#E3E8E5]">
 
-            <p
-                class="text-sm
-                       text-[#587067]
-                       font-medium">
+                <p
+                    class="text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#7C8984]">
 
-                Main Focus
+                    Team
 
-            </p>
+                </p>
 
-            <p
-                class="mt-2
-                       text-3xl
-                       font-black
-                       text-[#29483D]">
+                <p
+                    class="mt-2
+                           text-3xl sm:text-4xl
+                           font-black
+                           text-[#29483D]">
 
-                Web
+                    03
 
-            </p>
+                </p>
 
-            <p
-                class="mt-1
-                       text-sm
-                       text-[#71847D]">
+                <p
+                    class="mt-1
+                           text-sm
+                           text-[#71817C]">
 
-                Modern web development.
+                    Members building together
 
-            </p>
+                </p>
 
-        </div>
+            </div>
 
 
-        <div
-            class="group
-                   rounded-[1.25rem] sm:rounded-[1.5rem]
-                   bg-[#E5F0EB]
-                   border border-[#D4E4DD]
-                   p-5 sm:p-6
-                   hover:-translate-y-1
-                   hover:shadow-md
-                   transition-all
-                   duration-300">
+            <div
+                class="p-6 sm:p-8
+                       border-b
+                       lg:border-b-0
+                       lg:border-r
+                       border-[#E3E8E5]">
 
-            <p
-                class="text-sm
-                       text-[#587067]
-                       font-medium">
+                <p
+                    class="text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#7C8984]">
 
-                Philosophy
+                    Focus
 
-            </p>
+                </p>
 
-            <p
-                class="mt-2
-                       text-3xl
-                       font-black
-                       text-[#29483D]">
+                <p
+                    class="mt-2
+                           text-3xl sm:text-4xl
+                           font-black
+                           text-[#29483D]">
 
-                Grow
+                    Web
 
-            </p>
+                </p>
 
-            <p
-                class="mt-1
-                       text-sm
-                       text-[#71847D]">
+                <p
+                    class="mt-1
+                           text-sm
+                           text-[#71817C]">
 
-                Learn through building.
+                    Modern digital experiences
 
-            </p>
+                </p>
+
+            </div>
+
+
+            <div
+                class="p-6 sm:p-8
+                       border-r
+                       border-[#E3E8E5]">
+
+                <p
+                    class="text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#7C8984]">
+
+                    Mindset
+
+                </p>
+
+                <p
+                    class="mt-2
+                           text-3xl sm:text-4xl
+                           font-black
+                           text-[#29483D]">
+
+                    Learn
+
+                </p>
+
+                <p
+                    class="mt-1
+                           text-sm
+                           text-[#71817C]">
+
+                    Skills through real practice
+
+                </p>
+
+            </div>
+
+
+            <div
+                class="p-6 sm:p-8">
+
+                <p
+                    class="text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#7C8984]">
+
+                    Direction
+
+                </p>
+
+                <p
+                    class="mt-2
+                           text-3xl sm:text-4xl
+                           font-black
+                           text-[#B87945]">
+
+                    Next
+
+                </p>
+
+                <p
+                    class="mt-1
+                           text-sm
+                           text-[#71817C]">
+
+                    Always moving forward
+
+                </p>
+
+            </div>
 
         </div>
 
@@ -563,41 +963,163 @@
 
 
     {{-- =========================================================
-       WHAT WE DO
+       INTRODUCTION
     ========================================================== --}}
 
-    <section>
+    <section
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               py-12 sm:py-20">
+
 
         <div
-            class="flex
-                   flex-col
-                   sm:flex-row
-                   sm:items-end
-                   sm:justify-between
-                   gap-4
-                   mb-6">
+            class="grid
+                   grid-cols-1
+                   lg:grid-cols-[0.8fr_1.2fr]
+                   gap-10 lg:gap-20
+                   items-start">
+
 
             <div>
 
                 <p
                     class="text-sm
                            uppercase
-                           tracking-[0.25em]
-                           font-semibold
-                           text-[#B58A5A]">
+                           tracking-[0.3em]
+                           font-bold
+                           text-[#B87945]">
 
-                    What We Do
+                    More Than A Website
 
                 </p>
 
-                <h2
-                    class="text-3xl
-                           sm:text-4xl
-                           font-black
-                           text-[#29483D]
-                           mt-2">
 
-                    Turning ideas into projects.
+                <h2
+                    class="mt-4
+                           text-4xl sm:text-5xl
+                           font-black
+                           tracking-tight
+                           leading-tight
+                           text-[#173F46]">
+
+                    A place to
+                    <span class="text-[#4F806D]">
+                        grow.
+                    </span>
+
+                </h2>
+
+            </div>
+
+
+            <div>
+
+                <p
+                    class="text-lg sm:text-xl
+                           leading-8
+                           text-[#657873]">
+
+                    DevNext started with a simple idea:
+                    <span class="font-semibold text-[#29483D]">
+                        learning becomes more meaningful when you build something with it.
+                    </span>
+
+                </p>
+
+
+                <p
+                    class="mt-5
+                           text-base
+                           leading-7
+                           text-[#7A8782]">
+
+                    Instead of keeping our skills inside tutorials
+                    and classroom exercises, we use them to create
+                    websites, systems, experiments, and projects
+                    that solve practical problems.
+
+                </p>
+
+
+                <a
+                    href="{{ route('about') }}"
+                    class="group
+                           inline-flex
+                           items-center
+                           gap-2
+                           mt-7
+                           font-bold
+                           text-[#4F806D]
+                           hover:text-[#29483D]
+                           transition">
+
+                    Discover our story
+
+                    <span
+                        class="group-hover:translate-x-1
+                               transition-transform">
+
+                        →
+
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    {{-- =========================================================
+       WHAT WE BUILD
+    ========================================================== --}}
+
+    <section
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               py-12 sm:py-20">
+
+
+        <div
+            class="flex
+                   flex-col
+                   lg:flex-row
+                   lg:items-end
+                   lg:justify-between
+                   gap-5
+                   mb-8 sm:mb-10">
+
+
+            <div>
+
+                <p
+                    class="text-sm
+                           uppercase
+                           tracking-[0.3em]
+                           font-bold
+                           text-[#B87945]">
+
+                    What We Build
+
+                </p>
+
+
+                <h2
+                    class="mt-3
+                           text-3xl sm:text-5xl
+                           font-black
+                           tracking-tight
+                           text-[#173F46]">
+
+                    Ideas into
+                    <span class="text-[#4F806D]">
+                        experiences.
+                    </span>
 
                 </h2>
 
@@ -605,13 +1127,13 @@
 
 
             <p
-                class="max-w-md
-                       text-[#71847D]
-                       leading-relaxed">
+                class="max-w-lg
+                       text-[#71817C]
+                       leading-7">
 
-                We combine development, design,
-                and problem-solving to create
-                useful digital experiences.
+                From simple experiments to full systems,
+                every project gives us another opportunity
+                to learn, solve problems, and improve.
 
             </p>
 
@@ -628,41 +1150,67 @@
 
             {{-- CARD 1 --}}
 
-            <div
+            <article
                 class="group
                        relative
                        overflow-hidden
-                       rounded-[1.75rem]
-                       bg-[#FFFDFC]
-                       border border-[#E5E0D7]
-                       p-7
+                       rounded-[2rem]
+                       bg-[#29483D]
+                       p-7 sm:p-8
+                       text-white
                        shadow-sm
                        hover:-translate-y-2
-                       hover:shadow-lg
+                       hover:shadow-xl
                        transition-all
                        duration-300">
 
+
                 <div
-                    class="w-14 h-14
+                    class="absolute
+                           -right-12
+                           -top-12
+                           w-32 h-32
+                           rounded-full
+                           bg-white/5
+                           group-hover:scale-150
+                           transition-transform
+                           duration-700">
+                </div>
+
+
+                <div
+                    class="relative
+                           w-14 h-14
                            rounded-2xl
-                           bg-[#E5F0EB]
-                           border border-[#D4E4DD]
+                           bg-white/10
+                           border border-white/10
                            flex items-center
                            justify-center
-                           text-2xl
-                           group-hover:scale-110
-                           transition">
+                           text-2xl">
 
-                    💻
+                    &lt;/&gt;
 
                 </div>
 
 
+                <p
+                    class="relative
+                           mt-7
+                           text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-white/40">
+
+                    01 / Development
+
+                </p>
+
+
                 <h3
-                    class="text-lg sm:text-xl
-                           font-bold
-                           text-[#29483D]
-                           mt-6">
+                    class="relative
+                           mt-2
+                           text-2xl
+                           font-black">
 
                     Web Development
 
@@ -670,67 +1218,83 @@
 
 
                 <p
-                    class="mt-3
-                           text-[#587067]
-                           leading-relaxed">
+                    class="relative
+                           mt-3
+                           text-white/65
+                           leading-7">
 
-                    Building responsive and functional
-                    websites using modern development
-                    tools and technologies.
+                    Responsive websites,
+                    interactive interfaces,
+                    and functional web systems
+                    built with modern technologies.
 
                 </p>
 
 
                 <div
-                    class="mt-6
+                    class="relative
+                           mt-7
                            text-sm
-                           font-semibold
-                           text-[#4F806D]">
+                           font-bold
+                           text-[#D8C7AC]">
 
-                    Development →
+                    Code with purpose →
 
                 </div>
 
-            </div>
+            </article>
 
 
 
             {{-- CARD 2 --}}
 
-            <div
+            <article
                 class="group
                        relative
                        overflow-hidden
-                       rounded-[1.75rem]
-                       bg-[#F1EDE3]
-                       border border-[#E4DDD0]
-                       p-7
+                       rounded-[2rem]
+                       bg-white
+                       border border-[#D9E1DC]
+                       p-7 sm:p-8
                        shadow-sm
                        hover:-translate-y-2
-                       hover:shadow-lg
+                       hover:shadow-xl
                        transition-all
                        duration-300">
+
 
                 <div
                     class="w-14 h-14
                            rounded-2xl
-                           bg-[#D8C7AC]
+                           bg-[#F1E6D7]
+                           border border-[#E4D8C9]
                            flex items-center
                            justify-center
-                           text-2xl
-                           group-hover:scale-110
-                           transition">
+                           text-2xl">
 
-                    🎨
+                    ✦
 
                 </div>
 
 
+                <p
+                    class="mt-7
+                           text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#B87945]
+                           font-bold">
+
+                    02 / Design
+
+                </p>
+
+
                 <h3
-                    class="text-lg sm:text-xl
-                           font-bold
-                           text-[#29483D]
-                           mt-6">
+                    class="mt-2
+                           text-2xl
+                           font-black
+                           text-[#29483D]">
 
                     Creative Design
 
@@ -739,67 +1303,80 @@
 
                 <p
                     class="mt-3
-                           text-[#587067]
-                           leading-relaxed">
+                           text-[#71817C]
+                           leading-7">
 
-                    Designing clean, accessible,
-                    and user-friendly interfaces
-                    that feel natural to use.
+                    Clean layouts,
+                    thoughtful interactions,
+                    and interfaces designed
+                    to feel simple and natural.
 
                 </p>
 
 
                 <div
-                    class="mt-6
+                    class="mt-7
                            text-sm
-                           font-semibold
-                           text-[#B58A5A]">
+                           font-bold
+                           text-[#B87945]">
 
-                    Design →
+                    Make it feel right →
 
                 </div>
 
-            </div>
+            </article>
 
 
 
             {{-- CARD 3 --}}
 
-            <div
+            <article
                 class="group
                        relative
                        overflow-hidden
-                       rounded-[1.75rem]
-                       bg-[#FFFDFC]
-                       border border-[#E5E0D7]
-                       p-7
+                       rounded-[2rem]
+                       bg-[#E5F0EB]
+                       border border-[#D1E1DA]
+                       p-7 sm:p-8
                        shadow-sm
                        hover:-translate-y-2
-                       hover:shadow-lg
+                       hover:shadow-xl
                        transition-all
                        duration-300">
+
 
                 <div
                     class="w-14 h-14
                            rounded-2xl
-                           bg-[#E5F0EB]
-                           border border-[#D4E4DD]
+                           bg-white
+                           border border-[#D5E3DD]
                            flex items-center
                            justify-center
-                           text-2xl
-                           group-hover:scale-110
-                           transition">
+                           text-2xl">
 
-                    🚀
+                    ↗
 
                 </div>
 
 
+                <p
+                    class="mt-7
+                           text-xs
+                           uppercase
+                           tracking-[0.2em]
+                           text-[#4F806D]
+                           font-bold">
+
+                    03 / Innovation
+
+                </p>
+
+
                 <h3
-                    class="text-lg sm:text-xl
-                           font-bold
-                           text-[#29483D]
-                           mt-6">
+                    class="mt-2
+                           text-2xl
+                           font-black
+                           text-[#29483D]">
 
                     Real Solutions
 
@@ -808,27 +1385,27 @@
 
                 <p
                     class="mt-3
-                           text-[#587067]
-                           leading-relaxed">
+                           text-[#657873]
+                           leading-7">
 
                     Turning concepts into practical
-                    projects designed to solve
-                    real-world problems.
+                    projects that explore how technology
+                    can solve everyday problems.
 
                 </p>
 
 
                 <div
-                    class="mt-6
+                    class="mt-7
                            text-sm
-                           font-semibold
+                           font-bold
                            text-[#4F806D]">
 
-                    Innovation →
+                    Solve something real →
 
                 </div>
 
-            </div>
+            </article>
 
 
         </div>
@@ -838,227 +1415,235 @@
 
 
     {{-- =========================================================
-       WHY DEVNEXT
+       PROCESS
     ========================================================== --}}
 
     <section
-        class="grid
-               grid-cols-1
-               lg:grid-cols-2
-               gap-5">
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               py-12 sm:py-20">
 
 
         <div
-            class="rounded-[2rem]
-                   bg-[#29483D]
-                   p-8 sm:p-10
-                   text-white">
-
-            <p
-                class="text-sm
-                       uppercase
-                       tracking-[0.25em]
-                       text-[#D8C7AC]
-                       font-semibold">
-
-                Why DevNext?
-
-            </p>
+            class="rounded-[2.5rem]
+                   bg-[#173F46]
+                   overflow-hidden
+                   relative">
 
 
-            <h2
-                class="text-3xl
-                       sm:text-4xl
-                       font-black
-                       mt-3">
-
-                Built while we're
-                still learning.
-
-            </h2>
-
-
-            <p
-                class="mt-5
-                       text-white/70
-                       leading-relaxed
-                       max-w-xl">
-
-                DevNext isn't just a website.
-                It's a place where we can put
-                what we learn into practice,
-                experiment with new technologies,
-                and turn our ideas into something real.
-
-            </p>
+            <div
+                class="absolute
+                       right-[-8rem]
+                       top-[-8rem]
+                       w-72 h-72
+                       rounded-full
+                       bg-[#4F806D]
+                       blur-3xl
+                       opacity-20">
+            </div>
 
 
-            <a
-                href="/about"
-                class="inline-flex
-                       items-center
-                       gap-2
-                       mt-7
-                       text-[#D8C7AC]
-                       font-semibold
-                       hover:text-white
-                       transition">
-
-                Learn about our team
-
-                <span>
-                    →
-                </span>
-
-            </a>
-
-        </div>
+            <div
+                class="relative
+                       p-7 sm:p-10 lg:p-14">
 
 
+                <div
+                    class="max-w-2xl">
 
-        <div
-            class="rounded-[2rem]
-                   bg-[#E5F0EB]
-                   border border-[#D4E4DD]
-                   p-8 sm:p-10">
+                    <p
+                        class="text-sm
+                               uppercase
+                               tracking-[0.3em]
+                               font-bold
+                               text-[#D8C7AC]">
 
-            <p
-                class="text-sm
-                       uppercase
-                       tracking-[0.25em]
-                       text-[#4F806D]
-                       font-semibold">
+                        Our Process
 
-                Our Approach
-
-            </p>
+                    </p>
 
 
-            <div class="mt-6 sm:mt-7 space-y-5 sm:space-y-6">
+                    <h2
+                        class="mt-4
+                               text-3xl sm:text-5xl
+                               font-black
+                               tracking-tight
+                               text-white">
+
+                        Learn.
+                        <span class="text-[#B8CEC5]">
+                            Build.
+                        </span>
+                        Improve.
+
+                    </h2>
 
 
-                <div class="flex gap-3 sm:gap-4">
+                    <p
+                        class="mt-5
+                               text-white/55
+                               leading-7">
+
+                        We don't expect to know everything.
+                        We focus on learning enough to take
+                        the next step — then we take it.
+
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="grid
+                           grid-cols-1
+                           md:grid-cols-3
+                           gap-4
+                           mt-10">
+
+
+                    {{-- STEP 1 --}}
 
                     <div
-                        class="shrink-0
-                               w-10 h-10
-                               rounded-xl
-                               bg-white
-                               flex items-center
-                               justify-center
-                               font-bold
-                               text-[#4F806D]">
+                        class="rounded-2xl
+                               bg-white/5
+                               border border-white/10
+                               p-6
+                               hover:bg-white/10
+                               transition">
 
-                        01
+                        <span
+                            class="text-sm
+                                   font-mono
+                                   text-[#B8CEC5]">
 
-                    </div>
+                            01
 
-                    <div>
+                        </span>
+
 
                         <h3
-                            class="font-bold
-                                   text-[#29483D]">
+                            class="mt-5
+                                   text-xl
+                                   font-bold
+                                   text-white">
 
                             Learn
 
                         </h3>
 
-                        <p
-                            class="text-sm
-                                   text-[#587067]
-                                   mt-1">
 
-                            Understand the technology
-                            before building with it.
+                        <p
+                            class="mt-2
+                                   text-sm
+                                   leading-6
+                                   text-white/45">
+
+                            Understand the tools,
+                            concepts, and problems
+                            before jumping into code.
 
                         </p>
 
                     </div>
 
-                </div>
 
 
-                <div class="flex gap-3 sm:gap-4">
+                    {{-- STEP 2 --}}
 
                     <div
-                        class="shrink-0
-                               w-10 h-10
-                               rounded-xl
-                               bg-white
-                               flex items-center
-                               justify-center
-                               font-bold
-                               text-[#4F806D]">
+                        class="rounded-2xl
+                               bg-white/5
+                               border border-white/10
+                               p-6
+                               hover:bg-white/10
+                               transition">
 
-                        02
+                        <span
+                            class="text-sm
+                                   font-mono
+                                   text-[#D8C7AC]">
 
-                    </div>
+                            02
 
-                    <div>
+                        </span>
+
 
                         <h3
-                            class="font-bold
-                                   text-[#29483D]">
+                            class="mt-5
+                                   text-xl
+                                   font-bold
+                                   text-white">
 
                             Build
 
                         </h3>
 
-                        <p
-                            class="text-sm
-                                   text-[#587067]
-                                   mt-1">
 
-                            Turn what we learn into
-                            working projects.
+                        <p
+                            class="mt-2
+                                   text-sm
+                                   leading-6
+                                   text-white/45">
+
+                            Turn knowledge into
+                            working projects and
+                            practical experiments.
 
                         </p>
 
                     </div>
 
-                </div>
 
 
-                <div class="flex gap-3 sm:gap-4">
+                    {{-- STEP 3 --}}
 
                     <div
-                        class="shrink-0
-                               w-10 h-10
-                               rounded-xl
-                               bg-white
-                               flex items-center
-                               justify-center
-                               font-bold
-                               text-[#4F806D]">
+                        class="rounded-2xl
+                               bg-white/5
+                               border border-white/10
+                               p-6
+                               hover:bg-white/10
+                               transition">
 
-                        03
+                        <span
+                            class="text-sm
+                                   font-mono
+                                   text-[#B8CEC5]">
 
-                    </div>
+                            03
 
-                    <div>
+                        </span>
+
 
                         <h3
-                            class="font-bold
-                                   text-[#29483D]">
+                            class="mt-5
+                                   text-xl
+                                   font-bold
+                                   text-white">
 
                             Improve
 
                         </h3>
 
-                        <p
-                            class="text-sm
-                                   text-[#587067]
-                                   mt-1">
 
-                            Keep refining our skills
-                            and our projects.
+                        <p
+                            class="mt-2
+                                   text-sm
+                                   leading-6
+                                   text-white/45">
+
+                            Review what we built,
+                            find weaknesses,
+                            and make it better.
 
                         </p>
 
                     </div>
 
-                </div>
 
+                </div>
 
             </div>
 
@@ -1069,95 +1654,271 @@
 
 
     {{-- =========================================================
-       PROJECT CTA
+       FEATURED PROJECT CTA
     ========================================================== --}}
 
     <section
-        class="relative
-               overflow-hidden
-               rounded-[1.5rem] sm:rounded-[2rem]
-               bg-[#F1EDE3]
-               border border-[#E4DDD0]
-               p-8 sm:p-10 lg:p-12">
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               py-12 sm:py-20">
 
 
         <div
             class="relative
-                   flex
-                   flex-col
-                   md:flex-row
-                   md:items-center
-                   md:justify-between
-                   gap-7">
+                   overflow-hidden
+                   rounded-[2.5rem]
+                   bg-[#F1E6D7]
+                   border border-[#E4D8C9]">
 
 
-            <div>
+            <div
+                class="absolute
+                       right-[-5rem]
+                       bottom-[-8rem]
+                       w-72 h-72
+                       rounded-full
+                       bg-[#D8C7AC]
+                       blur-3xl
+                       opacity-40">
+            </div>
+
+
+            <div
+                class="relative
+                       p-8 sm:p-12 lg:p-16
+                       flex
+                       flex-col
+                       lg:flex-row
+                       lg:items-center
+                       lg:justify-between
+                       gap-10">
+
+
+                <div class="max-w-2xl">
+
+                    <p
+                        class="text-sm
+                               uppercase
+                               tracking-[0.3em]
+                               font-bold
+                               text-[#B87945]">
+
+                        Explore Our Work
+
+                    </p>
+
+
+                    <h2
+                        class="mt-4
+                               text-3xl sm:text-5xl
+                               font-black
+                               tracking-tight
+                               text-[#29483D]">
+
+                        See what we're
+                        <span class="text-[#B87945]">
+                            building.
+                        </span>
+
+                    </h2>
+
+
+                    <p
+                        class="mt-4
+                               text-base sm:text-lg
+                               leading-7
+                               text-[#657873]">
+
+                        Explore projects, experiments,
+                        systems, and ideas created by
+                        the S.T.A Coding Team.
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ route('projects.index') }}"
+                    class="group
+                           shrink-0
+                           inline-flex
+                           items-center
+                           justify-center
+                           gap-3
+                           px-7 py-4
+                           rounded-2xl
+                           bg-[#29483D]
+                           text-white
+                           font-bold
+                           shadow-lg
+                           hover:bg-[#1F3C33]
+                           hover:-translate-y-1
+                           hover:shadow-xl
+                           transition-all
+                           duration-300">
+
+                    Browse Projects
+
+                    <span
+                        class="text-xl
+                               group-hover:translate-x-1
+                               transition-transform">
+
+                        →
+
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    {{-- =========================================================
+       FINAL CTA
+    ========================================================== --}}
+
+    <section
+        class="max-w-7xl
+               mx-auto
+               px-4 sm:px-6 lg:px-8
+               pt-8
+               pb-16 sm:pb-24">
+
+
+        <div
+            class="relative
+                   text-center
+                   rounded-[2.5rem]
+                   bg-white
+                   border border-[#D9E1DC]
+                   p-8 sm:p-12 lg:p-16
+                   shadow-sm
+                   overflow-hidden">
+
+
+            <div
+                class="absolute
+                       left-1/2
+                       -top-32
+                       -translate-x-1/2
+                       w-72 h-72
+                       rounded-full
+                       bg-[#E5F0EB]
+                       blur-3xl
+                       opacity-70">
+            </div>
+
+
+            <div class="relative">
 
                 <p
                     class="text-sm
                            uppercase
-                           tracking-[0.25em]
-                           text-[#B58A5A]
-                           font-semibold">
+                           tracking-[0.3em]
+                           font-bold
+                           text-[#4F806D]">
 
-                    Explore Our Work
+                    The Next Step
 
                 </p>
 
 
                 <h2
-                    class="text-3xl
-                           sm:text-4xl
+                    class="mt-4
+                           text-3xl sm:text-5xl
+                           lg:text-6xl
                            font-black
-                           text-[#29483D]
-                           mt-2">
+                           tracking-tight
+                           leading-tight
+                           text-[#173F46]">
 
-                    See what we've built.
+                    There's always
+                    <span class="text-[#B87945]">
+                        something next.
+                    </span>
 
                 </h2>
 
 
                 <p
-                    class="mt-3
-                           text-[#587067]
-                           max-w-xl
-                           leading-relaxed">
+                    class="max-w-xl
+                           mx-auto
+                           mt-5
+                           text-base sm:text-lg
+                           leading-7
+                           text-[#71817C]">
 
-                    Explore our projects, experiments,
-                    and practical solutions created
-                    by the S.T.A Coding Team.
+                    New ideas.
+                    New projects.
+                    New problems to solve.
+                    And another opportunity to become better.
 
                 </p>
 
+
+                <div
+                    class="flex
+                           flex-col sm:flex-row
+                           justify-center
+                           gap-3
+                           mt-8">
+
+
+                    <a
+                        href="{{ route('projects.index') }}"
+                        class="inline-flex
+                               items-center
+                               justify-center
+                               gap-2
+                               px-7 py-4
+                               rounded-2xl
+                               bg-[#4F806D]
+                               text-white
+                               font-bold
+                               hover:bg-[#3E735F]
+                               hover:-translate-y-1
+                               transition-all
+                               duration-300">
+
+                        Explore DevNext
+
+                        <span>
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{{ route('contact') }}"
+                        class="inline-flex
+                               items-center
+                               justify-center
+                               px-7 py-4
+                               rounded-2xl
+                               border border-[#D4DED9]
+                               bg-[#F8FAF8]
+                               text-[#29483D]
+                               font-bold
+                               hover:bg-[#E8EEE9]
+                               hover:-translate-y-1
+                               transition-all
+                               duration-300">
+
+                        Get in Touch
+
+                    </a>
+
+                </div>
+
             </div>
-
-
-            <a
-                href="/projects"
-                class="shrink-0
-                       inline-flex
-                       items-center
-                       justify-center
-                       gap-2
-                       px-7 py-3.5
-                       rounded-full
-                       bg-[#4F806D]
-                       text-white
-                       font-semibold
-                       shadow-sm
-                       hover:bg-[#3F6D5B]
-                       hover:-translate-y-0.5
-                       hover:shadow-md
-                       transition-all
-                       duration-300">
-
-                View Projects
-
-                <span class="text-lg">
-                    →
-                </span>
-
-            </a>
 
         </div>
 
