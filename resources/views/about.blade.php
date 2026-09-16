@@ -1303,7 +1303,7 @@
                                    font-semibold
                                    mt-1">
 
-                            Frontend & UI Design
+                            Full Stack Development
 
                         </p>
 
@@ -1425,7 +1425,7 @@
                                    font-semibold
                                    mt-1">
 
-                            Web Development
+                            Frontend Development
 
                         </p>
 
