@@ -80,7 +80,7 @@
                     type="password"
                     name="password"
                     required
-                    minlength="12"
+                    minlength="8"
                     autocomplete="new-password"
                     placeholder="Create a password"
                     class="w-full px-4 py-3 rounded-xl border border-[#D9D3C7]
